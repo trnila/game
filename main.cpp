@@ -39,7 +39,52 @@ static void button_callback(GLFWwindow* window, int button, int action, int mode
 	if (action == GLFW_PRESS) printf("button_callback [%d,%d,%d]\n", button, action, mode);
 }
 
+char* readFile(const char *path) {
+	FILE* f = fopen(path, "r");
+	if(!f) {
+		perror("readFile: ");
+		exit(1);
+	}
 
+	fseek(f, 0, SEEK_END);
+	size_t size = ftell(f);
+	rewind(f);
+	char *content = new char[size + 1];
+	if(fread(content, size, 1, f) != 1) {
+		perror("readfile fread");
+		exit(1);
+	}
+	content[size] = '\0';
+	printf("%s", content);
+	return content;
+}
+
+GLuint createShader(const char *path, GLenum type) {
+	const GLchar* source = readFile(path);
+
+	GLuint res = glCreateShader(type);
+	const GLchar* sources[] = {
+#ifdef GL_ES_VERSION_2_0
+		"#version 100\n",  // OpenGL ES 2.0
+#else
+		"#version 120\n",  // OpenGL 2.1
+#endif
+		source
+	};
+	glShaderSource(res, 2, sources, NULL);
+	delete[] source;	
+
+	glCompileShader(res);
+	GLint compile_ok = GL_FALSE;
+	glGetShaderiv(res, GL_COMPILE_STATUS, &compile_ok);
+	if (compile_ok == GL_FALSE) {
+		//print_log(res);
+		glDeleteShader(res);
+		return 0;
+	}
+
+	return res;
+}
 
 //GLM test
 
@@ -59,43 +104,9 @@ glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 100.0f);
 int init_resources()
 {
 	GLint compile_ok = GL_FALSE, link_ok = GL_FALSE;
-	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-	const char *vs_source =
-#ifdef GL_ES_VERSION_2_0
-		"#version 100\n"  // OpenGL ES 2.0
-#else
-		"#version 120\n"  // OpenGL 2.1
-#endif
-		"attribute vec2 coord2d;                  "
-		"void main(void) {                        "
-		"  gl_Position = vec4(coord2d, 0.0, 1.0); "
-		"}";
-	glShaderSource(vs, 1, &vs_source, NULL);
-	glCompileShader(vs);
-	glGetShaderiv(vs, GL_COMPILE_STATUS, &compile_ok);
-	if (!compile_ok) {
-		fprintf(stderr, "Error in vertex shader\n");
-		return 0;
-	}
-	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-	const char *fs_source =
-#ifdef GL_ES_VERSION_2_0
-		"#version 100\n"  // OpenGL ES 2.0
-#else
-		"#version 120\n"  // OpenGL 2.1
-#endif
-		"void main(void) {        "
-		"  gl_FragColor[0] = 0.0; "
-		"  gl_FragColor[1] = 0.0; "
-		"  gl_FragColor[2] = 1.0; "
-		"}";
-	glShaderSource(fs, 1, &fs_source, NULL);
-	glCompileShader(fs);
-	glGetShaderiv(fs, GL_COMPILE_STATUS, &compile_ok);
-	if (!compile_ok) {
-		fprintf(stderr, "Error in fragment shader\n");
-		return 0;
-	}
+	GLuint vs = createShader("triangle.v.glsl", GL_VERTEX_SHADER);
+	GLuint fs = createShader("triangle.f.glsl", GL_FRAGMENT_SHADER);
+	
 	program = glCreateProgram();
 	glAttachShader(program, vs);
 	glAttachShader(program, fs);
@@ -166,9 +177,13 @@ int main(void)
 		glUseProgram(program);
 		glEnableVertexAttribArray(attribute_coord2d);
 		GLfloat triangle_vertices[] = {
-			0.0,  0.8,
+			-0.8,  0.8,
 			-0.8, -0.8,
 			0.8, -0.8,
+
+			0.8, 0.8,
+			-0.8, 0.8,
+			0.8, -0.8
 		};
 		/* Describe our vertices array to OpenGL (it can't guess its format automatically) */
 		glVertexAttribPointer(
@@ -182,6 +197,7 @@ int main(void)
 
 
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawArrays(GL_TRIANGLES, 3, 6);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
