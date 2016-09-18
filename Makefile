@@ -1,5 +1,8 @@
 CC=g++
-LDFLAGS=-lglfw -lGL
+LDFLAGS=-lglfw -lGL -lGLEW
+CPPFLAGS=-g
+
+all: main
 
 main: main.o
 

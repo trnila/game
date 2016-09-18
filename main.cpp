@@ -1,4 +1,5 @@
 //Include GLFW
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 //Include GLM
@@ -53,6 +54,65 @@ glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 100.0f);
 			);
 	// Model matrix : an identity matrix (model will be at the origin)
 	glm::mat4 Model = glm::mat4(1.0f);
+	GLuint program;
+	GLint attribute_coord2d;
+int init_resources()
+{
+	GLint compile_ok = GL_FALSE, link_ok = GL_FALSE;
+	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
+	const char *vs_source =
+#ifdef GL_ES_VERSION_2_0
+		"#version 100\n"  // OpenGL ES 2.0
+#else
+		"#version 120\n"  // OpenGL 2.1
+#endif
+		"attribute vec2 coord2d;                  "
+		"void main(void) {                        "
+		"  gl_Position = vec4(coord2d, 0.0, 1.0); "
+		"}";
+	glShaderSource(vs, 1, &vs_source, NULL);
+	glCompileShader(vs);
+	glGetShaderiv(vs, GL_COMPILE_STATUS, &compile_ok);
+	if (!compile_ok) {
+		fprintf(stderr, "Error in vertex shader\n");
+		return 0;
+	}
+	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
+	const char *fs_source =
+#ifdef GL_ES_VERSION_2_0
+		"#version 100\n"  // OpenGL ES 2.0
+#else
+		"#version 120\n"  // OpenGL 2.1
+#endif
+		"void main(void) {        "
+		"  gl_FragColor[0] = 0.0; "
+		"  gl_FragColor[1] = 0.0; "
+		"  gl_FragColor[2] = 1.0; "
+		"}";
+	glShaderSource(fs, 1, &fs_source, NULL);
+	glCompileShader(fs);
+	glGetShaderiv(fs, GL_COMPILE_STATUS, &compile_ok);
+	if (!compile_ok) {
+		fprintf(stderr, "Error in fragment shader\n");
+		return 0;
+	}
+	program = glCreateProgram();
+	glAttachShader(program, vs);
+	glAttachShader(program, fs);
+	glLinkProgram(program);
+	glGetProgramiv(program, GL_LINK_STATUS, &link_ok);
+	if (!link_ok) {
+		fprintf(stderr, "glLinkProgram:");
+		return 0;
+	}
+	const char* attribute_name = "coord2d";
+	attribute_coord2d = glGetAttribLocation(program, attribute_name);
+	if (attribute_coord2d == -1) {
+		fprintf(stderr, "Could not bind attribute %s\n", attribute_name);
+		return 0;
+	}
+	return 1;
+}
 
 
 int main(void)
@@ -95,25 +155,35 @@ int main(void)
 	glLoadIdentity();
 	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 
+	glewInit();
+	init_resources();
 
-	while (!glfwWindowShouldClose(window))
-	{
+
+	while (!glfwWindowShouldClose(window)) {
+		glClearColor(.0, .0, .0, .0);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glRotatef((float)glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
+		glUseProgram(program);
+		glEnableVertexAttribArray(attribute_coord2d);
+		GLfloat triangle_vertices[] = {
+			0.0,  0.8,
+			-0.8, -0.8,
+			0.8, -0.8,
+		};
+		/* Describe our vertices array to OpenGL (it can't guess its format automatically) */
+		glVertexAttribPointer(
+				attribute_coord2d, // attribute
+				2,                 // number of elements per vertex, here (x,y)
+				GL_FLOAT,          // the type of each element
+				GL_FALSE,          // take our values as-is
+				0,                 // no extra data between each position
+				triangle_vertices  // pointer to the C array
+				);
 
-		glBegin(GL_TRIANGLES);
-		glColor3f(1.f, 0.f, 0.f);
-		glVertex3f(-0.6f, -0.4f, 0.f);
-		glColor3f(0.f, 1.f, 0.f);
-		glVertex3f(0.6f, -0.4f, 0.f);
-		glColor3f(0.f, 0.f, 1.f);
-		glVertex3f(0.f, 0.6f, 0.f);
-		glEnd();
+
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
 		glfwSwapBuffers(window);
-
 		glfwPollEvents();
 	}
 	glfwDestroyWindow(window);
