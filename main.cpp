@@ -12,6 +12,7 @@
 //Include the standard C++ headers
 #include <stdlib.h>
 #include <stdio.h>
+#include <iostream>
 
 
 
@@ -55,8 +56,30 @@ char* readFile(const char *path) {
 		exit(1);
 	}
 	content[size] = '\0';
-	printf("%s", content);
 	return content;
+}
+
+void print_log(GLuint object) {
+	GLint log_length = 0;
+	if (glIsShader(object)) {
+		glGetShaderiv(object, GL_INFO_LOG_LENGTH, &log_length);
+	} else if (glIsProgram(object)) {
+		glGetProgramiv(object, GL_INFO_LOG_LENGTH, &log_length);
+	} else {
+		std::cerr << "printlog: Not a shader or a program\n";
+		return;
+	}
+
+	char* log = (char*)malloc(log_length);
+
+	if (glIsShader(object))
+		glGetShaderInfoLog(object, log_length, NULL, log);
+	else if (glIsProgram(object))
+		glGetProgramInfoLog(object, log_length, NULL, log);
+
+	std::cerr << log;
+	free(log);
+
 }
 
 GLuint createShader(const char *path, GLenum type) {
@@ -78,7 +101,7 @@ GLuint createShader(const char *path, GLenum type) {
 	GLint compile_ok = GL_FALSE;
 	glGetShaderiv(res, GL_COMPILE_STATUS, &compile_ok);
 	if (compile_ok == GL_FALSE) {
-		//print_log(res);
+		print_log(res);
 		glDeleteShader(res);
 		return 0;
 	}
@@ -106,7 +129,7 @@ int init_resources()
 	GLint compile_ok = GL_FALSE, link_ok = GL_FALSE;
 	GLuint vs = createShader("triangle.v.glsl", GL_VERTEX_SHADER);
 	GLuint fs = createShader("triangle.f.glsl", GL_FRAGMENT_SHADER);
-	
+
 	program = glCreateProgram();
 	glAttachShader(program, vs);
 	glAttachShader(program, fs);
