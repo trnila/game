@@ -1,19 +1,13 @@
-//Include GLFW
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-
-//Include GLM
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
-#include <glm/gtc/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale, glm::perspective
-#include <glm/gtc/type_ptr.hpp> // glm::value_ptr
-
-//Include the standard C++ headers
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-
 
 
 static void error_callback(int error, const char* description){ fputs(description, stderr); }
@@ -109,8 +103,6 @@ GLuint createShader(const char *path, GLenum type) {
 	return res;
 }
 
-//GLM test
-
 // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 100.0f);
 
@@ -184,10 +176,6 @@ int main(void)
 	float ratio = width / (float)height;
 	glViewport(0, 0, width, height);
 
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
 
 	glewInit();
 	init_resources();
