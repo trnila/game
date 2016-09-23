@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include "Shader.h"
+#include "Program.h"
 
 
 static void error_callback(int error, const char* description){ fputs(description, stderr); }
@@ -34,99 +36,20 @@ static void button_callback(GLFWwindow* window, int button, int action, int mode
 	if (action == GLFW_PRESS) printf("button_callback [%d,%d,%d]\n", button, action, mode);
 }
 
-char* readFile(const char *path) {
-	FILE* f = fopen(path, "r");
-	if(!f) {
-		perror("readFile: ");
-		exit(1);
-	}
-
-	fseek(f, 0, SEEK_END);
-	size_t size = ftell(f);
-	rewind(f);
-	char *content = new char[size + 1];
-	if(fread(content, size, 1, f) != 1) {
-		perror("readfile fread");
-		exit(1);
-	}
-	content[size] = '\0';
-	return content;
-}
-
-void print_log(GLuint object) {
-	GLint log_length = 0;
-	if (glIsShader(object)) {
-		glGetShaderiv(object, GL_INFO_LOG_LENGTH, &log_length);
-	} else if (glIsProgram(object)) {
-		glGetProgramiv(object, GL_INFO_LOG_LENGTH, &log_length);
-	} else {
-		std::cerr << "printlog: Not a shader or a program\n";
-		return;
-	}
-
-	char* log = (char*)malloc(log_length);
-
-	if (glIsShader(object))
-		glGetShaderInfoLog(object, log_length, NULL, log);
-	else if (glIsProgram(object))
-		glGetProgramInfoLog(object, log_length, NULL, log);
-
-	std::cerr << log;
-	free(log);
-
-}
-
-GLuint createShader(const char *path, GLenum type) {
-	const GLchar* source = readFile(path);
-
-	GLuint res = glCreateShader(type);
-	const GLchar* sources[] = {
-		"#version 330\n",  // OpenGL 2.1
-		source
-	};
-	glShaderSource(res, 2, sources, NULL);
-	delete[] source;	
-
-	glCompileShader(res);
-	GLint compile_ok = GL_FALSE;
-	glGetShaderiv(res, GL_COMPILE_STATUS, &compile_ok);
-	if (compile_ok == GL_FALSE) {
-		print_log(res);
-		glDeleteShader(res);
-		return 0;
-	}
-
-	return res;
-}
-
-// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
-glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.01f, 100.0f);
-
-// Camera matrix
-	glm::mat4 View = glm::lookAt(
-			glm::vec3(10, 10, 10), // Camera is at (4,3,-3), in World Space
-			glm::vec3(0, 0, 0), // and looks at the origin
-			glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
-			);
-	// Model matrix : an identity matrix (model will be at the origin)
-	glm::mat4 Model = glm::mat4(1.0f);
-	GLuint program;
-	GLint attribute_coord2d;
-int init_resources()
+int init_resources(Program &prog)
 {
-	GLint compile_ok = GL_FALSE, link_ok = GL_FALSE;
-	GLuint vs = createShader("triangle.v.glsl", GL_VERTEX_SHADER);
-	GLuint fs = createShader("triangle.f.glsl", GL_FRAGMENT_SHADER);
+	try {
+		Shader vertex(GL_VERTEX_SHADER, "triangle.v.glsl");
+		Shader fragment(GL_FRAGMENT_SHADER, "triangle.f.glsl");
+		
+		prog.attach(vertex);
+		prog.attach(fragment);
+		prog.link();
 
-	program = glCreateProgram();
-	glAttachShader(program, vs);
-	glAttachShader(program, fs);
-	glLinkProgram(program);
-	glGetProgramiv(program, GL_LINK_STATUS, &link_ok);
-	if (!link_ok) {
-		fprintf(stderr, "glLinkProgram:");
-		return 0;
+	} catch(GlslCompileError &err) {
+		std::cerr << "GLSL error: " << err.getSource() << " - " << err.what() << "\n";
 	}
+
 	return 1;
 }
 
@@ -177,8 +100,8 @@ int main(void)
 
 
 
-
-	init_resources();
+	Program prog;
+	init_resources(prog);
 
 	float points[] = {
 		-1.0f,-1.0f,-1.0f, // triangle 1 : begin
@@ -296,7 +219,7 @@ int main(void)
 	GLint uniform_mvp;
 	const char* uniform_name;
 	uniform_name = "mvp";
-	uniform_mvp = glGetUniformLocation(program, uniform_name);
+	uniform_mvp = glGetUniformLocation(prog.id, uniform_name);
 	if (uniform_mvp == -1) {
 		fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
 		return 0;
@@ -313,12 +236,10 @@ int main(void)
 		glClearColor(.0, .0, .0, .0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		glUseProgram(program);
+		prog.use();
 		glUniformMatrix4fv(uniform_mvp, 1, GL_FALSE, glm::value_ptr(mvp));
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 12 * 3); //mode,first,coun
-		//		glDrawArrays(GL_TRIANGLES, 3, 6); //mode,first,coun
-		//		glDrawArrays(GL_TRIANGLES, 6, 9); //mode,first,coun
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

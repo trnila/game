@@ -4,7 +4,7 @@ CPPFLAGS=-g
 
 all: main
 
-main: main.o
+main: main.o Shader.o Program.o
 
 clean:
 	rm -f main *.o
