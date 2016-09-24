@@ -54,7 +54,13 @@ public:
 
 
 	void start() {
+		float last = glfwGetTime();
 		while (!glfwWindowShouldClose(window)) {
+			float current = glfwGetTime();
+			float delta = current - last;
+			last = current;
+
+			scene->update(delta);
 			scene->renderOneFrame();
 
 			glfwSwapBuffers(window);

@@ -31,12 +31,22 @@ public:
 		rotateAround = glm::vec3(x, y, z);
 	}
 
+	void setAngle(float angle) {
+		this->angle = angle;
+	}
+
+	void addAngle(float angle) {
+		this->angle += angle;
+	}
+
+	VBO vbo;
+	VBO colorbuffer;
+private:
 	glm::vec3 position;
 	glm::vec3 rotateAround;
 	float angle;
 
-	VBO vbo;
-	VBO colorbuffer;
+
 };
 
 class Scene {
@@ -99,25 +109,27 @@ public:
 		return 1;
 	}
 
+	void update(float time) {
+		float angle = time * 45;
+
+		objects[0].addAngle(angle);
+		objects[1].addAngle(angle);
+	}
+
 	void renderOneFrame() {
-			obj->angle = glfwGetTime() * 45;
+		glClearColor(.0, .0, .0, .0);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			objects[1].angle = obj->angle;
+		for(Object &o: objects) {
+			glm::mat4 mvp = projection * view * o.getTransform();
 
+			prog.use();
 
-			glClearColor(.0, .0, .0, .0);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			mvpVar->setData(mvp);
 
-			for(Object &o: objects) {
-				glm::mat4 mvp = projection * view * o.getTransform();
-
-				prog.use();
-
-				mvpVar->setData(mvp);
-
-				vao.bind();
-				glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
-			}
+			vao.bind();
+			glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+		}
 	}
 
 private:
