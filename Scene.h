@@ -2,28 +2,70 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include <vector>
 #include "VBO.h"
 #include "Program.h"
 #include "data.h"
 
+class Object {
+public:
+	glm::mat4 getTransform() {
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
+			glm::mat4 anim = glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround);
+
+		return model * anim;
+	}
+
+	void move(float x, float y, float z) {
+		position.x += x;
+		position.y += y;
+		position.z += z;
+	}
+
+	void setPosition(float x, float y, float z) {
+		position = glm::vec3(x, y, z);
+	}
+
+	void rotate(float angle, float x, float y, float z) {
+		this->angle = angle;
+		rotateAround = glm::vec3(x, y, z);
+	}
+
+	glm::vec3 position;
+	glm::vec3 rotateAround;
+	float angle;
+
+	VBO vbo;
+	VBO colorbuffer;
+};
 
 class Scene {
 public:
 	Scene(GLFWwindow *window) {
 		init_resources();
 
-		vbo.setData((const char*) points, sizeof(points));
+		objects.emplace_back(Object());
+		objects.emplace_back(Object());
+
+		objects[0].setPosition(0, 0, -4);
+		objects[0].rotate(0, 0, 1, 0);
+		
+		objects[1].setPosition(0, 0, -9);
+		objects[1].rotate(0, 0, -1, 0);
+
+		obj = &objects[0];
+		obj->vbo.setData((const char*) points, sizeof(points));
 
 		vao.bind();
 		vao.enableAttrib(0);
 
-		vbo.bind();
+		obj->vbo.bind();
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-		colorbuffer.bind();
-		colorbuffer.setData((const char*) g_color_buffer_data, sizeof(g_color_buffer_data));
+		obj->colorbuffer.bind();
+		obj->colorbuffer.setData((const char*) g_color_buffer_data, sizeof(g_color_buffer_data));
 		glEnableVertexAttribArray(1);
-		colorbuffer.bind();
+		obj->colorbuffer.bind();
 		glVertexAttribPointer(1, 3,	GL_FLOAT, GL_FALSE, 0, (void*) 0);
 
 
@@ -36,6 +78,8 @@ public:
 
 		// todo: fix!
 		mvpVar = prog.bindUniformVariable("mvp");
+
+		objects[1].vbo = objects[0].vbo;
 
 	}
 	
@@ -56,28 +100,34 @@ public:
 	}
 
 	void renderOneFrame() {
-			float angle = glfwGetTime() * 45;
-			glm::vec3 axis_y(0, 1, 0);
-			glm::mat4 anim = glm::rotate(glm::mat4(1.0f), glm::radians(angle), axis_y);
-			glm::mat4 mvp = projection * view * model * anim;
+			obj->angle = glfwGetTime() * 45;
+
+			objects[1].angle = obj->angle;
+
 
 			glClearColor(.0, .0, .0, .0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			prog.use();
+			for(Object &o: objects) {
+				glm::mat4 mvp = projection * view * o.getTransform();
 
-			mvpVar->setData(mvp);
+				prog.use();
 
-			vao.bind();
-			glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+				mvpVar->setData(mvp);
+
+				vao.bind();
+				glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+			}
 	}
 
 private:
-	VBO vbo, colorbuffer;
 	VAO vao;
 	Program prog;
 	glm::mat4 model;
 	glm::mat4 view;
 	glm::mat4 projection;
 	UniformVariable *mvpVar;
+
+	Object *obj;
+	std::vector<Object> objects;
 };
