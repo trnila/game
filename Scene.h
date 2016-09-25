@@ -10,7 +10,28 @@
 
 class Renderable {
 public:
-	virtual void render() = 0;
+	Renderable(float* vertices, float *colors, int size): size(size) {
+		vao.bind();
+		vao.enableAttrib(0);
+
+		vbo.bind();
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		vbo.setData((const char*) vertices, size * 3 * sizeof(float));
+
+		colorsVbo.bind();
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		colorsVbo.setData((const char*) colors, size * 3 * sizeof(float));
+		glEnableVertexAttribArray(1);
+	}
+
+	virtual void render() {
+		vao.bind();
+		glDrawArrays(GL_TRIANGLES, 0, size);
+	}
+private:
+	VBO vbo, colorsVbo;
+	VAO vao;
+	int size;
 };
 
 class Object {
@@ -53,58 +74,6 @@ private:
 	float angle;
 };
 
-class Box: public Renderable { 
-public:
-	Box() {
-		vbo.setData((const char*) points, sizeof(points));
-
-		vao.bind();
-		vao.enableAttrib(0);
-
-		vbo.bind();
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-		colorbuffer.bind();
-		colorbuffer.setData((const char*) g_color_buffer_data, sizeof(g_color_buffer_data));
-		glEnableVertexAttribArray(1);
-		colorbuffer.bind();
-		glVertexAttribPointer(1, 3,	GL_FLOAT, GL_FALSE, 0, (void*) 0);
-	}
-
-	virtual void render() {
-		vao.bind();
-		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
-	}
-
-private:
-	VBO vbo, colorbuffer;
-	VAO vao;
-};
-
-class Rect: public Renderable {
-public:
-	Rect(float* vertices, float *colors, int size) {
-		vao.bind();
-		vao.enableAttrib(0);
-
-		vbo.bind();
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		vbo.setData((const char*) vertices, size);
-
-		colorsVbo.bind();
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		colorsVbo.setData((const char*) colors, size);
-		glEnableVertexAttribArray(1);
-	}
-
-	virtual void render() {
-		vao.bind();
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-	}
-private:
-	VBO vbo, colorsVbo;
-	VAO vao;
-};
 
 class Scene {
 public:
@@ -117,15 +86,15 @@ public:
 
 		objects[0].setPosition(-1, 0, -4);
 		objects[0].rotate(0, 0, 1, 0);
-		objects[0].renderable = new Rect(triangleVertices, triangleRed, sizeof(triangleRed));
+		objects[0].renderable = new Renderable(triangleVertices, triangleRed, 3);
 		
 		objects[1].setPosition(0, 0, -9);
 		objects[1].rotate(0, 0, -1, 0);
-		objects[1].renderable = new Box();
+		objects[1].renderable = new Renderable(cubeVertices, cubeRandColors, 36);
 
 		objects[2].setPosition(2, 0, -3);
 		objects[2].rotate(0, 0, 1, 0);
-		objects[2].renderable = new Rect(triangleVertices, triangleBlue, sizeof(triangleRed));
+		objects[2].renderable = new Renderable(triangleVertices, triangleBlue, 3);
 
 
 		int width, height;
