@@ -1,17 +1,12 @@
-
 #pragma once
-
-#include <GL/glew.h>
 #include <glm/mat4x4.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <GL/glew.h>
 
 class UniformVariable {
 public:
-	UniformVariable(GLint id): id(id) {}
+	UniformVariable(GLint id);
 
-	void setData(glm::mat4 &data) {
-		glUniformMatrix4fv(id, 1, GL_FALSE, value_ptr(data));
-	}
+	void setData(glm::mat4 &data);
 
 private:
 	GLint id;

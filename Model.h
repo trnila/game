@@ -2,6 +2,7 @@
 
 #include "VBO.h"
 #include "Program.h"
+#include "VAO.h"
 
 class Model {
 public:

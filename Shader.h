@@ -1,7 +1,7 @@
 #pragma once
 
-#include <GL/gl.h>
 #include <stdexcept>
+#include <GL/glew.h>
 
 class GlslCompileError: public std::runtime_error {
 public:
