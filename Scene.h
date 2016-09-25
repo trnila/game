@@ -11,7 +11,6 @@
 class Renderable {
 public:
 	virtual void render() = 0;
-
 };
 
 class Object {
@@ -84,33 +83,18 @@ private:
 
 class Rect: public Renderable {
 public:
-	Rect() {
-		float data[] = {
-			-1.0, -1.0, 0.0,
-			1.0, -1.0, 0.0,
-			-1.0, 1.0, 1.0
-		};
-
-		float colors[] = {
-			1.0, 0, 0,
-			1.0, 0, 0,
-			1.0, 0, 0,
-		//	0, 1, 0,
-		//	0, 0, 1
-		};
-
+	Rect(float* vertices, float *colors, int size) {
 		vao.bind();
 		vao.enableAttrib(0);
 
 		vbo.bind();
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		vbo.setData((const char*) data, sizeof(data));
+		vbo.setData((const char*) vertices, size);
 
 		colorsVbo.bind();
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		colorsVbo.setData((const char*) colors, sizeof(colors));
+		colorsVbo.setData((const char*) colors, size);
 		glEnableVertexAttribArray(1);
-
 	}
 
 	virtual void render() {
@@ -129,21 +113,26 @@ public:
 
 		objects.emplace_back(Object());
 		objects.emplace_back(Object());
+		objects.emplace_back(Object());
 
-		objects[0].setPosition(0, 0, -4);
+		objects[0].setPosition(-1, 0, -4);
 		objects[0].rotate(0, 0, 1, 0);
-		objects[0].renderable = new Rect();
+		objects[0].renderable = new Rect(triangleVertices, triangleRed, sizeof(triangleRed));
 		
 		objects[1].setPosition(0, 0, -9);
 		objects[1].rotate(0, 0, -1, 0);
 		objects[1].renderable = new Box();
 
+		objects[2].setPosition(2, 0, -3);
+		objects[2].rotate(0, 0, 1, 0);
+		objects[2].renderable = new Rect(triangleVertices, triangleBlue, sizeof(triangleRed));
+
 
 		int width, height;
 		glfwGetFramebufferSize(window, &width, &height);
 
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
-		view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -6.0));
+		view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));// * glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -8.0));
 		projection = glm::perspective(45.0f, 1.0f*width/height, 0.1f, 10.0f);
 
 		// todo: fix!
