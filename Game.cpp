@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "RenderContext.h"
 
 void Game::init() {
 	glfwSetErrorCallback([] (int err, const char* description) -> void {
@@ -46,6 +47,8 @@ void Game::init() {
 }
 
 void Game::start() {
+	RenderContext context;
+
 	double last = glfwGetTime();
 	while (!glfwWindowShouldClose(window)) {
 		double current = glfwGetTime();
@@ -53,7 +56,7 @@ void Game::start() {
 		last = current;
 
 		scene->update(delta);
-		scene->renderOneFrame();
+		scene->renderOneFrame(context);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

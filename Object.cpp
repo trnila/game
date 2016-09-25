@@ -29,6 +29,6 @@ void Object::addAngle(float angle) {
 	this->angle += angle;
 }
 
-void Object::render() {
-	model->render();
+void Object::render(RenderContext &context) {
+	model->render(context);
 }

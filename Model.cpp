@@ -14,7 +14,7 @@ Model::Model(float *vertices, float *colors, int size) : size(size) {
 	glEnableVertexAttribArray(1);
 }
 
-void Model::render() {
-	vao.bind();
+void Model::render(RenderContext &context) {
+	context.bind(vao);
 	glDrawArrays(GL_TRIANGLES, 0, size);
 }

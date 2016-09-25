@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Program.h"
 #include "Model.h"
+#include "RenderContext.h"
 
 class Object {
 public:
@@ -16,7 +17,7 @@ public:
 	void setAngle(float angle);
 	void addAngle(float angle);
 
-	void render();
+	void render(RenderContext &context);
 private:
 	glm::vec3 position;
 	glm::vec3 rotateAround;

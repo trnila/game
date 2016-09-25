@@ -53,15 +53,15 @@ void Scene::update(float time) {
 	}
 }
 
-void Scene::renderOneFrame() {
-	glClearColor(.0, .0, .0, .0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void Scene::renderOneFrame(RenderContext &context) {
+	context.clearColor(0, 0, 0, 0);
+	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	prog.use();
+	context.use(prog);
 
 	for(Object &o: objects) {
 		glm::mat4 mvp = projection * view * o.getTransform();
 		mvpVar->setData(mvp);
-		o.render();
+		o.render(context);
 	}
 }

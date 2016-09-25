@@ -6,6 +6,7 @@
 #include "Program.h"
 #include "Object.h"
 #include "ResourceManager.h"
+#include "RenderContext.h"
 #include <GLFW/glfw3.h>
 
 class Scene {
@@ -13,7 +14,7 @@ public:
 	Scene(GLFWwindow *window);
 	int init_resources();
 	void update(float time);
-	void renderOneFrame();
+	void renderOneFrame(RenderContext &context);
 
 private:
 	Program prog;
