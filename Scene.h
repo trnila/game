@@ -6,6 +6,7 @@
 #include "Program.h"
 #include "Object.h"
 #include "data.h"
+#include "ResourceManager.h"
 
 
 class Scene {
@@ -29,7 +30,7 @@ public:
 
 		int width, height;
 		glfwGetFramebufferSize(window, &width, &height);
-		
+
 		view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));// * glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -8.0));
 		projection = glm::perspective(45.0f, 1.0f*width/height, 0.1f, 10.0f);
 
@@ -40,8 +41,8 @@ public:
 	
 	int init_resources() {
 		try {
-			Shader vertex(GL_VERTEX_SHADER, "triangle.v.glsl");
-			Shader fragment(GL_FRAGMENT_SHADER, "triangle.f.glsl");
+			Shader vertex = ResourceManager<Shader>::getInstance().getResource<>("triangle.v.glsl", GL_VERTEX_SHADER);
+			Shader fragment = ResourceManager<Shader>::getInstance().getResource<>("triangle.f.glsl", GL_FRAGMENT_SHADER);
 
 			prog.attach(vertex);
 			prog.attach(fragment);

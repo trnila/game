@@ -2,7 +2,7 @@
 #include "Shader.h"
 #include "utils.h"
 
-Shader::Shader(GLenum type, const char *file) {
+Shader::Shader(const char *file, GLenum type) {
 	id = glCreateShader(type);
 	if(!id) {
 		throw std::runtime_error("Could not create shader");
