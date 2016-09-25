@@ -7,11 +7,18 @@
 #include "Program.h"
 #include "data.h"
 
+
+class Renderable {
+public:
+	virtual void render() = 0;
+
+};
+
 class Object {
 public:
 	glm::mat4 getTransform() {
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
-			glm::mat4 anim = glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround);
+		glm::mat4 anim = glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround);
 
 		return model * anim;
 	}
@@ -41,12 +48,40 @@ public:
 
 	VBO vbo;
 	VBO colorbuffer;
+	Renderable *renderable;
+	
 private:
 	glm::vec3 position;
 	glm::vec3 rotateAround;
 	float angle;
+};
 
+class Box: public Renderable { 
+public:
+	Box() {
+		vbo.setData((const char*) points, sizeof(points));
 
+		vao.bind();
+		vao.enableAttrib(0);
+
+		vbo.bind();
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+
+		colorbuffer.bind();
+		colorbuffer.setData((const char*) g_color_buffer_data, sizeof(g_color_buffer_data));
+		glEnableVertexAttribArray(1);
+		colorbuffer.bind();
+		glVertexAttribPointer(1, 3,	GL_FLOAT, GL_FALSE, 0, (void*) 0);
+	}
+
+	virtual void render() {
+		vao.bind();
+		glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+	}
+
+private:
+	VBO vbo, colorbuffer;
+	VAO vao;
 };
 
 class Scene {
@@ -54,29 +89,20 @@ public:
 	Scene(GLFWwindow *window) {
 		init_resources();
 
+		Box* box = new Box();
+
 		objects.emplace_back(Object());
 		objects.emplace_back(Object());
 
 		objects[0].setPosition(0, 0, -4);
 		objects[0].rotate(0, 0, 1, 0);
+		objects[0].renderable = box;
 		
 		objects[1].setPosition(0, 0, -9);
 		objects[1].rotate(0, 0, -1, 0);
+		objects[1].renderable = box;
 
-		obj = &objects[0];
-		obj->vbo.setData((const char*) points, sizeof(points));
 
-		vao.bind();
-		vao.enableAttrib(0);
-
-		obj->vbo.bind();
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-
-		obj->colorbuffer.bind();
-		obj->colorbuffer.setData((const char*) g_color_buffer_data, sizeof(g_color_buffer_data));
-		glEnableVertexAttribArray(1);
-		obj->colorbuffer.bind();
-		glVertexAttribPointer(1, 3,	GL_FLOAT, GL_FALSE, 0, (void*) 0);
 
 
 		int width, height;
@@ -88,8 +114,6 @@ public:
 
 		// todo: fix!
 		mvpVar = prog.bindUniformVariable("mvp");
-
-		objects[1].vbo = objects[0].vbo;
 
 	}
 	
@@ -127,8 +151,7 @@ public:
 
 			mvpVar->setData(mvp);
 
-			vao.bind();
-			glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+			o.renderable->render();
 		}
 	}
 
