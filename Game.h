@@ -54,10 +54,10 @@ public:
 
 
 	void start() {
-		float last = glfwGetTime();
+		double last = glfwGetTime();
 		while (!glfwWindowShouldClose(window)) {
-			float current = glfwGetTime();
-			float delta = current - last;
+			double current = glfwGetTime();
+			float delta = (float) (current - last);
 			last = current;
 
 			scene->update(delta);

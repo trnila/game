@@ -23,7 +23,7 @@ Shader::Shader(GLenum type, const char *file) {
 			glGetProgramiv(id, GL_INFO_LOG_LENGTH, &log_length);
 		}
 
-		char* log = (char*) malloc(log_length);
+		char* log = new char[log_length];
 
 		if (glIsShader(id))
 			glGetShaderInfoLog(id, log_length, NULL, log);
@@ -32,7 +32,7 @@ Shader::Shader(GLenum type, const char *file) {
 
 		glDeleteShader(id);
 		GlslCompileError exception(file, std::string(log));
-		free(log);
+		delete[] log;
 		throw exception;
 	}
 }

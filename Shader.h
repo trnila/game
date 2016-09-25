@@ -21,7 +21,7 @@ class Shader {
 public:
 	Shader(GLenum type, const char *file);
 
-	int getId() {
+	GLuint getId() {
 		return id;
 	}
 

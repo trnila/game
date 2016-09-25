@@ -7,12 +7,12 @@
 
 class UniformVariable {
 public:
-	UniformVariable(GLuint id): id(id) {}
+	UniformVariable(GLint id): id(id) {}
 
 	void setData(glm::mat4 &data) {
 		glUniformMatrix4fv(id, 1, GL_FALSE, value_ptr(data));
 	}
 
 private:
-	GLuint id;
+	GLint id;
 };

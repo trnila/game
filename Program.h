@@ -14,5 +14,5 @@ public:
 	UniformVariable* bindUniformVariable(const char* variableName);
 
 private:
-	GLint id;
+	GLuint id;
 };

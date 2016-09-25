@@ -29,8 +29,7 @@ public:
 
 		int width, height;
 		glfwGetFramebufferSize(window, &width, &height);
-
-		model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -6.0));
+		
 		view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));// * glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -8.0));
 		projection = glm::perspective(45.0f, 1.0f*width/height, 0.1f, 10.0f);
 
@@ -78,7 +77,6 @@ public:
 
 private:
 	Program prog;
-	glm::mat4 model;
 	glm::mat4 view;
 	glm::mat4 projection;
 	UniformVariable *mvpVar;
