@@ -6,7 +6,7 @@ class VAO {
 public:
 	VAO();
 	void bind();
-	void enableAttrib(int id);
+	void enableAttrib(GLuint id);
 
 private:
 	unsigned int id;

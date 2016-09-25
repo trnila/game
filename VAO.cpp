@@ -9,6 +9,6 @@ void VAO::bind() {
 	glBindVertexArray(id);
 }
 
-void VAO::enableAttrib(int id) {
-	glEnableVertexAttribArray(0);
+void VAO::enableAttrib(GLuint id) {
+	glEnableVertexAttribArray(id);
 }
