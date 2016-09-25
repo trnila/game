@@ -3,76 +3,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <vector>
-#include "VBO.h"
 #include "Program.h"
+#include "Object.h"
 #include "data.h"
-
-
-class Renderable {
-public:
-	Renderable(float* vertices, float *colors, int size): size(size) {
-		vao.bind();
-		vao.enableAttrib(0);
-
-		vbo.bind();
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		vbo.setData((const char*) vertices, size * 3 * sizeof(float));
-
-		colorsVbo.bind();
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
-		colorsVbo.setData((const char*) colors, size * 3 * sizeof(float));
-		glEnableVertexAttribArray(1);
-	}
-
-	virtual void render() {
-		vao.bind();
-		glDrawArrays(GL_TRIANGLES, 0, size);
-	}
-private:
-	VBO vbo, colorsVbo;
-	VAO vao;
-	int size;
-};
-
-class Object {
-public:
-	glm::mat4 getTransform() {
-		glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
-		glm::mat4 anim = glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround);
-
-		return model * anim;
-	}
-
-	void move(float x, float y, float z) {
-		position.x += x;
-		position.y += y;
-		position.z += z;
-	}
-
-	void setPosition(float x, float y, float z) {
-		position = glm::vec3(x, y, z);
-	}
-
-	void rotate(float angle, float x, float y, float z) {
-		this->angle = angle;
-		rotateAround = glm::vec3(x, y, z);
-	}
-
-	void setAngle(float angle) {
-		this->angle = angle;
-	}
-
-	void addAngle(float angle) {
-		this->angle += angle;
-	}
-
-	Renderable *renderable;
-	
-private:
-	glm::vec3 position;
-	glm::vec3 rotateAround;
-	float angle;
-};
 
 
 class Scene {
@@ -86,15 +19,15 @@ public:
 
 		objects[0].setPosition(-1, 0, -4);
 		objects[0].rotate(0, 0, 1, 0);
-		objects[0].renderable = new Renderable(triangleVertices, triangleRed, 3);
+		objects[0].renderable = new Model(triangleVertices, triangleRed, 3);
 		
 		objects[1].setPosition(0, 0, -9);
 		objects[1].rotate(0, 0, -1, 0);
-		objects[1].renderable = new Renderable(cubeVertices, cubeRandColors, 36);
+		objects[1].renderable = new Model(cubeVertices, cubeRandColors, 36);
 
 		objects[2].setPosition(2, 0, -3);
 		objects[2].rotate(0, 0, 1, 0);
-		objects[2].renderable = new Renderable(triangleVertices, triangleBlue, 3);
+		objects[2].renderable = new Model(triangleVertices, triangleBlue, 3);
 
 
 		int width, height;

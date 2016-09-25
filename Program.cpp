@@ -24,3 +24,13 @@ void Program::link() {
 void Program::use() {
 	glUseProgram(id);
 }
+
+UniformVariable *Program::bindUniformVariable(const char *variableName) {
+	GLint uniformId;
+	uniformId = glGetUniformLocation(id, variableName);
+	if (uniformId == -1) {
+		throw std::runtime_error("could not bind uniform variable");
+	}
+
+	return new UniformVariable(uniformId);
+}
