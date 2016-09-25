@@ -46,8 +46,6 @@ public:
 		this->angle += angle;
 	}
 
-	VBO vbo;
-	VBO colorbuffer;
 	Renderable *renderable;
 	
 private:
@@ -84,25 +82,61 @@ private:
 	VAO vao;
 };
 
+class Rect: public Renderable {
+public:
+	Rect() {
+		float data[] = {
+			-1.0, -1.0, 0.0,
+			1.0, -1.0, 0.0,
+			-1.0, 1.0, 1.0
+		};
+
+		float colors[] = {
+			1.0, 0, 0,
+			1.0, 0, 0,
+			1.0, 0, 0,
+		//	0, 1, 0,
+		//	0, 0, 1
+		};
+
+		vao.bind();
+		vao.enableAttrib(0);
+
+		vbo.bind();
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		vbo.setData((const char*) data, sizeof(data));
+
+		colorsVbo.bind();
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
+		colorsVbo.setData((const char*) colors, sizeof(colors));
+		glEnableVertexAttribArray(1);
+
+	}
+
+	virtual void render() {
+		vao.bind();
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+	}
+private:
+	VBO vbo, colorsVbo;
+	VAO vao;
+};
+
 class Scene {
 public:
 	Scene(GLFWwindow *window) {
 		init_resources();
-
-		Box* box = new Box();
 
 		objects.emplace_back(Object());
 		objects.emplace_back(Object());
 
 		objects[0].setPosition(0, 0, -4);
 		objects[0].rotate(0, 0, 1, 0);
-		objects[0].renderable = box;
+		objects[0].renderable = new Rect();
 		
 		objects[1].setPosition(0, 0, -9);
 		objects[1].rotate(0, 0, -1, 0);
-		objects[1].renderable = box;
-
-
+		objects[1].renderable = new Box();
 
 
 		int width, height;
@@ -136,33 +170,29 @@ public:
 	void update(float time) {
 		float angle = time * 45;
 
-		objects[0].addAngle(angle);
-		objects[1].addAngle(angle);
+		//objects[0].addAngle(angle);
+		//objects[1].addAngle(angle);
 	}
 
 	void renderOneFrame() {
 		glClearColor(.0, .0, .0, .0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
+		prog.use();
 
 		for(Object &o: objects) {
 			glm::mat4 mvp = projection * view * o.getTransform();
-
-			prog.use();
-
 			mvpVar->setData(mvp);
-
 			o.renderable->render();
 		}
 	}
 
 private:
-	VAO vao;
 	Program prog;
 	glm::mat4 model;
 	glm::mat4 view;
 	glm::mat4 projection;
 	UniformVariable *mvpVar;
 
-	Object *obj;
 	std::vector<Object> objects;
 };
