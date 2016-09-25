@@ -1,10 +1,9 @@
 #include "Object.h"
 
-glm::mat4 Object::getTransform() {
-	glm::mat4 model = translate(glm::mat4(1.0f), position);
-	glm::mat4 anim = glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround);
+Object::Object(Model *model) : model(model) {}
 
-	return model * anim;
+glm::mat4 Object::getTransform() {
+	return glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround);
 }
 
 void Object::move(float x, float y, float z) {
@@ -28,4 +27,8 @@ void Object::setAngle(float angle) {
 
 void Object::addAngle(float angle) {
 	this->angle += angle;
+}
+
+void Object::render() {
+	model->render();
 }

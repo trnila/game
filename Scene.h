@@ -13,21 +13,18 @@ public:
 	Scene(GLFWwindow *window) {
 		init_resources();
 
-		objects.emplace_back(Object());
-		objects.emplace_back(Object());
-		objects.emplace_back(Object());
+		objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3)));
+		objects.emplace_back(Object(new Model(cubeVertices, cubeRandColors, 36)));
+		objects.emplace_back(Object(new Model(triangleVertices, triangleBlue, 3)));
 
 		objects[0].setPosition(-1, 0, -4);
 		objects[0].rotate(0, 0, 1, 0);
-		objects[0].renderable = new Model(triangleVertices, triangleRed, 3);
 		
 		objects[1].setPosition(0, 0, -9);
 		objects[1].rotate(0, 0, -1, 0);
-		objects[1].renderable = new Model(cubeVertices, cubeRandColors, 36);
 
 		objects[2].setPosition(2, 0, -3);
 		objects[2].rotate(0, 0, 1, 0);
-		objects[2].renderable = new Model(triangleVertices, triangleBlue, 3);
 
 
 		int width, height;
@@ -75,7 +72,7 @@ public:
 		for(Object &o: objects) {
 			glm::mat4 mvp = projection * view * o.getTransform();
 			mvpVar->setData(mvp);
-			o.renderable->render();
+			o.render();
 		}
 	}
 

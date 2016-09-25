@@ -8,6 +8,8 @@
 
 class Object {
 public:
+	Object(Model *model);
+
 	glm::mat4 getTransform();
 	void move(float x, float y, float z);
 	void setPosition(float x, float y, float z);
@@ -15,10 +17,10 @@ public:
 	void setAngle(float angle);
 	void addAngle(float angle);
 
-	Model *renderable;
-
+	void render();
 private:
 	glm::vec3 position;
 	glm::vec3 rotateAround;
 	float angle;
+	Model *model;
 };
