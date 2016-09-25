@@ -159,8 +159,9 @@ public:
 	void update(float time) {
 		float angle = time * 45;
 
-		//objects[0].addAngle(angle);
-		//objects[1].addAngle(angle);
+		for(Object &o: objects) {
+			o.addAngle(angle);
+		}
 	}
 
 	void renderOneFrame() {
