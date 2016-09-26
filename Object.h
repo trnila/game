@@ -8,7 +8,7 @@
 
 class Object {
 public:
-	Object(Model *model);
+	Object(Model *model, Program& program);
 
 	glm::mat4 getTransform();
 	void move(float x, float y, float z);
@@ -23,4 +23,5 @@ private:
 	glm::vec3 rotateAround;
 	float angle;
 	Model *model;
+	Program &program;
 };

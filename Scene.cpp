@@ -4,9 +4,9 @@
 Scene::Scene(GLFWwindow *window) {
 	init_resources();
 
-	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3)));
-	objects.emplace_back(Object(new Model(cubeVertices, cubeRandColors, 36)));
-	objects.emplace_back(Object(new Model(triangleVertices, triangleBlue, 3)));
+	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(new Model(cubeVertices, cubeRandColors, 36), prog));
+	objects.emplace_back(Object(new Model(triangleVertices, triangleBlue, 3), prog));
 
 	objects[0].setPosition(-1, 0, -4);
 	objects[0].rotate(0, 0, 1, 0);
@@ -56,8 +56,6 @@ void Scene::update(float time) {
 void Scene::renderOneFrame(RenderContext &context) {
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	context.use(prog);
 
 	for(Object &o: objects) {
 		glm::mat4 mvp = projection * view * o.getTransform();
