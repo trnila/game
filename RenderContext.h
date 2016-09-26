@@ -2,6 +2,7 @@
 #include "Program.h"
 #include "VBO.h"
 #include "VAO.h"
+#include "Camera.h"
 
 class RenderContext {
 public:
@@ -28,4 +29,14 @@ public:
 	void drawArrays(int type, int start, int stop) {
 		glDrawArrays(type, start, stop);
 	}
+
+	void setCamera(Camera *camera) {
+		this->camera = camera;
+	}
+
+	Camera* getCamera() {
+		return camera;
+	}
+private:
+	Camera *camera;
 };

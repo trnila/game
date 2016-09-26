@@ -18,9 +18,7 @@ public:
 
 private:
 	Program prog;
-	glm::mat4 view;
-	glm::mat4 projection;
-	UniformVariable *mvpVar;
+	Camera camera;
 
 	std::vector<Object> objects;
 };

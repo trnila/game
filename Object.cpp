@@ -31,5 +31,10 @@ void Object::addAngle(float angle) {
 
 void Object::render(RenderContext &context) {
 	context.use(program);
+	
+	glm::mat4 transform = context.getCamera()->getTransform() * getTransform();
+	UniformVariable *mvpVar = program.bindUniformVariable("mvp");
+	mvpVar->setData(transform);
+
 	model->render(context);
 }
