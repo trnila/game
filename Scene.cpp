@@ -27,31 +27,6 @@ Scene::Scene(GLFWwindow *window) {
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	camera.setDimension(width, height);
-	glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x, double y) -> void {
-		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
-
-		double speed = 0.001f;
-		hor += speed * float(width/2 - x );
-		vert += speed * float(height/2 - y);
-		glfwSetCursorPos(window, width/2, height/2);
-
-
-		cam->dir = glm::vec3(
-				cos(1 - vert) * sin(hor),
-				sin(1 - vert),
-				cos(1 - vert) * cos(hor)
-		);
-
-	});
-
-	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) -> void {
-		if(key == GLFW_KEY_UP) {
-			cam->pos.z -= 0.5;
-		} else if(key == GLFW_KEY_DOWN) {
-			cam->pos.z += 0.5;
-		}
-	});
 }
 
 int Scene::init_resources() {
@@ -86,4 +61,29 @@ void Scene::renderOneFrame(RenderContext &context) {
 	for(Object &o: objects) {
 		o.render(context);
 	}
+}
+
+void Scene::onKey(int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_UP) {
+		camera.pos.z -= 0.5;
+	} else if (key == GLFW_KEY_DOWN) {
+		camera.pos.z += 0.5;
+	}
+}
+
+void Scene::onMove(GLFWwindow *window, double x, double y) {
+	int width, height;
+	glfwGetFramebufferSize(window, &width, &height);
+
+	double speed = 0.001f;
+	hor += speed * float(width / 2 - x);
+	vert += speed * float(height / 2 - y);
+	glfwSetCursorPos(window, width / 2, height / 2);
+
+
+	cam->dir = glm::vec3(
+			cos(1 - vert) * sin(hor),
+			sin(1 - vert),
+			cos(1 - vert) * cos(hor)
+	);
 }

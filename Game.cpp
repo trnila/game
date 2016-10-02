@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "RenderContext.h"
 
 void Game::init() {
 	glfwSetErrorCallback([] (int err, const char* description) -> void {
@@ -18,10 +17,12 @@ void Game::init() {
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 
-
-	//glfwSetKeyCallback(window, key_callback);
-	//glfwSetCursorPosCallback(window, cursor_callback);
-	//glfwSetMouseButtonCallback(window, button_callback);
+	glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
+		Game::getInstance().onKey(key, scancode, action, mods);
+	});
+	glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x, double y) {
+		Game::getInstance().onMove(window, x, y);
+	});
 	glfwSetWindowSizeCallback(window, [] (GLFWwindow* window, int width, int height) -> void {
 		glViewport(0, 0, width, height);
 	});
@@ -61,4 +62,12 @@ void Game::start() {
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
+}
+
+void Game::onKey(int key, int scancode, int action, int mods) {
+	scene->onKey(key, scancode, action, mods);
+}
+
+void Game::onMove(GLFWwindow *window, double x, double y) {
+	scene->onMove(window, x, y);
 }
