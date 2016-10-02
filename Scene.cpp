@@ -1,6 +1,10 @@
 #include "Scene.h"
 #include "data.h"
 
+Camera *cam;
+float vert = 0;
+double hor = 0;
+
 Scene::Scene(GLFWwindow *window) {
 	init_resources();
 
@@ -18,10 +22,36 @@ Scene::Scene(GLFWwindow *window) {
 	objects[2].setPosition(2, 0, -3);
 	objects[2].rotate(0, 0, 1, 0);
 
+	cam = &camera;
+
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	camera.setDimension(width, height);
+	glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x, double y) -> void {
+		int width, height;
+		glfwGetFramebufferSize(window, &width, &height);
 
+		double speed = 0.001f;
+		hor += speed * float(width/2 - x );
+		vert += speed * float(height/2 - y);
+		glfwSetCursorPos(window, width/2, height/2);
+
+
+		cam->dir = glm::vec3(
+				cos(1 - vert) * sin(hor),
+				sin(1 - vert),
+				cos(1 - vert) * cos(hor)
+		);
+
+	});
+
+	glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) -> void {
+		if(key == GLFW_KEY_UP) {
+			cam->pos.z -= 0.5;
+		} else if(key == GLFW_KEY_DOWN) {
+			cam->pos.z += 0.5;
+		}
+	});
 }
 
 int Scene::init_resources() {
