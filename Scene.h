@@ -25,6 +25,9 @@ public:
 private:
 	Program prog;
 	Camera camera;
+	double horChange, vertChange;
+	bool forward = false;
+	bool backward = false;
 
 	std::vector<Object> objects;
 };

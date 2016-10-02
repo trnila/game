@@ -1,10 +1,6 @@
 #include "Scene.h"
 #include "data.h"
 
-Camera *cam;
-float vert = 0;
-double hor = 0;
-
 Scene::Scene(GLFWwindow *window) {
 	init_resources();
 
@@ -21,8 +17,6 @@ Scene::Scene(GLFWwindow *window) {
 
 	objects[2].setPosition(2, 0, -3);
 	objects[2].rotate(0, 0, 1, 0);
-
-	cam = &camera;
 
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
@@ -51,6 +45,16 @@ void Scene::update(float time) {
 	for(Object &o: objects) {
 		o.addAngle(angle);
 	}
+
+	double mouseSpeed = time;
+	camera.rotateBy(mouseSpeed * vertChange, mouseSpeed * horChange);
+	horChange = vertChange = 0;
+
+	if (forward) {
+		camera.move(0, 0, -10 * time);
+	} else if (backward) {
+		camera.move(0, 0, 10 * time);
+	}
 }
 
 void Scene::renderOneFrame(RenderContext &context) {
@@ -64,26 +68,21 @@ void Scene::renderOneFrame(RenderContext &context) {
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
-	if (key == GLFW_KEY_UP) {
-		camera.pos.z -= 0.5;
-	} else if (key == GLFW_KEY_DOWN) {
-		camera.pos.z += 0.5;
+	forward = backward = false;
+	if (action == GLFW_PRESS) {
+		if (key == GLFW_KEY_UP) {
+			forward = true;
+		} else if (key == GLFW_KEY_DOWN) {
+			backward = true;
+		}
 	}
 }
 
 void Scene::onMove(GLFWwindow *window, double x, double y) {
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
-
-	double speed = 0.001f;
-	hor += speed * float(width / 2 - x);
-	vert += speed * float(height / 2 - y);
+	
+	horChange = float(width / 2 - x);
+	vertChange = float(height / 2 - y);
 	glfwSetCursorPos(window, width / 2, height / 2);
-
-
-	cam->dir = glm::vec3(
-			cos(1 - vert) * sin(hor),
-			sin(1 - vert),
-			cos(1 - vert) * cos(hor)
-	);
 }

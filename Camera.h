@@ -2,23 +2,39 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
+#include <math.h>
 
 class Camera {
 public:
 	void setDimension(int width, int height) {
-		view = glm::lookAt(pos, glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
 		projection = glm::perspective(45.0f, 1.0f*width/height, 0.1f, 10.0f);
 	}
 
 	const glm::mat4 getTransform() {
-		view = glm::lookAt(pos, pos + dir, glm::vec3(0.0, 1.0, 0.0));
+		glm::vec3 dir = glm::vec3(
+				cos(v) * sin(h),
+				sin(v),
+				cos(v) * cos(h)
+		);
+
+		glm::mat4 view = glm::lookAt(position, position + dir, glm::vec3(0.0, 1.0, 0.0));
 		return projection * view;
 	}
 
-	glm::vec3 pos = glm::vec3(0, 2, 0);
-	glm::vec3 dir = glm::vec3(0, 0, -4);
+	void rotateBy(double vert, double hor) {
+		v += vert;
+		h += hor;
+	}
+
+	void move(float x, float y, float z) {
+		position.x += x;
+		position.y += y;
+		position.z += z;
+	}
 
 private:
-	glm::mat4 view;
 	glm::mat4 projection;
+	glm::vec3 position;
+
+	float v, h;
 };
