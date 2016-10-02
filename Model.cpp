@@ -1,20 +1,19 @@
 #include "Model.h"
 
-Model::Model(float *vertices, float *colors, int size) : size(size) {
+Model::Model(float *vertices, float *colors, int size) : size(size), vbo(0), colorsVbo(1) {
 	vao.bind();
-	vao.enableAttrib(0);
 
 	vbo.bind();
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	vbo.setData((const char*) vertices, size * 3 * sizeof(float));
 
 	colorsVbo.bind();
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 	colorsVbo.setData((const char*) colors, size * 3 * sizeof(float));
-	glEnableVertexAttribArray(1);
+
+	vao.enableAttrib(0);
+	vao.enableAttrib(1);
 }
 
 void Model::render(RenderContext &context) {
 	context.bind(vao);
-	glDrawArrays(GL_TRIANGLES, 0, size);
+	context.drawArrays(GL_TRIANGLES, 0, size);
 }
