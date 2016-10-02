@@ -1,10 +1,15 @@
 #include "Camera.h"
 
-void Camera::setDimension(int width, int height) {
-	projection = glm::perspective(45.0f, 1.0f * width / height, 0.1f, 10.0f);
+Camera::Camera() : zFar(50.0f), zNear(1.0f) {}
+
+void Camera::setViewportSize(int width, int height) {
+	this->width = width;
+	this->height = height;
 }
 
 const glm::mat4 Camera::getTransform() {
+	glm::mat4 projection = glm::perspective(45.0f, 1.0f * width / height, zNear, zFar);
+
 	glm::vec3 dir = glm::vec3(
 			cos(v) * sin(h),
 			sin(v),
@@ -35,4 +40,12 @@ void Camera::setPosition(float x, float y, float z) {
 void Camera::setRotation(float vert, float hor) {
 	v = vert;
 	h = hor;
+}
+
+void Camera::setZFar(float zFar) {
+	Camera::zFar = zFar;
+}
+
+void Camera::setZNear(float zNear) {
+	Camera::zNear = zNear;
 }

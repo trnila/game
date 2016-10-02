@@ -6,18 +6,23 @@
 
 class Camera {
 public:
-	void setDimension(int width, int height);
+	Camera();
+
+	void setViewportSize(int width, int height);
 	const glm::mat4 getTransform();
 	void rotateBy(double vert, double hor);
 	void move(float x, float y, float z);
-
 	void setPosition(float x, float y, float z);
-
 	void setRotation(float vert, float hor);
 
+	void setZFar(float zFar);
+
+	void setZNear(float zNear);
+
 private:
-	glm::mat4 projection;
 	glm::vec3 position;
 
 	float v, h;
+	int width, height;
+	float zFar, zNear;
 };
