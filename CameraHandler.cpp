@@ -25,11 +25,7 @@ void CameraHandler::onKey(int key, int scancode, int action, int mods) {
 	}
 }
 
-void CameraHandler::onMove(GLFWwindow *window, double x, double y) {
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-
-	horChange = float(width / 2 - x);
-	vertChange = float(height / 2 - y);
-	glfwSetCursorPos(window, width / 2, height / 2);
+void CameraHandler::onMove(double x, double y) {
+	horChange = x;
+	vertChange = y;
 }
