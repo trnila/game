@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "data.h"
 
-Scene::Scene(GLFWwindow *window) {
+Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	init_resources();
 
 	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
@@ -46,15 +46,7 @@ void Scene::update(float time) {
 		o.addAngle(angle);
 	}
 
-	double mouseSpeed = time;
-	camera.rotateBy(mouseSpeed * vertChange, mouseSpeed * horChange);
-	horChange = vertChange = 0;
-
-	if (forward) {
-		camera.move(0, 0, -10 * time);
-	} else if (backward) {
-		camera.move(0, 0, 10 * time);
-	}
+	camHandler.update(time);
 }
 
 void Scene::renderOneFrame(RenderContext &context) {
@@ -68,21 +60,10 @@ void Scene::renderOneFrame(RenderContext &context) {
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
-	forward = backward = false;
-	if (action == GLFW_PRESS) {
-		if (key == GLFW_KEY_UP) {
-			forward = true;
-		} else if (key == GLFW_KEY_DOWN) {
-			backward = true;
-		}
-	}
+	camHandler.onKey(key, scancode, action, mods);
 }
 
 void Scene::onMove(GLFWwindow *window, double x, double y) {
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	
-	horChange = float(width / 2 - x);
-	vertChange = float(height / 2 - y);
-	glfwSetCursorPos(window, width / 2, height / 2);
+	camHandler.onMove(window, x, y);
 }
+

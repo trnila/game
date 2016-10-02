@@ -9,6 +9,7 @@
 #include "RenderContext.h"
 #include "KeyListener.h"
 #include "MouseListener.h"
+#include "CameraHandler.h"
 #include <GLFW/glfw3.h>
 
 class Scene : public KeyListener, public MouseListener {
@@ -19,15 +20,13 @@ public:
 	void renderOneFrame(RenderContext &context);
 
 	virtual void onKey(int key, int scancode, int action, int mods) override;
-
 	virtual void onMove(GLFWwindow *window, double x, double y) override;
 
 private:
 	Program prog;
 	Camera camera;
-	double horChange, vertChange;
-	bool forward = false;
-	bool backward = false;
+	CameraHandler camHandler;
 
 	std::vector<Object> objects;
+
 };
