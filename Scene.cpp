@@ -13,7 +13,7 @@ Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	objects[0].setScale(5, 5, 1);
 
 	objects[1].setPosition(0, 0, -9);
-	objects[1].rotate(0, 0, -1, 0);
+	objects[1].rotate(0, 1, -1, 1);
 
 	objects[2].setPosition(2, 0, -3);
 	objects[2].rotate(0, 0, 1, 0);
