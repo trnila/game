@@ -17,10 +17,13 @@ public:
 	void setAngle(float angle);
 	void addAngle(float angle);
 
+	void setScale(float x, float y, float z);
+
 	void render(RenderContext &context);
 private:
 	glm::vec3 position;
 	glm::vec3 rotateAround;
+	glm::vec3 scale;
 	float angle;
 	Model *model;
 	Program &program;

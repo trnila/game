@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "Camera.h"
 #include "data.h"
 
 Scene::Scene(GLFWwindow *window) {
@@ -11,6 +10,7 @@ Scene::Scene(GLFWwindow *window) {
 
 	objects[0].setPosition(-1, 0, -4);
 	objects[0].rotate(0, 0, 1, 0);
+	objects[0].setScale(5, 5, 1);
 
 	objects[1].setPosition(0, 0, -9);
 	objects[1].rotate(0, 0, -1, 0);

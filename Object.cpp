@@ -1,9 +1,12 @@
 #include "Object.h"
 
-Object::Object(Model *model, Program& program) : model(model), program(program) {}
+Object::Object(Model *model, Program &program) : model(model), program(program), scale(1.0f, 1.0f, 1.0f) {}
 
 glm::mat4 Object::getTransform() {
-	return glm::translate(glm::mat4(1.0f), position) * glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround);
+	return
+			glm::translate(glm::mat4(1.0f), position)
+			* glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround)
+			* glm::scale(glm::mat4(1.0f), scale);
 }
 
 void Object::move(float x, float y, float z) {
@@ -37,4 +40,8 @@ void Object::render(RenderContext &context) {
 	mvpVar->setData(transform);
 
 	model->render(context);
+}
+
+void Object::setScale(float x, float y, float z) {
+	scale = glm::vec3(x, y, z);
 }
