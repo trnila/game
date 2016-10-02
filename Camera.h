@@ -7,12 +7,13 @@
 class Camera {
 public:
 	void setDimension(int width, int height);
-
 	const glm::mat4 getTransform();
-
 	void rotateBy(double vert, double hor);
-
 	void move(float x, float y, float z);
+
+	void setPosition(float x, float y, float z);
+
+	void setRotation(float vert, float hor);
 
 private:
 	glm::mat4 projection;

@@ -21,6 +21,9 @@ Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	camera.setDimension(width, height);
+
+	camera.setPosition(0, 0, 1.004475f);
+	camera.setRotation(-0.091711f, -3.180683f);
 }
 
 int Scene::init_resources() {

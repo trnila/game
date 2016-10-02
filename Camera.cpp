@@ -25,3 +25,14 @@ void Camera::move(float x, float y, float z) {
 	position.y += y;
 	position.z += z;
 }
+
+void Camera::setPosition(float x, float y, float z) {
+	position.x = x;
+	position.y = y;
+	position.z = z;
+}
+
+void Camera::setRotation(float vert, float hor) {
+	v = vert;
+	h = hor;
+}
