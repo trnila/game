@@ -48,6 +48,16 @@ void Scene::update(float time) {
 	for(Object &o: objects) {
 		o.addAngle(angle);
 	}
+	objects[1].move(0, 0, time);
+	objects[0].setScale(scale, scale, scale);
+
+	scale += 2 * scaleSign * time;
+
+	if (scale <= 0.1) {
+		scaleSign = 1;
+	} else if (scale >= 5.0) {
+		scaleSign = -1;
+	}
 
 	camHandler.update(time);
 }
