@@ -4,5 +4,5 @@
 
 class MouseListener {
 public:
-	virtual void onMove(double x, double y) = 0;
+	virtual void onMove(GLFWwindow *window, double x, double y) = 0;
 };

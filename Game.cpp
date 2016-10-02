@@ -21,14 +21,7 @@ void Game::init() {
 		Game::getInstance().onKey(key, scancode, action, mods);
 	});
 	glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x, double y) {
-		int width, height;
-		glfwGetFramebufferSize(window, &width, &height);
-
-		float horChange = float(width / 2 - x);
-		float vertChange = float(height / 2 - y);
-		glfwSetCursorPos(window, width / 2, height / 2);
-
-		Game::getInstance().onMove(horChange, vertChange);
+		Game::getInstance().onMove(window, x, y);
 	});
 	glfwSetWindowSizeCallback(window, [] (GLFWwindow* window, int width, int height) -> void {
 		glViewport(0, 0, width, height);
@@ -48,7 +41,7 @@ void Game::init() {
 
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
-	glfwSetCursorPos(window, width / 2, height / 2);
+	float ratio = width / (float)height;
 	glViewport(0, 0, width, height);
 
 	scene = new Scene(window);
@@ -75,6 +68,6 @@ void Game::onKey(int key, int scancode, int action, int mods) {
 	scene->onKey(key, scancode, action, mods);
 }
 
-void Game::onMove(double x, double y) {
-	scene->onMove(x, y);
+void Game::onMove(GLFWwindow *window, double x, double y) {
+	scene->onMove(window, x, y);
 }

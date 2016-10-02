@@ -15,7 +15,7 @@ public:
 private:
 	virtual void onKey(int key, int scancode, int action, int mods) override;
 
-	virtual void onMove(double x, double y) override;
+	virtual void onMove(GLFWwindow *window, double x, double y) override;
 
 private:
 	GLFWwindow* window;
