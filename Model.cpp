@@ -4,10 +4,10 @@ Model::Model(float *vertices, float *colors, int size) : size(size), vbo(0), col
 	vao.bind();
 
 	vbo.bind();
-	vbo.setData((const char*) vertices, size * 3 * sizeof(float));
+	vbo.setData(vertices, size, 3);
 
 	colorsVbo.bind();
-	colorsVbo.setData((const char*) colors, size * 3 * sizeof(float));
+	colorsVbo.setData(colors, size, 3);
 
 	vao.enableAttrib(0);
 	vao.enableAttrib(1);
