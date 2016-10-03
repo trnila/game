@@ -11,6 +11,10 @@ class Game : public Singleton<Game>, KeyListener, MouseListener {
 public:
 	void init();
 	void start();
+	
+protected:
+	Game() {};
+	friend Singleton<Game>;
 
 private:
 	virtual void onKey(int key, int scancode, int action, int mods) override;
