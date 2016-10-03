@@ -6,6 +6,7 @@ Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	objects.emplace_back(Object(new Model("resources/cylinder.obj"), prog));
 	objects.emplace_back(Object(new Model("resources/torus.obj"), prog));
 	objects.emplace_back(Object(new Model("resources/monkey.obj"), prog));
+	objects.emplace_back(Object(new Model("resources/terrain.obj"), prog));
 	/*
 	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
 	objects.emplace_back(Object(new Model(cubeVertices, cubeRandColors, 36), prog));
@@ -22,6 +23,10 @@ Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 
 	objects[2].setPosition(2, 0, -3);
 	objects[2].rotate(0, 0, 1, 0);
+
+	objects[3].setPosition(-1, -10, -4);
+	objects[3].rotate(0, 0, 1, 0);
+	objects[3].setScale(5, 5, 5);
 
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);

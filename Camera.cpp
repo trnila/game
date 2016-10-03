@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera() : zFar(50.0f), zNear(1.0f) {}
+Camera::Camera() : zFar(50.0f), zNear(0.1f) {}
 
 void Camera::setViewportSize(int width, int height) {
 	this->width = width;
