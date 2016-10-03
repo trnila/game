@@ -1,6 +1,6 @@
 #include "Scene.h"
 
-CameraHandler::CameraHandler(Camera *camera) : camera(camera) {}
+CameraHandler::CameraHandler(Camera *camera) : camera(camera), vertChange(0), horChange(0) {}
 
 void CameraHandler::update(float time) {
 	double mouseSpeed = time;
