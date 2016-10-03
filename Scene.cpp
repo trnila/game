@@ -1,12 +1,17 @@
 #include "Scene.h"
-#include "data.h"
 
 Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	init_resources();
 
+	objects.emplace_back(Object(new Model("resources/cylinder.obj"), prog));
+	objects.emplace_back(Object(new Model("resources/torus.obj"), prog));
+	objects.emplace_back(Object(new Model("resources/monkey.obj"), prog));
+	/*
 	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
 	objects.emplace_back(Object(new Model(cubeVertices, cubeRandColors, 36), prog));
 	objects.emplace_back(Object(new Model(triangleVertices, triangleBlue, 3), prog));
+	objects.emplace_back(Object(new Model("resources/cylinder.obj"), prog));
+	 */
 
 	objects[0].setPosition(-1, 0, -4);
 	objects[0].rotate(0, 0, 1, 0);
