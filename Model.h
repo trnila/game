@@ -14,4 +14,6 @@ private:
 	VBO vbo, colorsVbo;
 	VAO vao;
 	int size;
+	GLuint vertexbuffer;
+	GLuint id;
 };
