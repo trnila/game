@@ -1,8 +1,9 @@
 #pragma once
 #include "Shader.h"
 #include "UniformVariable.h"
+#include "Observer.h"
 
-class Program {
+class Program: public Observer {
 public:
 	Program();
 	void attach(Shader &shader);
@@ -10,6 +11,8 @@ public:
 	void use();
 	UniformVariable* bindUniformVariable(const char* variableName);
 	void setMatrix(const char* var, const glm::mat4 &mat);
+
+	virtual void notify(Camera &camera) override;
 
 private:
 	GLuint id;

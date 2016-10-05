@@ -1,4 +1,5 @@
 #include "Program.h"
+#include "Camera.h"
 
 Program::Program() {
 	id = glCreateProgram();
@@ -37,4 +38,9 @@ UniformVariable *Program::bindUniformVariable(const char *variableName) {
 
 void Program::setMatrix(const char* var, const glm::mat4 &mat) {
 	bindUniformVariable(var)->setData(mat);
+}
+
+void Program::notify(Camera &camera) {
+	setMatrix("viewMatrix", camera.getTransform());
+	setMatrix("projectionMatrix", camera.getPerspective());
 }

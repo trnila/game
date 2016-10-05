@@ -45,6 +45,8 @@ int Scene::init_resources() {
 		prog.attach(fragment);
 		prog.link();
 
+		camera.addListener(&prog);
+
 	} catch(GlslCompileError &err) {
 		std::cerr << "GLSL error: " << err.getSource() << " - " << err.what() << "\n";
 	}

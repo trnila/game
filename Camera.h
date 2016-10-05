@@ -3,8 +3,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <math.h>
+#include "Observer.h"
 
-class Camera {
+class Camera: public Subject {
 public:
 	Camera();
 
@@ -18,6 +19,7 @@ public:
 	void setZFar(float zFar);
 
 	void setZNear(float zNear);
+	glm::mat4 getPerspective() const;
 
 private:
 	glm::vec3 position;

@@ -6,7 +6,7 @@ class UniformVariable {
 public:
 	UniformVariable(GLint id);
 
-	void setData(glm::mat4 &data);
+	void setData(const glm::mat4 &data);
 
 private:
 	GLint id;
