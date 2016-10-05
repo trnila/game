@@ -34,3 +34,7 @@ UniformVariable *Program::bindUniformVariable(const char *variableName) {
 
 	return new UniformVariable(uniformId);
 }
+
+void Program::setMatrix(const char* var, const glm::mat4 &mat) {
+	bindUniformVariable(var)->setData(mat);
+}

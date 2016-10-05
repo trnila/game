@@ -36,8 +36,12 @@ void Object::render(RenderContext &context) {
 	context.use(program);
 	
 	glm::mat4 transform = context.getCamera()->getTransform() * getTransform();
-	UniformVariable *mvpVar = program.bindUniformVariable("mvp");
+	UniformVariable *mvpVar = program.bindUniformVariable("modelMatrix");
 	mvpVar->setData(transform);
+
+	glm::mat4 I(1.0f);
+	program.bindUniformVariable("projectionMatrix")->setData(I);
+	program.bindUniformVariable("viewMatrix")->setData(I);
 
 	model->render(context);
 }
