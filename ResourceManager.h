@@ -1,14 +1,11 @@
 #pragma once
 
 #include <unordered_map>
+#include "Singleton.h"
 
 template<typename T>
-class ResourceManager {
+class ResourceManager : public Singleton<ResourceManager<T>> {
 public:
-	static ResourceManager<T>& getInstance() {
-		return instance;
-	}
-
 	template<typename... Args>
 	T& getResource(const char *filename, Args... arg) {
 		auto it = resources.find(std::string(filename));
@@ -20,12 +17,10 @@ public:
 		return resources.find(filename)->second;
 	}
 
+protected:
+	friend class Singleton<ResourceManager<T>>;
+
 private:
 	ResourceManager() {}
 	std::unordered_map<std::string, T> resources;
-
-	static ResourceManager<T> instance;
 };
-
-template<typename T>
-ResourceManager<T> ResourceManager<T>::instance;
