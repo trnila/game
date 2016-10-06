@@ -24,6 +24,7 @@ Window::Window(int width, int height, const char *title) : width(width), height(
 		Window *win = (Window *) glfwGetWindowUserPointer(window);
 		win->width = w;
 		win->height = h;
+		win->notify();
 	});
 }
 
@@ -34,4 +35,12 @@ bool Window::shouldClose() const {
 void Window::swapBuffers() const {
 	glfwSwapBuffers(window);
 
+}
+
+int Window::getWidth() {
+	return width;
+}
+
+int Window::getHeight() {
+	return height;
 }

@@ -1,3 +1,4 @@
+
 #include "Camera.h"
 
 Camera::Camera() : zFar(50.0f), zNear(0.1f) {}
@@ -56,5 +57,11 @@ void Camera::setZFar(float zFar) {
 
 void Camera::setZNear(float zNear) {
 	Camera::zNear = zNear;
+	notify();
+}
+
+void Camera::updated(Window &camera) {
+	width = camera.getWidth();
+	height = camera.getHeight();
 	notify();
 }

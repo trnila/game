@@ -26,7 +26,7 @@ public:
 protected:
 	void notify() {
 		for (Observer<T> *observer: listeners) {
-			observer->updated(reinterpret_cast<T &>(*this));
+			observer->updated(static_cast<T &>(*this));
 		}
 	}
 

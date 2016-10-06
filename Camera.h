@@ -4,8 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <math.h>
 #include "Observer.h"
+#include "Window.h"
 
-class Camera : public Subject<Camera> {
+class Camera : public Subject<Camera>, public Observer<Window> {
 public:
 	Camera();
 
@@ -20,6 +21,8 @@ public:
 
 	void setZNear(float zNear);
 	glm::mat4 getPerspective() const;
+
+	virtual void updated(Window &camera) override;
 
 private:
 	glm::vec3 position;
