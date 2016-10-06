@@ -21,10 +21,13 @@ public:
 
 	void setScale(float x, float y, float z);
 
+	void setRotationPoint(float x, float y, float z);
+
 	void render(RenderContext &context);
 private:
 	glm::vec3 position;
-	glm::vec3 rotateAround;
+	glm::vec3 rotateAxis;
+	glm::vec3 rotatePoint;
 	glm::vec3 scale;
 	float angle;
 	Model *model;

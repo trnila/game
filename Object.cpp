@@ -1,12 +1,22 @@
 #include "Object.h"
 
-Object::Object(Model *model, Program &program) : model(model), program(program), scale(1.0f, 1.0f, 1.0f) {}
+Object::Object(Model *model, Program &program) :
+		model(model),
+		program(program),
+		scale(1.0f, 1.0f, 1.0f),
+		rotatePoint(0, 0, 0),
+		angle(0),
+		rotateAxis(0, 0, 0),
+		position(0, 0, 0) {}
 
 glm::mat4 Object::getTransform() {
-	return
-			glm::translate(glm::mat4(1.0f), position)
-			* glm::rotate(glm::mat4(1.0f), glm::radians(angle), rotateAround)
-			* glm::scale(glm::mat4(1.0f), scale);
+	glm::mat4 model(1.0f);
+	model = glm::translate(model, -rotatePoint);
+	model = glm::scale(model, scale);
+	model = glm::rotate(model, glm::radians(angle), rotateAxis);
+	model = glm::translate(model, rotatePoint);
+	model = glm::translate(model, position);
+	return model;
 }
 
 void Object::move(float x, float y, float z) {
@@ -21,7 +31,7 @@ void Object::setPosition(float x, float y, float z) {
 
 void Object::rotate(float angle, float x, float y, float z) {
 	this->angle = angle;
-	rotateAround = glm::vec3(x, y, z);
+	rotateAxis = glm::vec3(x, y, z);
 }
 
 void Object::setAngle(float angle) {
@@ -50,4 +60,8 @@ void Object::setScale(float x, float y, float z) {
 
 void Object::setColor(float r, float g, float b) {
 	color = glm::vec3(r, g, b);
+}
+
+void Object::setRotationPoint(float x, float y, float z) {
+	rotatePoint = glm::vec3(x, y, z);
 }
