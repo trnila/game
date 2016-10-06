@@ -3,12 +3,10 @@
 #include <vector>
 #include <algorithm>
 
-class Camera;
-
 template<typename T>
 class Observer {
 public:
-	virtual void updated(T &camera) = 0;
+	virtual void updated(T &obj) = 0;
 };
 
 

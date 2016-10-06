@@ -2,6 +2,7 @@
 #include "Shader.h"
 #include "UniformVariable.h"
 #include "Observer.h"
+#include "Camera.h"
 
 class Program : public Observer<Camera> {
 public:

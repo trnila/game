@@ -18,6 +18,10 @@ glm::mat4 Camera::getPerspective() const {
 }
 
 void Camera::rotateBy(double vert, double hor) {
+	if (vert == 0 && hor == 0) {
+		return;
+	}
+
 	v += vert;
 	h += hor;
 
@@ -26,6 +30,10 @@ void Camera::rotateBy(double vert, double hor) {
 }
 
 void Camera::move(float x, float y, float z) {
+	if (x == 0 && y == 0 && z == 0) {
+		return;
+	}
+
 	position.x += x;
 	position.y += y;
 	position.z += z;
@@ -68,18 +76,22 @@ void Camera::updated(Window &camera) {
 
 void Camera::forward(float diff) {
 	position += glm::normalize(target) * diff;
+	notify();
 }
 
 void Camera::backward(float diff) {
 	position -= glm::normalize(target) * diff;
+	notify();
 }
 
 void Camera::left(float diff) {
 	position -= glm::normalize(glm::cross(target, up)) * diff;
+	notify();
 }
 
 void Camera::right(float diff) {
 	position += glm::normalize(glm::cross(target, up)) * diff;
+	notify();
 }
 
 
