@@ -39,9 +39,15 @@ void Object::render(RenderContext &context) {
 	UniformVariable *mvpVar = program.bindUniformVariable("modelMatrix");
 	mvpVar->setData(transform);
 
+	program.setColor(color.r, color.g, color.b);
+
 	model->render(context);
 }
 
 void Object::setScale(float x, float y, float z) {
 	scale = glm::vec3(x, y, z);
+}
+
+void Object::setColor(float r, float g, float b) {
+	color = glm::vec3(r, g, b);
 }

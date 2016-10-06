@@ -1,3 +1,4 @@
+#include <glm/gtc/type_ptr.hpp>
 #include "Program.h"
 #include "Camera.h"
 
@@ -43,4 +44,9 @@ void Program::setMatrix(const char* var, const glm::mat4 &mat) {
 void Program::notify(Camera &camera) {
 	setMatrix("viewMatrix", camera.getTransform());
 	setMatrix("projectionMatrix", camera.getPerspective());
+}
+
+void Program::setColor(float r, float g, float b) {
+	GLint uniformId = glGetUniformLocation(id, "simpleColor");
+	glUniform3fv(uniformId, 1, glm::value_ptr(glm::vec3(r, g, b)));
 }

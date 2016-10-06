@@ -12,6 +12,8 @@ public:
 	UniformVariable* bindUniformVariable(const char* variableName);
 	void setMatrix(const char* var, const glm::mat4 &mat);
 
+	void setColor(float r, float g, float b);
+
 	virtual void notify(Camera &camera) override;
 
 private:

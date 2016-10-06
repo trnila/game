@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "data.h"
 
 Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	init_resources();
@@ -7,6 +8,7 @@ Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	objects.emplace_back(Object(new Model("resources/torus.obj"), prog));
 	objects.emplace_back(Object(new Model("resources/monkey.obj"), prog));
 	objects.emplace_back(Object(new Model("resources/terrain.obj"), prog));
+	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
 	/*
 	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
 	objects.emplace_back(Object(new Model(cubeVertices, cubeRandColors, 36), prog));
@@ -17,16 +19,24 @@ Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	objects[0].setPosition(-1, 0, -4);
 	objects[0].rotate(0, 0, 1, 0);
 	objects[0].setScale(5, 5, 1);
+	objects[0].setColor(1, 0, 0);
 
 	objects[1].setPosition(0, 0, -9);
 	objects[1].rotate(0, 1, -1, 1);
+	objects[1].setColor(0, 1, 0);
 
 	objects[2].setPosition(2, 0, -3);
 	objects[2].rotate(0, 0, 1, 0);
+	objects[2].setColor(0, 0, 1);
 
 	objects[3].setPosition(-1, -10, -4);
 	objects[3].rotate(0, 0, 1, 0);
 	objects[3].setScale(5, 5, 5);
+	objects[3].setColor(1, 1, 0);
+
+	objects[4].setPosition(-1, -10, -5);
+	objects[4].rotate(0, 0, 1, 0);
+	objects[4].setColor(1, 0, 1);
 
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);

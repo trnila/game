@@ -17,6 +17,8 @@ public:
 	void setAngle(float angle);
 	void addAngle(float angle);
 
+	void setColor(float r, float g, float b);
+
 	void setScale(float x, float y, float z);
 
 	void render(RenderContext &context);
@@ -27,4 +29,5 @@ private:
 	float angle;
 	Model *model;
 	Program &program;
+	glm::vec3 color;
 };
