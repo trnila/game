@@ -25,7 +25,9 @@ public:
 	virtual void updated(Window &camera) override;
 
 private:
+	glm::vec3 up;
 	glm::vec3 position;
+	glm::vec3 target;
 	Window &window;
 
 	float v, h;

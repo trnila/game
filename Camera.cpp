@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera(Window &window) : zFar(50.0f), zNear(0.1f), window(window) {
+Camera::Camera(Window &window) : zFar(50.0f), zNear(0.1f), window(window), up(0.0, 1.0, 0.0) {
 	window.addListener(this);
 	updated(window);
 }
@@ -10,13 +10,7 @@ Camera::~Camera() {
 }
 
 const glm::mat4 Camera::getTransform() {
-	glm::vec3 dir = glm::vec3(
-			cos(v) * sin(h),
-			sin(v),
-			cos(v) * cos(h)
-	);
-
-	return glm::lookAt(position, position + dir, glm::vec3(0.0, 1.0, 0.0));
+	return glm::lookAt(position, position + target, up);
 }
 
 glm::mat4 Camera::getPerspective() const {
@@ -27,6 +21,7 @@ void Camera::rotateBy(double vert, double hor) {
 	v += vert;
 	h += hor;
 
+	setRotation(v + vert, h + hor);
 	notify();
 }
 
@@ -47,6 +42,11 @@ void Camera::setPosition(float x, float y, float z) {
 void Camera::setRotation(float vert, float hor) {
 	v = vert;
 	h = hor;
+
+	target.x = cos(v) * sin(h);
+	target.y = sin(v);
+	target.z = cos(v) * cos(h);
+
 	notify();
 }
 
