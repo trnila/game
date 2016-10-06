@@ -1,7 +1,12 @@
-
 #include "Camera.h"
 
-Camera::Camera() : zFar(50.0f), zNear(0.1f) {}
+Camera::Camera(Window &window) : zFar(50.0f), zNear(0.1f), window(window) {
+	window.addListener(this);
+}
+
+Camera::~Camera() {
+	window.removeListener(this);
+}
 
 void Camera::setViewportSize(int width, int height) {
 	this->width = width;

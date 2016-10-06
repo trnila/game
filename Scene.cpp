@@ -1,10 +1,8 @@
 #include "Scene.h"
 #include "data.h"
 
-Scene::Scene(Window &window) : camHandler(&camera) {
+Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	init_resources();
-
-	window.addListener(&camera);
 
 	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
 	objects.emplace_back(Object(new Model("resources/ball.obj"), prog));

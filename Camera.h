@@ -8,7 +8,9 @@
 
 class Camera : public Subject<Camera>, public Observer<Window> {
 public:
-	Camera();
+	Camera(Window &window);
+
+	~Camera();
 
 	void setViewportSize(int width, int height);
 	const glm::mat4 getTransform();
@@ -26,6 +28,7 @@ public:
 
 private:
 	glm::vec3 position;
+	Window &window;
 
 	float v, h;
 	int width, height;
