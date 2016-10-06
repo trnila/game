@@ -5,7 +5,7 @@
 Program::Program() {
 	id = glCreateProgram();
 	if(!id) {
-		//TODO: check
+		throw std::runtime_error("Could not create program!");
 	}
 }
 
