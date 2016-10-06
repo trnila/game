@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "data.h"
 
-Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
+Scene::Scene(Window &window) : camHandler(&camera) {
 	init_resources();
 
 	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
@@ -44,9 +44,7 @@ Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	objects[5].setScale(1, 2, 1);
 	objects[5].setColor(0, 1, 0);
 
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	camera.setViewportSize(width, height);
+	camera.setViewportSize(window.getWidth(), window.getHeight());
 
 	camera.setPosition(0, 0, 1.004475f);
 	camera.setRotation(-0.091711f, -3.180683f);

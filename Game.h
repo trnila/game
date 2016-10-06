@@ -1,27 +1,25 @@
 #pragma once
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <glm/vec4.hpp>
 #include "Scene.h"
 #include "Singleton.h"
 #include "KeyListener.h"
 #include "MouseListener.h"
+#include "Window.h"
 
-class Game : public Singleton<Game>, KeyListener, MouseListener {
+class Game : public Singleton<Game>, public KeyListener, public MouseListener {
 public:
 	void init();
 	void start();
+
+	virtual void onKey(int key, int scancode, int action, int mods) override;
+
+	virtual void onMove(GLFWwindow *window, double x, double y) override;
 	
 protected:
 	Game() {};
 	friend Singleton<Game>;
 
 private:
-	virtual void onKey(int key, int scancode, int action, int mods) override;
-
-	virtual void onMove(GLFWwindow *window, double x, double y) override;
-
-private:
-	GLFWwindow* window;
+	Window *window;
 	Scene *scene;
 };

@@ -10,11 +10,11 @@
 #include "KeyListener.h"
 #include "MouseListener.h"
 #include "CameraHandler.h"
-#include <GLFW/glfw3.h>
+#include "Window.h"
 
 class Scene : public KeyListener, public MouseListener {
 public:
-	Scene(GLFWwindow *window);
+	Scene(Window &window);
 	int init_resources();
 	void update(float time);
 	void renderOneFrame(RenderContext &context);

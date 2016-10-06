@@ -8,24 +8,8 @@ void Game::init() {
 	if (!glfwInit()) {
 		throw std::runtime_error("failed to init glfw");
 	}
-	window = glfwCreateWindow(640, 480, "ZPG", NULL, NULL);
-	if (!window) {
-		glfwTerminate();
-		throw std::runtime_error("could not create window");
-	}
 
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);
-
-	glfwSetKeyCallback(window, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
-		Game::getInstance().onKey(key, scancode, action, mods);
-	});
-	glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x, double y) {
-		Game::getInstance().onMove(window, x, y);
-	});
-	glfwSetWindowSizeCallback(window, [] (GLFWwindow* window, int width, int height) -> void {
-		glViewport(0, 0, width, height);
-	});
+	window = new Window(640, 480, "The Game");
 
 
 	GLenum err = glewInit();
@@ -38,20 +22,14 @@ void Game::init() {
 
 	glEnable(GL_DEPTH_TEST);
 
-
-	int width, height;
-	glfwGetFramebufferSize(window, &width, &height);
-	float ratio = width / (float)height;
-	glViewport(0, 0, width, height);
-
-	scene = new Scene(window);
+	scene = new Scene(*window);
 }
 
 void Game::start() {
 	RenderContext context;
 
 	double last = glfwGetTime();
-	while (!glfwWindowShouldClose(window)) {
+	while (!window->shouldClose()) {
 		double current = glfwGetTime();
 		float delta = (float) (current - last);
 		last = current;
@@ -59,7 +37,7 @@ void Game::start() {
 		scene->update(delta);
 		scene->renderOneFrame(context);
 
-		glfwSwapBuffers(window);
+		window->swapBuffers();
 		glfwPollEvents();
 	}
 }
