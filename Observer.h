@@ -8,7 +8,7 @@ class Camera;
 template<typename T>
 class Observer {
 public:
-	virtual void notify(T &camera) = 0;
+	virtual void updated(T &camera) = 0;
 };
 
 
@@ -26,7 +26,7 @@ public:
 protected:
 	void notify() {
 		for (Observer<T> *observer: listeners) {
-			observer->notify(reinterpret_cast<T &>(*this));
+			observer->updated(reinterpret_cast<T &>(*this));
 		}
 	}
 

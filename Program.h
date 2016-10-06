@@ -14,7 +14,7 @@ public:
 
 	void setColor(float r, float g, float b);
 
-	virtual void notify(Camera &camera) override;
+	virtual void updated(Camera &camera) override;
 
 private:
 	GLuint id;

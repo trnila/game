@@ -41,7 +41,7 @@ void Program::setMatrix(const char* var, const glm::mat4 &mat) {
 	bindUniformVariable(var)->setData(mat);
 }
 
-void Program::notify(Camera &camera) {
+void Program::updated(Camera &camera) {
 	setMatrix("viewMatrix", camera.getTransform());
 	setMatrix("projectionMatrix", camera.getPerspective());
 }
