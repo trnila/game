@@ -65,3 +65,21 @@ void Camera::updated(Window &camera) {
 	height = camera.getHeight();
 	notify();
 }
+
+void Camera::forward(float diff) {
+	position += glm::normalize(target) * diff;
+}
+
+void Camera::backward(float diff) {
+	position -= glm::normalize(target) * diff;
+}
+
+void Camera::left(float diff) {
+	position -= glm::normalize(glm::cross(target, up)) * diff;
+}
+
+void Camera::right(float diff) {
+	position += glm::normalize(glm::cross(target, up)) * diff;
+}
+
+

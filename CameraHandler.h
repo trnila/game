@@ -21,6 +21,8 @@ private:
 	double vertChange;
 	bool forward = false;
 	bool backward = false;
+	bool right = false;
+	bool left = false;
 
 	double lastX, lastY;
 };

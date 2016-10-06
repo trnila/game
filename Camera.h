@@ -22,13 +22,21 @@ public:
 	void setZNear(float zNear);
 	glm::mat4 getPerspective() const;
 
-	virtual void updated(Window &camera) override;
+	void forward(float diff);
 
+	void backward(float diff);
+
+	void left(float diff);
+
+	void right(float diff);
+
+	virtual void updated(Window &camera) override;
 private:
-	glm::vec3 up;
-	glm::vec3 position;
-	glm::vec3 target;
 	Window &window;
+
+	glm::vec3 position;
+	glm::vec3 up;
+	glm::vec3 target;
 
 	float v, h;
 	int width, height;
