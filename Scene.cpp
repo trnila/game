@@ -4,13 +4,15 @@
 Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	init_resources();
 
-	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(new Model("resources/ball.obj"), prog));
-	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(new Model("resources/terrain.obj"), prog));
-	objects.emplace_back(Object(new Model("resources/tube.obj"), prog));
+	ResourceManager<Model> &resources = ResourceManager<Model>::getInstance();
+
+	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(&resources.getResource("resources/ball.obj"), prog));
+	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(&resources.getResource("resources/terrain.obj"), prog));
+	objects.emplace_back(Object(&resources.getResource("resources/tube.obj"), prog));
 
 	objects[0].setPosition(-0.1f, -1.0f, 0);
 	objects[0].setPosition(0, 0, 0);

@@ -13,7 +13,7 @@ public:
 			return it->second;
 		}
 
-		resources[filename] = T(filename, arg...);
+		resources.emplace(filename, T(filename, arg...));
 		return resources.find(filename)->second;
 	}
 

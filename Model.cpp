@@ -3,7 +3,7 @@
 #include <sstream>
 #include "Model.h"
 
-Model::Model(float *vertices, float *colors, int size) : size(size), vbo(0), colorsVbo(1) {
+Model::Model(const char *name, float *vertices, float *colors, int size) : size(size), vbo(0), colorsVbo(1) {
 	vao.bind();
 
 	vbo.bind();

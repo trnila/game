@@ -20,7 +20,6 @@ private:
 class Shader {
 public:
 	Shader(const char *file, GLenum type);
-	Shader() {}
 
 	GLuint getId() {
 		return id;
