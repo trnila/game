@@ -3,7 +3,7 @@
 #include "UniformVariable.h"
 #include "Observer.h"
 
-class Program: public Observer {
+class Program : public Observer<Camera> {
 public:
 	Program();
 	void attach(Shader &shader);

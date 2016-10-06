@@ -5,7 +5,7 @@
 #include <math.h>
 #include "Observer.h"
 
-class Camera: public Subject {
+class Camera : public Subject<Camera> {
 public:
 	Camera();
 
