@@ -2,16 +2,11 @@
 
 Camera::Camera(Window &window) : zFar(50.0f), zNear(0.1f), window(window) {
 	window.addListener(this);
+	updated(window);
 }
 
 Camera::~Camera() {
 	window.removeListener(this);
-}
-
-void Camera::setViewportSize(int width, int height) {
-	this->width = width;
-	this->height = height;
-	notify();
 }
 
 const glm::mat4 Camera::getTransform() {
@@ -56,12 +51,12 @@ void Camera::setRotation(float vert, float hor) {
 }
 
 void Camera::setZFar(float zFar) {
-	Camera::zFar = zFar;
+	this->zFar = zFar;
 	notify();
 }
 
 void Camera::setZNear(float zNear) {
-	Camera::zNear = zNear;
+	this->zNear = zNear;
 	notify();
 }
 

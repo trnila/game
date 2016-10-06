@@ -44,8 +44,6 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	objects[5].setScale(1, 2, 1);
 	objects[5].setColor(0, 1, 0);
 
-	camera.setViewportSize(window.getWidth(), window.getHeight());
-
 	camera.setPosition(0, 0, 1.004475f);
 	camera.setRotation(-0.091711f, -3.180683f);
 }

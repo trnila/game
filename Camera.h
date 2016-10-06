@@ -9,10 +9,8 @@
 class Camera : public Subject<Camera>, public Observer<Window> {
 public:
 	Camera(Window &window);
-
 	~Camera();
 
-	void setViewportSize(int width, int height);
 	const glm::mat4 getTransform();
 	void rotateBy(double vert, double hor);
 	void move(float x, float y, float z);
