@@ -4,39 +4,45 @@
 Scene::Scene(GLFWwindow *window) : camHandler(&camera) {
 	init_resources();
 
-	objects.emplace_back(Object(new Model("resources/cylinder.obj"), prog));
-	objects.emplace_back(Object(new Model("resources/torus.obj"), prog));
-	objects.emplace_back(Object(new Model("resources/monkey.obj"), prog));
+	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(new Model("resources/ball.obj"), prog));
+	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
 	objects.emplace_back(Object(new Model("resources/terrain.obj"), prog));
-	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
-	/*
-	objects.emplace_back(Object(new Model(triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(new Model(cubeVertices, cubeRandColors, 36), prog));
-	objects.emplace_back(Object(new Model(triangleVertices, triangleBlue, 3), prog));
-	objects.emplace_back(Object(new Model("resources/cylinder.obj"), prog));
-	 */
+	objects.emplace_back(Object(new Model("resources/tube.obj"), prog));
 
-	objects[0].setPosition(-1, 0, -4);
-	objects[0].rotate(0, 0, 1, 0);
-	objects[0].setScale(5, 5, 1);
+	objects[0].setPosition(-0.1f, -1.0f, 0);
+	objects[0].setPosition(0, 0, 0);
+	objects[0].rotate(0, 0, 0, 1);
+	objects[0].setScale(1, 1, 1);
 	objects[0].setColor(1, 0, 0);
+	//objects[0].setRotationPoint(-0.1f, -1.0f, 0);
 
-	objects[1].setPosition(0, 0, -9);
-	objects[1].rotate(0, 1, -1, 1);
-	objects[1].setColor(0, 1, 0);
+	objects[1].setPosition(0, 0, 0);
+	objects[1].rotate(0, 0, 0, 1);
+	objects[1].setScale(0.01, 0.01, 0.01);
+	objects[1].setColor(1, 1, 1);
 
-	objects[2].setPosition(2, 0, -3);
-	objects[2].rotate(0, 0, 1, 0);
-	objects[2].setColor(0, 0, 1);
+	objects[2].setPosition(0, 0, 0);
+	objects[2].rotate(90, 0, 0, 1);
+	objects[2].setScale(1, 1, 1);
+	objects[2].setColor(0, 1, 0);
 
-	objects[3].setPosition(-1, -10, -4);
-	objects[3].rotate(0, 0, 1, 0);
-	objects[3].setScale(5, 5, 5);
-	objects[3].setColor(1, 1, 0);
+	objects[3].setPosition(0, 0, 0);
+	objects[3].rotate(180, 0, 0, 1);
+	objects[3].setScale(1, 1, 1);
+	objects[3].setColor(0, 0, 1);
 
-	objects[4].setPosition(-1, -10, -5);
-	objects[4].rotate(0, 0, 1, 0);
-	objects[4].setColor(1, 0, 1);
+	objects[4].setPosition(0, 0, 0);
+	objects[4].rotate(270, 0, 0, 1);
+	objects[4].setScale(1, 1, 1);
+	objects[4].setColor(1, 1, 1);
+
+	objects[5].setPosition(0, -1, 0);
+	objects[5].rotate(0, 0, 0, 1);
+	objects[5].setScale(1, 2, 1);
+	objects[5].setColor(0, 1, 0);
 
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
@@ -66,11 +72,15 @@ int Scene::init_resources() {
 
 void Scene::update(float time) {
 	float angle = time * 45;
+	objects[0].addAngle(angle);
+	objects[2].addAngle(angle);
+	objects[3].addAngle(angle);
+	objects[4].addAngle(angle);
 
-	for(Object &o: objects) {
+	/*for(Object &o: objects) {
 		o.addAngle(angle);
-	}
-	objects[1].move(0, 0, time);
+	}*/
+	/*objects[1].move(0, 0, time);
 	objects[0].setScale(scale, scale, scale);
 
 	scale += 2 * scaleSign * time;
@@ -80,7 +90,7 @@ void Scene::update(float time) {
 	} else if (scale >= 5.0) {
 		scaleSign = -1;
 	}
-
+*/
 	camHandler.update(time);
 }
 

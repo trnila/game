@@ -80,9 +80,9 @@ float cubeRandColors[] = {
 
 
 float triangleVertices[] = {
-	-1.0f, -1.0f, 0.0f,
-	1.0f, -1.0f, 0.0f,
-	-1.0f, 1.0f, 1.0f
+		0.0f, 0.0f, 0.0f,
+		0.1f, 1.0f, 0.0f,
+		-0.1f, 1.0f, 0.0f
 };
 
 float triangleRed[] = {
