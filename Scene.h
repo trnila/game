@@ -28,7 +28,7 @@ private:
 	CameraHandler camHandler;
 
 	std::vector<Object> objects;
-	float scale = 5.0;
-	int scaleSign = -1;
+
+	float deadTime;
 
 };

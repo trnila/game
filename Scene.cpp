@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "data.h"
 
-Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
+Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) {
 	init_resources();
 
 	ResourceManager<Model> &resources = ResourceManager<Model>::getInstance();
@@ -13,7 +13,7 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
 	objects.emplace_back(Object(&resources.getResource("resources/terrain.obj"), prog));
 	objects.emplace_back(Object(&resources.getResource("resources/tube.obj"), prog));
-	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
+	objects.emplace_back(Object(&resources.getResource("resources/tree.obj"), prog));
 
 	objects[0].setPosition(-0.1f, -1.0f, 0);
 	objects[0].setPosition(0, 0, 0);
@@ -42,7 +42,7 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	objects[4].setScale(1, 1, 1);
 	objects[4].setColor(1, 1, 1);
 
-	objects[5].setPosition(0, -100, 0);
+	objects[5].setPosition(0, -1, 0);
 	objects[5].rotate(0, 0, 0, 1);
 	objects[5].setScale(1, 2, 1);
 	objects[5].setColor(0, 123/255.0f, 10/255.0f);
@@ -52,11 +52,11 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	objects[6].setScale(0.05, 1, 0.05);
 	objects[6].setColor(139/255.0f, 69/255.0f, 19/255.0f);
 
-	objects[7].setPosition(5, 0, 0);
+	objects[7].setPosition(3.4071f, -1.0f, 2.8450f);
 	objects[7].rotate(0, 0, 0, 1);
-	objects[7].setScale(1, 1, 1);
+	objects[7].setScale(0.001, 0.001, 0.001);
 	objects[7].setColor(139/255.0f, 69/255.0f, 19/255.0f);
-	objects[7].setRotationPoint(5.1, 1, 0);
+	objects[7].setRotationPoint(3.4071f, -1.0f, 2.8450f);
 
 	camera.setPosition(0, 0, 1.004475f);
 	camera.setRotation(-0.091711f, -3.180683f);
@@ -87,27 +87,19 @@ void Scene::update(float time) {
 	objects[3].addAngle(angle);
 	objects[4].addAngle(angle);
 
-	objects[7].addAngle(angle);
-	/*objects[7].multiplyScale(1.001, 1.001, 1.001);
-
 	if(objects[7].getScale().x > 0.1) {
 		objects[7].rotate(90, 0, 0, 1);
-	}*/
+		deadTime += time;
 
-	/*for(Object &o: objects) {
-		o.addAngle(angle);
-	}*/
-	/*objects[1].move(0, 0, time);
-	objects[0].setScale(scale, scale, scale);
-
-	scale += 2 * scaleSign * time;
-
-	if (scale <= 0.1) {
-		scaleSign = 1;
-	} else if (scale >= 5.0) {
-		scaleSign = -1;
+		if(deadTime > 5) {
+			objects[7].rotate(0, 0, 0, 1);
+			objects[7].setScale(0.001, 0.001, 0.001);
+			deadTime = 0;
+		}
+	} else {
+		objects[7].multiplyScale(1.01, 1.01, 1.01);
 	}
-*/
+
 	camHandler.update(time);
 }
 
