@@ -11,10 +11,10 @@ Object::Object(Model *model, Program &program) :
 
 glm::mat4 Object::getTransform() {
 	glm::mat4 model(1.0f);
-	model = glm::translate(model, -rotatePoint);
+	model = glm::translate(model, rotatePoint);
 	model = glm::scale(model, scale);
 	model = glm::rotate(model, glm::radians(angle), rotateAxis);
-	model = glm::translate(model, rotatePoint);
+	model = glm::translate(model, -rotatePoint);
 	model = glm::translate(model, position);
 	return model;
 }
@@ -64,4 +64,15 @@ void Object::setColor(float r, float g, float b) {
 
 void Object::setRotationPoint(float x, float y, float z) {
 	rotatePoint = glm::vec3(x, y, z);
+}
+
+void Object::multiplyScale(float x, float y, float z) {
+	scale.x *= x;
+	scale.y *= y;
+	scale.z *= z;
+
+}
+
+glm::vec3 Object::getScale() {
+	return scale;
 }

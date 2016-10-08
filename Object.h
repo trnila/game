@@ -16,6 +16,8 @@ public:
 	void rotate(float angle, float x, float y, float z);
 	void setAngle(float angle);
 	void addAngle(float angle);
+	void multiplyScale(float x, float y, float z);
+	glm::vec3 getScale();
 
 	void setColor(float r, float g, float b);
 
