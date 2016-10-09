@@ -37,10 +37,6 @@ void Transform::setScale(float x, float y, float z) {
 	scale = glm::vec3(x, y, z);
 }
 
-void Transform::setRotationPoint(float x, float y, float z) {
-	rotatePoint = glm::vec3(x, y, z);
-}
-
 void Transform::multiplyScale(float x, float y, float z) {
 	scale.x *= x;
 	scale.y *= y;
@@ -55,6 +51,24 @@ void Transform::setPosition(glm::vec3 pos) {
 	position = pos;
 }
 
-void Transform::setRotationPoint(glm::vec3 p) {
-	rotatePoint = p;
+void Transform::rotate(float angle, glm::vec3 axis) {
+	this->angle = angle;
+	this->rotateAxis = axis;
+
+}
+
+void Transform::rotate(float angle) {
+	this->angle = angle;
+}
+
+void Transform::setScale(float s) {
+	setScale(s, s, s);
+}
+
+void Transform::setScale(glm::vec3 scale) {
+	this->scale = scale;
+}
+
+void Transform::multiplyScale(glm::vec3 scale) {
+	multiplyScale(scale.x, scale.y, scale.z);
 }
