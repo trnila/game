@@ -27,8 +27,9 @@ void Scene::createScene() {
 	windMill = new NodeList();
 	windMill->move(0, 0.5, 0);
 
-	NodeList *propeller = new NodeList();
+	propeller = new NodeList();
 	propeller->move(0, 1, -0.05f);
+	propeller->rotate(0, 0.6, 0, 1);
 	// propellers
 	glm::vec3 colors[] = {
 			{1, 0, 0},
@@ -48,7 +49,6 @@ void Scene::createScene() {
 		obj->rotate(90 * i, 0.6, 0, 1);
 		obj->setScale(1, 1, 1);
 		obj->setColor(colors[i]);
-		obj->attachLogic<RotateLogic>(anglePerSec);
 		propeller->addNode(obj);
 	}
 	// tube
@@ -108,6 +108,7 @@ void Scene::update(float time) {
 
 	root.update(time, parent);
 	windMill->move(0.5 * time, 0, 0);
+	propeller->addAngle(45 * time);
 	camHandler.update(time);
 }
 
