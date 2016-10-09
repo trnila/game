@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "Logic.h"
 
 Object::Object(Model *model, Program &program) :
 		position(0, 0, 0),
@@ -8,7 +9,14 @@ Object::Object(Model *model, Program &program) :
 		angle(0),
 		model(model),
 		program(program),
-		color(1.0f) {}
+		color(1.0f),
+		logic(nullptr) {}
+
+Object::~Object() {
+	if (logic) {
+		delete logic;
+	}
+}
 
 glm::mat4 Object::getTransform() {
 	glm::mat4 model(1.0f);
@@ -81,4 +89,10 @@ void Object::setPosition(glm::vec3 pos) {
 
 void Object::setRotationPoint(glm::vec3 p) {
 	rotatePoint = p;
+}
+
+void Object::update(float diff) {
+	if (logic) {
+		logic->update(diff);
+	}
 }

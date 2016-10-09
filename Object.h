@@ -6,9 +6,13 @@
 #include "Model.h"
 #include "RenderContext.h"
 
+class Logic;
+
 class Object {
 public:
 	Object(Model *model, Program& program);
+
+	~Object();
 
 	glm::mat4 getTransform();
 	void move(float x, float y, float z);
@@ -30,6 +34,13 @@ public:
 	void setRotationPoint(glm::vec3 p);
 
 	void render(RenderContext &context);
+
+	void update(float diff);
+
+	template<typename T, typename... Args>
+	void attachLogic(Args... args) {
+		logic = new T(*this, args...);
+	}
 private:
 	glm::vec3 position;
 	glm::vec3 rotateAxis;
@@ -39,4 +50,5 @@ private:
 	Model *model;
 	Program &program;
 	glm::vec3 color;
+	Logic *logic = nullptr;
 };
