@@ -27,7 +27,7 @@ void Object::setColor(float r, float g, float b) {
 }
 
 void Object::update(float diff, const glm::mat4 parent) {
-	this->parent = getTransform() * parent;
+	this->parent = parent * getTransform();
 	if (logic) {
 		logic->update(diff);
 	}

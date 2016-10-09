@@ -32,7 +32,7 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 	};
 	for (int i = 0; i < 4; i++) {
 		obj = new Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog);
-		obj->setPosition(center);
+		//obj->setPosition(center);
 		obj->setRotationPoint(center);
 		obj->rotate(90 * i, 0.6, 0, 1);
 		obj->setScale(1, 1, 1);
