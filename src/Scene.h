@@ -16,7 +16,8 @@
 class Scene : public KeyListener, public MouseListener {
 public:
 	Scene(Window &window);
-	int init_resources();
+
+	void initResources();
 	void update(float time);
 	void renderOneFrame(RenderContext &context);
 
@@ -32,4 +33,6 @@ private:
 	Camera camera;
 	CameraHandler camHandler;
 	float deadTime;
+
+	void createScene();
 };

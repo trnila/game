@@ -3,10 +3,13 @@
 #include "Logic.h"
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) {
-	init_resources();
+	initResources();
 
+	createScene();
+}
+
+void Scene::createScene() {
 	ResourceManager<Model> &resources = ResourceManager<Model>::getInstance();
-
 
 	Object *obj;
 	Object *terrain = new Object(&resources.getResource("resources/terrain.obj"), prog);
@@ -33,6 +36,12 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 			{0, 0, 1},
 			{1, 1, 0}
 	};
+
+	obj = new Object(&resources.getResource("resources/ball.obj"), prog);
+	obj->setScale(0.02, 0.02, 0.02);
+	obj->setColor(1, 1, 1);
+	propeller->addNode(obj);
+
 	for (int i = 0; i < 4; i++) {
 		obj = new Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog);
 		obj->setRotationPoint(center);
@@ -78,7 +87,7 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 	camera.setRotation(-0.582351f, -0.1290f);
 }
 
-int Scene::init_resources() {
+void Scene::initResources() {
 	try {
 		Shader vertex = ResourceManager<Shader>::getInstance().getResource<>("triangle.v.glsl", GL_VERTEX_SHADER);
 		Shader fragment = ResourceManager<Shader>::getInstance().getResource<>("triangle.f.glsl", GL_FRAGMENT_SHADER);
@@ -92,8 +101,6 @@ int Scene::init_resources() {
 	} catch(GlslCompileError &err) {
 		std::cerr << "GLSL error: " << err.getSource() << " - " << err.what() << "\n";
 	}
-
-	return 1;
 }
 
 void Scene::update(float time) {
