@@ -4,14 +4,7 @@
 Object::Object(Model *model, Program &program) :
 		model(model),
 		program(program),
-		color(1.0f),
-		logic(nullptr) {}
-
-Object::~Object() {
-	if (logic) {
-		delete logic;
-	}
-}
+		color(1.0f) {}
 
 void Object::render(RenderContext &context) {
 	context.use(program);
@@ -27,10 +20,11 @@ void Object::setColor(float r, float g, float b) {
 }
 
 void Object::update(float diff, const glm::mat4 parent) {
-	this->parent = parent * getTransform();
-	if (logic) {
-		logic->update(diff);
+	if (this->logic) {
+		this->logic->update(diff);
 	}
+
+	this->parent = parent * getTransform();
 }
 
 void Object::setColor(glm::vec3 color) {

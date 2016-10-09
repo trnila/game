@@ -22,7 +22,6 @@ void Scene::createScene() {
 	root.addNode(terrain);
 
 	glm::vec3 center = glm::vec3(0.2787f, 1.811f, -0.48f);
-	float anglePerSec = 45;
 
 	windMill = new NodeList();
 	windMill->move(0, 0.5, 0);
@@ -30,6 +29,7 @@ void Scene::createScene() {
 	propeller = new NodeList();
 	propeller->move(0, 1, -0.05f);
 	propeller->rotate(0, 0.6, 0, 1);
+	propeller->attachLogic<RotateLogic>(45);
 	// propellers
 	glm::vec3 colors[] = {
 			{1, 0, 0},
@@ -108,7 +108,6 @@ void Scene::update(float time) {
 
 	root.update(time, parent);
 	windMill->move(0.5 * time, 0, 0);
-	propeller->addAngle(45 * time);
 	camHandler.update(time);
 }
 
