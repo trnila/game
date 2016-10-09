@@ -7,75 +7,68 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 
 	ResourceManager<Model> &resources = ResourceManager<Model>::getInstance();
 
-	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(&resources.getResource("resources/ball.obj"), prog));
-	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog));
-	objects.emplace_back(Object(&resources.getResource("resources/terrain.obj"), prog));
-	objects.emplace_back(Object(&resources.getResource("resources/tube.obj"), prog));
-	objects.emplace_back(Object(&resources.getResource("resources/tree.obj"), prog));
-	objects.emplace_back(Object(&resources.getResource("resources/tree.obj"), prog));
+
+	Object *obj;
+	Object *terrain = new Object(&resources.getResource("resources/terrain.obj"), prog);
+
+	terrain->setPosition(0, 0, 0);
+	terrain->rotate(0, 0, 0, 1);
+	terrain->setScale(1, 2, 1);
+	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
+
+	root.addNode(terrain);
 
 	glm::vec3 center = glm::vec3(0.2787f, 1.811f, -0.48f);
 	float anglePerSec = 45;
 
-	objects[0].setPosition(center);
-	objects[0].setRotationPoint(center);
-	objects[0].rotate(0, 0.6, 0, 1);
-	objects[0].setScale(1, 1, 1);
-	objects[0].setColor(1, 0, 0);
-	objects[0].attachLogic<RotateLogic>(anglePerSec);
+	NodeList *windMill = new NodeList();
 
-	objects[1].setPosition(center);
-	objects[1].rotate(0, 0, 0, 1);
-	objects[1].setScale(0.01, 0.01, 0.01);
-	objects[1].setColor(1, 1, 1);
+	// propellers
+	glm::vec3 colors[] = {
+			{1, 0, 0},
+			{0, 1, 0},
+			{0, 0, 1},
+			{1, 1, 0}
+	};
+	for (int i = 0; i < 4; i++) {
+		obj = new Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog);
+		obj->setPosition(center);
+		obj->setRotationPoint(center);
+		obj->rotate(90 * i, 0.6, 0, 1);
+		obj->setScale(1, 1, 1);
+		obj->setColor(colors[i]);
+		obj->attachLogic<RotateLogic>(anglePerSec);
+		windMill->addNode(obj);
+	}
+	// tube
+	obj = new Object(&resources.getResource("resources/tube.obj"), prog);
+	obj->setPosition(0.2759985f, 0.8f, -0.41095f);
+	obj->rotate(0, 0, 0, 1);
+	obj->setScale(0.05, 1, 0.05);
+	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
+	windMill->addNode(obj);
 
-	objects[2].setPosition(center);
-	objects[2].setRotationPoint(center);
-	objects[2].rotate(90, 0.6, 0, 1);
-	objects[2].setScale(1, 1, 1);
-	objects[2].setColor(0, 1, 0);
-	objects[2].attachLogic<RotateLogic>(anglePerSec);
+	root.addNode(windMill);
 
-	objects[3].setPosition(center);
-	objects[3].setRotationPoint(center);
-	objects[3].rotate(180, 0.6, 0, 1);
-	objects[3].setScale(1, 1, 1);
-	objects[3].setColor(0, 0, 1);
-	objects[3].attachLogic<RotateLogic>(anglePerSec);
 
-	objects[4].setPosition(center);
-	objects[4].setRotationPoint(center);
-	objects[4].rotate(270, 0.6, 0, 1);
-	objects[4].setScale(1, 1, 1);
-	objects[4].setColor(1, 1, 1);
-	objects[4].attachLogic<RotateLogic>(anglePerSec);
+	obj = new Object(&resources.getResource("resources/tree.obj"), prog);
+	obj->setPosition(3.4071f, 0.0f, 2.8450f);
+	obj->rotate(0, 0, 0, 1);
+	obj->setScale(0.001, 0.001, 0.001);
+	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
+	obj->setRotationPoint(3.4071f, 0.0f, 2.8450f);
+	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
+	root.addNode(obj);
 
-	objects[5].setPosition(0, 0, 0);
-	objects[5].rotate(0, 0, 0, 1);
-	objects[5].setScale(1, 2, 1);
-	objects[5].setColor(0, 123/255.0f, 10/255.0f);
+	obj = new Object(&resources.getResource("resources/tree.obj"), prog);
+	obj->setPosition(2.4071f, 0.0f, 2.8450f);
+	obj->rotate(0, 0, 0, 1);
+	obj->setScale(0.001, 0.001, 0.001);
+	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
+	obj->setRotationPoint(2.4071f, 0.0f, 2.8450f);
+	obj->attachLogic<TreeLogic>(1.04, 0.2, 9);
+	root.addNode(obj);
 
-	objects[6].setPosition(0.2759985f, 0.8f, -0.41095f);
-	objects[6].rotate(0, 0, 0, 1);
-	objects[6].setScale(0.05, 1, 0.05);
-	objects[6].setColor(139/255.0f, 69/255.0f, 19/255.0f);
-
-	objects[7].setPosition(3.4071f, 0.0f, 2.8450f);
-	objects[7].rotate(0, 0, 0, 1);
-	objects[7].setScale(0.001, 0.001, 0.001);
-	objects[7].setColor(139/255.0f, 69/255.0f, 19/255.0f);
-	objects[7].setRotationPoint(3.4071f, 0.0f, 2.8450f);
-	objects[7].attachLogic<TreeLogic>(1.01, 0.1, 5);
-
-	objects[8].setPosition(2.4071f, 0.0f, 2.8450f);
-	objects[8].rotate(0, 0, 0, 1);
-	objects[8].setScale(0.001, 0.001, 0.001);
-	objects[8].setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	objects[8].setRotationPoint(2.4071f, 0.0f, 2.8450f);
-	objects[8].attachLogic<TreeLogic>(1.04, 0.2, 9);
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
@@ -100,10 +93,7 @@ int Scene::init_resources() {
 }
 
 void Scene::update(float time) {
-	for (Object &o: objects) {
-		o.update(time);
-	}
-
+	root.update(time);
 	camHandler.update(time);
 }
 
@@ -112,9 +102,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	context.setCamera(&camera);
 
-	for(Object &o: objects) {
-		o.render(context);
-	}
+	root.render(context);
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {

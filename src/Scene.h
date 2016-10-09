@@ -11,6 +11,7 @@
 #include "MouseListener.h"
 #include "CameraHandler.h"
 #include "Window.h"
+#include "NodeList.h"
 
 class Scene : public KeyListener, public MouseListener {
 public:
@@ -24,12 +25,10 @@ public:
 	virtual void onMove(double x, double y) override;
 
 private:
+	NodeList root;
+
 	Program prog;
 	Camera camera;
 	CameraHandler camHandler;
-
-	std::vector<Object> objects;
-
 	float deadTime;
-
 };

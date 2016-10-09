@@ -96,3 +96,7 @@ void Object::update(float diff) {
 		logic->update(diff);
 	}
 }
+
+void Object::setColor(glm::vec3 color) {
+	this->color = color;
+}

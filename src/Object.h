@@ -5,10 +5,11 @@
 #include "Program.h"
 #include "Model.h"
 #include "RenderContext.h"
+#include "Node.h"
 
 class Logic;
 
-class Object {
+class Object : public Node {
 public:
 	Object(Model *model, Program& program);
 
@@ -27,15 +28,17 @@ public:
 
 	void setColor(float r, float g, float b);
 
+	void setColor(glm::vec3 color);
+
 	void setScale(float x, float y, float z);
 
 	void setRotationPoint(float x, float y, float z);
 
 	void setRotationPoint(glm::vec3 p);
 
-	void render(RenderContext &context);
+	virtual void render(RenderContext &context) override;
 
-	void update(float diff);
+	virtual void update(float diff) override;
 
 	template<typename T, typename... Args>
 	void attachLogic(Args... args) {
