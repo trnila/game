@@ -25,7 +25,7 @@ void Game::init() {
 	scene = new Scene(*window);
 }
 
-void Game::start() {
+void Game::startRendering() {
 	RenderContext context;
 
 	double last = glfwGetTime();

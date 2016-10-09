@@ -3,7 +3,7 @@
 int main() {
 	Game &g = Game::getInstance();
 	g.init();
-	g.start();
+	g.startRendering();
 	
 	//glfwDestroyWindow(window);
 	glfwTerminate();

@@ -9,7 +9,8 @@
 class Game : public Singleton<Game>, public KeyListener, public MouseListener {
 public:
 	void init();
-	void start();
+
+	void startRendering();
 
 	virtual void onKey(int key, int scancode, int action, int mods) override;
 
