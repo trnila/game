@@ -76,3 +76,11 @@ void Object::multiplyScale(float x, float y, float z) {
 glm::vec3 Object::getScale() {
 	return scale;
 }
+
+void Object::setPosition(glm::vec3 pos) {
+	position = pos;
+}
+
+void Object::setRotationPoint(glm::vec3 p) {
+	rotatePoint = p;
+}
