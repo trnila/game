@@ -15,16 +15,18 @@ public:
 	~Object();
 	void setColor(float r, float g, float b);
 	void setColor(glm::vec3 color);
-	virtual void render(RenderContext &context) override;
-	virtual void update(float diff) override;
+	virtual void render(RenderContext &context);
+	virtual void update(float diff, const glm::mat4 parent);
 
 	template<typename T, typename... Args>
 	void attachLogic(Args... args) {
 		logic = new T(*this, args...);
 	}
+
 private:
 	Model *model;
 	Program &program;
 	glm::vec3 color;
 	Logic *logic = nullptr;
+	glm::mat4 parent;
 };

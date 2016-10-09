@@ -1,5 +1,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Transform.h"
+#include "glm/ext.hpp"
 
 glm::mat4 Transform::getTransform() {
 	glm::mat4 model(1.0f);

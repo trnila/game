@@ -1,5 +1,6 @@
 
 #include "NodeList.h"
+#include "Object.h"
 
 void NodeList::render(RenderContext &context) {
 	for (Node *node: nodes) {
@@ -7,9 +8,9 @@ void NodeList::render(RenderContext &context) {
 	}
 }
 
-void NodeList::update(float diff) {
+void NodeList::update(float diff, const glm::mat4 parent) {
 	for (Node *node: nodes) {
-		node->update(diff);
+		node->update(diff, parent * getTransform());
 	}
 }
 

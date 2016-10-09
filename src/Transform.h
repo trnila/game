@@ -29,11 +29,11 @@ public:
 	void setRotationPoint(glm::vec3 p);
 
 private:
-	glm::vec3 position;
-	glm::vec3 rotateAxis;
-	glm::vec3 rotatePoint;
-	glm::vec3 scale;
-	float angle;
+	glm::vec3 position = glm::vec3(0, 0, 0);
+	glm::vec3 rotateAxis = glm::vec3(1, 0, 0);
+	glm::vec3 rotatePoint = glm::vec3(0, 0, 0);
+	glm::vec3 scale = glm::vec3(1, 1, 1);
+	float angle = 0.0f;
 };
 
 

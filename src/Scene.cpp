@@ -21,7 +21,7 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 	glm::vec3 center = glm::vec3(0.2787f, 1.811f, -0.48f);
 	float anglePerSec = 45;
 
-	NodeList *windMill = new NodeList();
+	windMill = new NodeList();
 
 	// propellers
 	glm::vec3 colors[] = {
@@ -93,7 +93,10 @@ int Scene::init_resources() {
 }
 
 void Scene::update(float time) {
-	root.update(time);
+	glm::mat4 parent(1.0f);
+
+	root.update(time, parent);
+	windMill->move(0.5 * time, 0, 0);
 	camHandler.update(time);
 }
 
