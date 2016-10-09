@@ -9,7 +9,7 @@ Object::Object(Model *model, Program &program) :
 void Object::render(RenderContext &context) {
 	context.use(program);
 
-	program.setMatrix("modelMatrix", parent);
+	program.setMatrix("modelMatrix", modelMatrix);
 	program.setColor(color.r, color.g, color.b);
 
 	model->render(context);
@@ -22,7 +22,7 @@ void Object::setColor(float r, float g, float b) {
 void Object::update(float diff, const glm::mat4 &parent) {
 	updateLogic(diff);
 
-	this->parent = parent * getTransform();
+	this->modelMatrix = parent * getTransform();
 }
 
 void Object::setColor(glm::vec3 color) {

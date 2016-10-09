@@ -21,5 +21,5 @@ private:
 	Model *model;
 	Program &program;
 	glm::vec3 color;
-	glm::mat4 parent;
+	glm::mat4 modelMatrix;
 };
