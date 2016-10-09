@@ -1,6 +1,16 @@
 #include "Camera.h"
 
-Camera::Camera(Window &window) : zFar(50.0f), zNear(0.1f), window(window), up(0.0, 1.0, 0.0) {
+Camera::Camera(Window &window) :
+		window(window),
+		position(0.0),
+		up(0.0, 1.0, 0.0),
+		target(0.0),
+		v(0),
+		h(0),
+		width(800),
+		height(600),
+		zFar(50.0f),
+		zNear(0.1f) {
 	window.addListener(this);
 	updated(window);
 }

@@ -1,13 +1,14 @@
 #include "Object.h"
 
 Object::Object(Model *model, Program &program) :
+		position(0, 0, 0),
+		rotateAxis(0, 0, 0),
+		rotatePoint(0, 0, 0),
+		scale(1.0f, 1.0f, 1.0f),
+		angle(0),
 		model(model),
 		program(program),
-		scale(1.0f, 1.0f, 1.0f),
-		rotatePoint(0, 0, 0),
-		angle(0),
-		rotateAxis(0, 0, 0),
-		position(0, 0, 0) {}
+		color(1.0f) {}
 
 glm::mat4 Object::getTransform() {
 	glm::mat4 model(1.0f);

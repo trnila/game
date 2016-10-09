@@ -3,7 +3,7 @@
 #include <sstream>
 #include "Model.h"
 
-Model::Model(const char *name, float *vertices, float *colors, int size) : size(size), vbo(0), colorsVbo(1) {
+Model::Model(const char *name, float *vertices, float *colors, int size) : vbo(0), colorsVbo(1), size(size) {
 	vao.bind();
 
 	vbo.bind();
@@ -40,8 +40,6 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 			verts.push_back(z);
 		} else if (line[0] == 'f') {
 			int x, y, z;
-			int g;
-			//sscanf(line.c_str(), "f %d//%d %d//%d %d//%d", &x, &g, &y, &g, &z, &g);
 			sscanf(line.c_str(), "f %d %d %d", &x, &y, &z);
 
 			data.push_back(verts[3 * (x - 1)]);
