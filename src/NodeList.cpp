@@ -1,6 +1,4 @@
-
 #include "NodeList.h"
-#include "Object.h"
 
 void NodeList::render(RenderContext &context) {
 	for (Node *node: nodes) {
@@ -19,5 +17,5 @@ void NodeList::addNode(Node *node) {
 }
 
 void NodeList::removeNode(Node *node) {
-	//TODO: do this!
+	nodes.erase(std::remove(nodes.begin(), nodes.end(), node), nodes.end());
 }
