@@ -2,11 +2,12 @@ CC=g++
 LDFLAGS=-lglfw -lGL -lGLEW
 CPPFLAGS=-g -Wall -Wextra -pedantic
 
-CPP_FILES=$(wildcard *.cpp)
+CPP_FILES=$(wildcard src/*.cpp)
 
 all: main
 
 main: $(CPP_FILES:.cpp=.o)
+	$(CC) $(CPPFLAGS) $(LDFLAGS) $^ -o $@
 
 clean:
-	rm -f main *.o
+	rm -f main src/*.o
