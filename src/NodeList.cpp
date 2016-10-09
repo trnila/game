@@ -1,5 +1,4 @@
 #include "NodeList.h"
-#include "Logic.h"
 
 void NodeList::render(RenderContext &context) {
 	for (Node *node: nodes) {
@@ -8,9 +7,7 @@ void NodeList::render(RenderContext &context) {
 }
 
 void NodeList::update(float diff, const glm::mat4 parent) {
-	if (this->logic) {
-		this->logic->update(diff);
-	}
+	updateLogic(diff);
 
 	for (Node *node: nodes) {
 		node->update(diff, parent * getTransform());
