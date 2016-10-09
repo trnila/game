@@ -121,7 +121,7 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
 }
 
-void Scene::onMove(GLFWwindow *window, double x, double y) {
-	camHandler.onMove(window, x, y);
+void Scene::onMove(double x, double y) {
+	camHandler.onMove(x, y);
 }
 

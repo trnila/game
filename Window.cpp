@@ -17,7 +17,7 @@ Window::Window(int width, int height, const char *title) : width(width), height(
 		Game::getInstance().onKey(key, scancode, action, mods);
 	});
 	glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x, double y) {
-		Game::getInstance().onMove(window, x, y);
+		Game::getInstance().onMove(x, y);
 	});
 	glfwSetWindowSizeCallback(window, [](GLFWwindow *window, int w, int h) -> void {
 		glViewport(0, 0, w, h);

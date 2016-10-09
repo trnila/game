@@ -46,6 +46,6 @@ void Game::onKey(int key, int scancode, int action, int mods) {
 	scene->onKey(key, scancode, action, mods);
 }
 
-void Game::onMove(GLFWwindow *window, double x, double y) {
-	scene->onMove(window, x, y);
+void Game::onMove(double x, double y) {
+	scene->onMove(x, y);
 }

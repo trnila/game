@@ -51,7 +51,7 @@ void CameraHandler::onKey(int key, int scancode, int action, int mods) {
 	}
 }
 
-void CameraHandler::onMove(GLFWwindow *window, double x, double y) {
+void CameraHandler::onMove(double x, double y) {
 	horChange = lastX - x;
 	vertChange = lastY - y;
 
