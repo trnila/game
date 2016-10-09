@@ -17,12 +17,10 @@ class Scene : public KeyListener, public MouseListener {
 public:
 	Scene(Window &window);
 
-	void initResources();
 	void update(float time);
 	void renderOneFrame(RenderContext &context);
 
 	virtual void onKey(int key, int scancode, int action, int mods) override;
-
 	virtual void onMove(double x, double y) override;
 
 private:
@@ -32,7 +30,7 @@ private:
 	Program prog;
 	Camera camera;
 	CameraHandler camHandler;
-	float deadTime;
 
 	void createScene();
+	void initResources();
 };

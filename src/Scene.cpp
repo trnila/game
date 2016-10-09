@@ -2,7 +2,7 @@
 #include "data.h"
 #include "Logic.h"
 
-Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) {
+Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	initResources();
 
 	createScene();
