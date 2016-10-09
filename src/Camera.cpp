@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include <stdio.h>
 
 Camera::Camera(Window &window) :
 		window(window),
@@ -54,6 +55,7 @@ void Camera::setPosition(float x, float y, float z) {
 	position.x = x;
 	position.y = y;
 	position.z = z;
+
 	notify();
 }
 
@@ -86,6 +88,7 @@ void Camera::updated(Window &camera) {
 
 void Camera::forward(float diff) {
 	position += glm::normalize(target) * diff;
+	printf("%f %f %f\n", position.x, position.y, position.z);
 	notify();
 }
 

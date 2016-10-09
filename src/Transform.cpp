@@ -4,11 +4,9 @@
 
 glm::mat4 Transform::getTransform() {
 	glm::mat4 model(1.0f);
-	//model = glm::translate(model, rotatePoint);
-	model = glm::rotate(model, glm::radians(angle), rotateAxis);
-	//model = glm::translate(model, -rotatePoint);
 	model = glm::translate(model, position);
 	model = glm::scale(model, scale);
+	model = glm::rotate(model, glm::radians(angle), rotateAxis);
 	return model;
 }
 

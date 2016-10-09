@@ -22,7 +22,10 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 	float anglePerSec = 45;
 
 	windMill = new NodeList();
+	windMill->move(0, 0.5, 0);
 
+	NodeList *propeller = new NodeList();
+	propeller->move(0, 1, -0.05f);
 	// propellers
 	glm::vec3 colors[] = {
 			{1, 0, 0},
@@ -32,21 +35,20 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 	};
 	for (int i = 0; i < 4; i++) {
 		obj = new Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog);
-		//obj->setPosition(center);
 		obj->setRotationPoint(center);
 		obj->rotate(90 * i, 0.6, 0, 1);
 		obj->setScale(1, 1, 1);
 		obj->setColor(colors[i]);
 		obj->attachLogic<RotateLogic>(anglePerSec);
-		windMill->addNode(obj);
+		propeller->addNode(obj);
 	}
 	// tube
 	obj = new Object(&resources.getResource("resources/tube.obj"), prog);
-	obj->setPosition(0.2759985f, 0.8f, -0.41095f);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.05, 1, 0.05);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
 	windMill->addNode(obj);
+	windMill->addNode(propeller);
 
 	root.addNode(windMill);
 
@@ -56,7 +58,6 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	obj->setRotationPoint(3.4071f, 0.0f, 2.8450f);
 	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
 	root.addNode(obj);
 
@@ -65,7 +66,6 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	obj->setRotationPoint(2.4071f, 0.0f, 2.8450f);
 	obj->attachLogic<TreeLogic>(1.04, 0.2, 9);
 	root.addNode(obj);
 
