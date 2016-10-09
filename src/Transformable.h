@@ -2,9 +2,8 @@
 
 #include <glm/mat4x4.hpp>
 
-class Transform {
+class Transformable {
 public:
-	glm::mat4 getTransform();
 	void move(float x, float y, float z);
 	void setPosition(float x, float y, float z);
 	void setPosition(glm::vec3 pos);
@@ -21,6 +20,9 @@ public:
 	void multiplyScale(float x, float y, float z);
 	void multiplyScale(glm::vec3 scale);
 	glm::vec3 getScale();
+
+protected:
+	glm::mat4 getTransform();
 
 private:
 	glm::vec3 position = glm::vec3(0, 0, 0);

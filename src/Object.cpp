@@ -19,7 +19,7 @@ void Object::setColor(float r, float g, float b) {
 	color = glm::vec3(r, g, b);
 }
 
-void Object::update(float diff, const glm::mat4 parent) {
+void Object::update(float diff, const glm::mat4 &parent) {
 	updateLogic(diff);
 
 	this->parent = parent * getTransform();

@@ -6,7 +6,7 @@ void NodeList::render(RenderContext &context) {
 	}
 }
 
-void NodeList::update(float diff, const glm::mat4 parent) {
+void NodeList::update(float diff, const glm::mat4 &parent) {
 	updateLogic(diff);
 
 	for (Node *node: nodes) {

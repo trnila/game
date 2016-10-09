@@ -15,7 +15,7 @@ public:
 	void setColor(float r, float g, float b);
 	void setColor(glm::vec3 color);
 	virtual void render(RenderContext &context);
-	virtual void update(float diff, const glm::mat4 parent);
+	virtual void update(float diff, const glm::mat4 &parent);
 
 private:
 	Model *model;
