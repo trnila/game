@@ -13,7 +13,7 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 
 	terrain->setPosition(0, 0, 0);
 	terrain->rotate(0, 0, 0, 1);
-	terrain->setScale(1, 2, 1);
+	terrain->setScale(2, 3, 2);
 	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
 
 	root.addNode(terrain);
@@ -53,21 +53,25 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), deadTime(0) 
 	root.addNode(windMill);
 
 
+	NodeList *forest = new NodeList();
+	forest->move(3, 0.1, 5.68);
+	root.addNode(forest);
+
 	obj = new Object(&resources.getResource("resources/tree.obj"), prog);
-	obj->setPosition(3.4071f, 0.0f, 2.8450f);
+	obj->setPosition(4, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
 	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
-	root.addNode(obj);
+	forest->addNode(obj);
 
 	obj = new Object(&resources.getResource("resources/tree.obj"), prog);
-	obj->setPosition(2.4071f, 0.0f, 2.8450f);
+	obj->setPosition(0, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
 	obj->attachLogic<TreeLogic>(1.04, 0.2, 9);
-	root.addNode(obj);
+	forest->addNode(obj);
 
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
