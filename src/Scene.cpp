@@ -82,6 +82,19 @@ void Scene::createScene() {
 	forest->addNode(obj);
 
 
+	NodeList *origin = new NodeList;
+	root.addNode(origin);
+	origin->setPosition(1, 2, 1);
+	origin->rotate(90, 0, 0, 1);
+	origin->attachLogic<RotateLogic>(45);
+
+	obj = new Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog);
+	obj->move(-0.1, -1, 0);
+	obj->setColor(1, 0, 0);
+	origin->addNode(obj);
+
+
+
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
 }
