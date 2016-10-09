@@ -1,6 +1,5 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Program.h"
-#include "Camera.h"
 
 Program::Program() {
 	id = glCreateProgram();
@@ -27,18 +26,13 @@ void Program::use() {
 	glUseProgram(id);
 }
 
-UniformVariable *Program::bindUniformVariable(const char *variableName) {
-	GLint uniformId;
-	uniformId = glGetUniformLocation(id, variableName);
+void Program::setMatrix(const char* var, const glm::mat4 &mat) {
+	GLint uniformId = glGetUniformLocation(id, var);
 	if (uniformId == -1) {
 		throw std::runtime_error("could not bind uniform variable");
 	}
 
-	return new UniformVariable(uniformId);
-}
-
-void Program::setMatrix(const char* var, const glm::mat4 &mat) {
-	bindUniformVariable(var)->setData(mat);
+	glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(mat));
 }
 
 void Program::updated(Camera &camera) {

@@ -45,11 +45,8 @@ void Object::addAngle(float angle) {
 
 void Object::render(RenderContext &context) {
 	context.use(program);
-	
-	glm::mat4 transform = getTransform();
-	UniformVariable *mvpVar = program.bindUniformVariable("modelMatrix");
-	mvpVar->setData(transform);
 
+	program.setMatrix("modelMatrix", getTransform());
 	program.setColor(color.r, color.g, color.b);
 
 	model->render(context);
