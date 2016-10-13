@@ -16,6 +16,9 @@ Model::Model(const char *name, float *vertices, int size) : vbo(0), colorsVbo(1)
 
 	vbo.bind();
 	vbo.setData(vertices, size, 3, 0);
+	glBufferData(GL_ARRAY_BUFFER, 6*size*sizeof(float), vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+	vao.enableAttrib(0);
 }
 
 void Model::render(RenderContext &context) {
