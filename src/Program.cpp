@@ -66,3 +66,8 @@ void Program::setLight(glm::vec3 position) {
 	GLint uniformId = glGetUniformLocation(id, "lightPos");
 	glUniform3fv(uniformId, 1, glm::value_ptr(position));
 }
+
+void Program::setBool(const char *var, bool val) {
+	GLint uniformId = glGetUniformLocation(id, var);
+	glUniform1i(uniformId, val);
+}

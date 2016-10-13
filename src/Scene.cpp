@@ -15,7 +15,7 @@ void Scene::createScene() {
 	ResourceManager<Model> &resources = ResourceManager<Model>::getInstance();
 
 	Object *obj;
-	Object *terrain = new Object(&resources.getResource("resources/terrain.obj"), prog);
+	Object *terrain = new Object(&resources.getResource("resources/terrain.obj"), prog, nullptr);
 
 	terrain->setPosition(0, 0, 0);
 	terrain->rotate(0, 0, 0, 1);
@@ -41,20 +41,20 @@ void Scene::createScene() {
 			{1, 1, 0}
 	};
 
-	obj = new Object(&resources.getResource("resources/ball.obj"), prog);
+	obj = new Object(&resources.getResource("resources/ball.obj"), prog, nullptr);
 	obj->setScale(0.02, 0.02, 0.02);
 	obj->setColor(1, 1, 1);
 	propeller->addNode(obj);
 
 	for (int i = 0; i < 4; i++) {
-		obj = new Object(&resources.getResource("redTriangle", triangleVertices, 3), prog);
+		obj = new Object(&resources.getResource("redTriangle", triangleVertices, 3), prog, nullptr);
 		obj->rotate(90 * i, 0.6, 0, 1);
 		obj->setScale(1, 1, 1);
 		obj->setColor(colors[i]);
 		propeller->addNode(obj);
 	}
 	// tube
-	obj = new Object(&resources.getResource("resources/tube.obj"), prog);
+	obj = new Object(&resources.getResource("resources/tube.obj"), prog, nullptr);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.05, 1, 0.05);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
@@ -68,7 +68,7 @@ void Scene::createScene() {
 	forest->move(3, 0.1, 5.68);
 	root.addNode(forest);
 
-	obj = new Object(&resources.getResource("resources/tree.obj"), prog);
+	obj = new Object(&resources.getResource("resources/tree.obj"), prog, nullptr);
 	obj->setPosition(4, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
@@ -76,7 +76,7 @@ void Scene::createScene() {
 	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
 	forest->addNode(obj);
 
-	obj = new Object(&resources.getResource("resources/tree.obj"), prog);
+	obj = new Object(&resources.getResource("resources/tree.obj"), prog, nullptr);
 	obj->setPosition(0, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
@@ -91,7 +91,7 @@ void Scene::createScene() {
 	origin->rotate(90, 0, 0, 1);
 	origin->attachLogic<RotateLogic>(45);
 
-	obj = new Object(&resources.getResource("redTriangle", triangleVertices, 3), prog);
+	obj = new Object(&resources.getResource("redTriangle", triangleVertices, 3), prog, nullptr);
 	obj->move(-0.1, -1, 0);
 	obj->setColor(1, 0, 0);
 	origin->addNode(obj);
@@ -104,7 +104,7 @@ void Scene::createScene() {
 	root.addNode(light);
 	obj1 = light;
 
-	obj = new Object(&resources.getResource("resources/ball.obj"), prog);
+	obj = new Object(&resources.getResource("resources/ball.obj"), prog, nullptr);
 	obj->setScale(0.02, 0.02, 0.02);
 	obj->setPosition(pos);
 	//obj->attachLogic<MoveLogic>();
@@ -112,7 +112,7 @@ void Scene::createScene() {
 
 	obj2 = obj;
 
-	obj = new Object(&resources.getResource("resources/cube.obj"), prog);
+	obj = new Object(&resources.getResource("resources/cube.obj"), prog, new Texture("resources/cube.png"));
 	obj->setPosition(7, 0, 0);
 	obj->setColor(1, 0, 0);
 	obj->attachLogic<RotateLogic>(40);

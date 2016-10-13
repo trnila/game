@@ -12,7 +12,8 @@ class Logic;
 
 class Object : public Node {
 public:
-	Object(Model *model, Program& program);
+	Object(Model *model, Program &program, Texture *texture);
+
 	void setColor(float r, float g, float b);
 	void setColor(glm::vec3 color);
 	virtual void render(RenderContext &context);

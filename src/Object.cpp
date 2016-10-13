@@ -1,14 +1,11 @@
 #include "Object.h"
 #include "Logic.h"
-#include "Texture.h"
 
-Object::Object(Model *model, Program &program) :
+Object::Object(Model *model, Program &program, Texture *texture) :
 		model(model),
 		program(program),
-		color(1.0f) {
-	this->texture = new Texture("resources/cube.png");
-
-}
+		color(1.0f),
+		texture(texture) {}
 
 void Object::render(RenderContext &context) {
 	context.use(program);
@@ -16,7 +13,14 @@ void Object::render(RenderContext &context) {
 	program.setMatrix("modelMatrix", modelMatrix);
 	program.setColor(color.r, color.g, color.b);
 
-	this->texture->bind();
+	if(texture) {
+		texture->bind();
+		program.setBool("hasTexture", true);
+	} else {
+		program.setBool("hasTexture", false);
+	}
+
+
 	model->render(context);
 }
 

@@ -13,6 +13,7 @@ public:
 
 	void setColor(float r, float g, float b);
 	void setLight(glm::vec3 position);
+	void setBool(const char *var, bool val);
 
 	virtual void updated(Camera &camera) override;
 
