@@ -6,14 +6,19 @@
 #include <assimp/postprocess.h>
 #include "Model.h"
 
+struct __attribute__((__packed__)) Vertex {
+	glm::vec3 pos;
+	glm::vec3 normal;
+};
+
 Model::Model(const char *name, float *vertices, float *colors, int size) : vbo(0), colorsVbo(1), size(size) {
 	vao.bind();
 
 	vbo.bind();
-	vbo.setData(vertices, size, 3);
+	vbo.setData(vertices, size, 3, 0);
 
 	colorsVbo.bind();
-	colorsVbo.setData(colors, size, 3);
+	colorsVbo.setData(colors, size, 3, 0);
 
 	vao.enableAttrib(0);
 	vao.enableAttrib(1);
@@ -43,9 +48,24 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 	vao.bind();
 
 	vbo.bind();
-	vbo.setData(m->mVertices, m->mNumVertices, 3);
+
+	std::vector<Vertex> vertices;
+	for(int i = 0; i < m->mNumVertices; i++) {
+		Vertex vert;
+		vert.pos = glm::vec3(m->mVertices[i].x, m->mVertices[i].y, m->mVertices[i].z);
+
+		if(m->mNormals) {
+			vert.normal = glm::vec3(m->mNormals[i].x, m->mNormals[i].y, m->mNormals[i].z);
+		}
+		vertices.push_back(vert);
+	}
+
+	vbo.setData(vertices.data(), vertices.size(), 3, 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) sizeof(vertices[0].pos));
 
 	vao.enableAttrib(0);
+	vao.enableAttrib(1);
 
 	std::vector<int> index;
 	for(unsigned int i = 0; i < m->mNumFaces; i++) {

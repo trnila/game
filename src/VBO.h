@@ -10,11 +10,12 @@ public:
 	void bind();
 
 	template<typename T>
-	void setData(const T *data, size_t size, size_t blockSize) {
+	void setData(const T *data, size_t size, size_t blockSize, void *offset) {
 		glBindBuffer(GL_ARRAY_BUFFER, id);
 		glBufferData(GL_ARRAY_BUFFER, size * sizeof(T) * blockSize, data, GL_STATIC_DRAW);
-		glVertexAttribPointer(bufferIndex, blockSize, Type<T>::value, GL_FALSE, 0, NULL);
+		glVertexAttribPointer(bufferIndex, blockSize, Type<T>::value, GL_FALSE, 0, offset);
 	}
+
 private:
 	GLuint id;
 	GLuint bufferIndex;
