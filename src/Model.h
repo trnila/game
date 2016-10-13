@@ -15,5 +15,6 @@ public:
 private:
 	VBO vbo, colorsVbo;
 	VAO vao;
+	GLuint ibo = 0;
 	int size;
 };

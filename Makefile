@@ -1,5 +1,5 @@
 CC=g++
-LDFLAGS=-lglfw -lGL -lGLEW
+LDFLAGS=-lglfw -lGL -lGLEW -lassimp
 CPPFLAGS=-g -Wall -Wextra -pedantic
 
 CPP_FILES=$(wildcard src/*.cpp)
