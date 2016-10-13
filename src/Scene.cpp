@@ -112,9 +112,10 @@ void Scene::createScene() {
 
 	obj2 = obj;
 
-	obj = new Object(&resources.getResource("resources/monkey.obj"), prog);
-	obj->setPosition(7, 2, 0);
+	obj = new Object(&resources.getResource("resources/cube.obj"), prog);
+	obj->setPosition(7, 0, 0);
 	obj->setColor(1, 0, 0);
+	obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
 
