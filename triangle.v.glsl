@@ -1,18 +1,17 @@
 #version 400
 layout(location=0) in vec3 vp;
 layout(location=1) in vec3 normal;
+
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
-uniform vec3 simpleColor;
-out vec3 color;
-out vec4 worldNormal;
-out vec4 pos;
+
+out vec4 normal_world;
+out vec4 position_world;
 
 void main(void) {
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vp, 1.0);
-	pos = modelMatrix * vec4(vp, 1.0);
-	color = simpleColor;
 
-	worldNormal = modelMatrix * vec4(normal, 1.0);
+	position_world = modelMatrix * vec4(vp, 1.0);
+	normal_world = modelMatrix * vec4(normal, 1.0);
 }

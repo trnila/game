@@ -9,6 +9,8 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	createScene();
 }
 
+Node* obj1, *obj2;
+
 void Scene::createScene() {
 	ResourceManager<Model> &resources = ResourceManager<Model>::getInstance();
 
@@ -95,19 +97,24 @@ void Scene::createScene() {
 	origin->addNode(obj);
 
 
+	glm::vec3 pos(-0.280287, 6.302092, -4.222088);
 	Light *light = new Light(prog);
-	light->setPosition(0, 2, 0);
-	light->attachLogic<MoveLogic>();
+	light->setPosition(pos);
+	//light->attachLogic<MoveLogic>();
 	root.addNode(light);
+	obj1 = light;
 
 	obj = new Object(&resources.getResource("resources/ball.obj"), prog);
 	obj->setScale(0.02, 0.02, 0.02);
-	obj->setPosition(0, 2, 0);
-	obj->attachLogic<MoveLogic>();
+	obj->setPosition(pos);
+	//obj->attachLogic<MoveLogic>();
 	root.addNode(obj);
+
+	obj2 = obj;
 
 	obj = new Object(&resources.getResource("resources/monkey.obj"), prog);
 	obj->setPosition(7, 2, 0);
+	obj->setColor(1, 0, 0);
 	root.addNode(obj);
 
 
@@ -149,6 +156,11 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
+
+	if(key == GLFW_KEY_SPACE) {
+		obj1->setPosition(camera.getPosition());
+		//obj2->setPosition(camera.getPosition());
+	}
 }
 
 void Scene::onMove(double x, double y) {

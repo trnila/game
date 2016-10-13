@@ -16,6 +16,9 @@ public:
 	void move(float x, float y, float z);
 	void setPosition(float x, float y, float z);
 	void setRotation(float vert, float hor);
+	glm::vec3 getPosition() {
+		return position;
+	}
 
 	void setZFar(float zFar);
 
