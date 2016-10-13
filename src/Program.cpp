@@ -18,7 +18,24 @@ void Program::link() {
 	GLint link_ok;
 	glGetProgramiv(id, GL_LINK_STATUS, &link_ok);
 	if(!link_ok) {
-		throw GlslCompileError("", "unable to link");
+		GLint log_length = 0;
+		if (glIsShader(id)) {
+			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &log_length);
+		} else if (glIsProgram(id)) {
+			glGetProgramiv(id, GL_INFO_LOG_LENGTH, &log_length);
+		}
+
+		char* log = new char[log_length];
+
+		if (glIsShader(id))
+			glGetShaderInfoLog(id, log_length, NULL, log);
+		else if (glIsProgram(id))
+			glGetProgramInfoLog(id, log_length, NULL, log);
+
+		glDeleteShader(id);
+		GlslCompileError exception("linking", std::string(log));
+		delete[] log;
+		throw exception;
 	}
 }
 

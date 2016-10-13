@@ -1,10 +1,14 @@
 #include "Object.h"
 #include "Logic.h"
+#include "Texture.h"
 
 Object::Object(Model *model, Program &program) :
 		model(model),
 		program(program),
-		color(1.0f) {}
+		color(1.0f) {
+	this->texture = new Texture("resources/cube.png");
+
+}
 
 void Object::render(RenderContext &context) {
 	context.use(program);
@@ -12,6 +16,7 @@ void Object::render(RenderContext &context) {
 	program.setMatrix("modelMatrix", modelMatrix);
 	program.setColor(color.r, color.g, color.b);
 
+	this->texture->bind();
 	model->render(context);
 }
 

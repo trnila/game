@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "RenderContext.h"
 #include "Node.h"
+#include "Texture.h"
 
 class Logic;
 
@@ -22,4 +23,5 @@ private:
 	Program &program;
 	glm::vec3 color;
 	glm::mat4 modelMatrix;
+	Texture *texture;
 };

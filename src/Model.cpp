@@ -9,6 +9,7 @@
 struct __attribute__((__packed__)) Vertex {
 	glm::vec3 pos;
 	glm::vec3 normal;
+	glm::vec2 uv;
 };
 
 Model::Model(const char *name, float *vertices, int size) : vbo(0), colorsVbo(1), size(size) {
@@ -58,15 +59,24 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 		if(m->mNormals) {
 			vert.normal = glm::vec3(m->mNormals[i].x, m->mNormals[i].y, m->mNormals[i].z);
 		}
+
+		if(m->HasTextureCoords(0)) {
+			vert.uv = glm::vec2(m->mTextureCoords[0][i].x, m->mTextureCoords[0][i].y);
+		} else {
+			vert.uv = glm::vec2(0, 0);
+		}
+
 		vertices.push_back(vert);
 	}
 
 	vbo.setData(vertices.data(), vertices.size(), 3, 0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) sizeof(vertices[0].pos));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) sizeof(vertices[0].pos) + sizeof(vertices[0].normal));
 
 	vao.enableAttrib(0);
 	vao.enableAttrib(1);
+	vao.enableAttrib(2);
 
 	std::vector<int> index;
 	for(unsigned int i = 0; i < m->mNumFaces; i++) {
@@ -81,4 +91,8 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(int), index.data(), GL_STATIC_DRAW);
 
 	size = index.size();
+
+	if(scene->mNumMaterials >= 1) {
+		//aiMaterial *mat = scene->mMaterials[0]
+	}
 }
