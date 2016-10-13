@@ -11,17 +11,11 @@ struct __attribute__((__packed__)) Vertex {
 	glm::vec3 normal;
 };
 
-Model::Model(const char *name, float *vertices, float *colors, int size) : vbo(0), colorsVbo(1), size(size) {
+Model::Model(const char *name, float *vertices, int size) : vbo(0), colorsVbo(1), size(size) {
 	vao.bind();
 
 	vbo.bind();
 	vbo.setData(vertices, size, 3, 0);
-
-	colorsVbo.bind();
-	colorsVbo.setData(colors, size, 3, 0);
-
-	vao.enableAttrib(0);
-	vao.enableAttrib(1);
 }
 
 void Model::render(RenderContext &context) {
@@ -44,6 +38,10 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 	}
 
 	aiMesh* m = scene->mMeshes[0];
+
+	if(!m->mNormals) {
+		printf("obj %s has no normals!\n", path);
+	}
 
 	vao.bind();
 

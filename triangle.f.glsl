@@ -3,9 +3,12 @@
 out vec4 frag_colour;
 in vec4 color;
 in vec4 worldNormal;
+in vec4 pos;
+
+uniform vec3 lightPos;
 
 void main(void) {
-	vec4 lightVector= normalize(vec4(10.0,10.0,10.0, 1.0));
-	float dot_product = max(dot(lightVector, normalize(worldNormal)), 0.0);
+	vec4 lightVector = normalize(vec4(lightPos, 1.0) - pos);
+	float dot_product = dot(normalize(lightVector), normalize(worldNormal));
 	frag_colour = color * dot_product;
 }

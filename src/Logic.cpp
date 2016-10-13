@@ -18,3 +18,9 @@ void TreeLogic::update(float diff) {
 		obj.multiplyScale(growSpeed, growSpeed, growSpeed);
 	}
 }
+
+MoveLogic::MoveLogic(Node &obj) : Logic(obj) {}
+
+void MoveLogic::update(float diff) {
+	obj.move(0, 1.0 * diff, 0);
+}

@@ -12,6 +12,7 @@ public:
 	void setMatrix(const char* var, const glm::mat4 &mat);
 
 	void setColor(float r, float g, float b);
+	void setLight(glm::vec3 position);
 
 	virtual void updated(Camera &camera) override;
 

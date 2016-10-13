@@ -72,3 +72,7 @@ void Transformable::setScale(glm::vec3 scale) {
 void Transformable::multiplyScale(glm::vec3 scale) {
 	multiplyScale(scale.x, scale.y, scale.z);
 }
+
+glm::vec3 Transformable::getPosition() {
+	return position;
+}

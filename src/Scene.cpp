@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "data.h"
 #include "Logic.h"
+#include "Light.h"
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	initResources();
@@ -44,7 +45,7 @@ void Scene::createScene() {
 	propeller->addNode(obj);
 
 	for (int i = 0; i < 4; i++) {
-		obj = new Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog);
+		obj = new Object(&resources.getResource("redTriangle", triangleVertices, 3), prog);
 		obj->rotate(90 * i, 0.6, 0, 1);
 		obj->setScale(1, 1, 1);
 		obj->setColor(colors[i]);
@@ -88,11 +89,26 @@ void Scene::createScene() {
 	origin->rotate(90, 0, 0, 1);
 	origin->attachLogic<RotateLogic>(45);
 
-	obj = new Object(&resources.getResource("redTriangle", triangleVertices, triangleRed, 3), prog);
+	obj = new Object(&resources.getResource("redTriangle", triangleVertices, 3), prog);
 	obj->move(-0.1, -1, 0);
 	obj->setColor(1, 0, 0);
 	origin->addNode(obj);
 
+
+	Light *light = new Light(prog);
+	light->setPosition(0, 2, 0);
+	light->attachLogic<MoveLogic>();
+	root.addNode(light);
+
+	obj = new Object(&resources.getResource("resources/ball.obj"), prog);
+	obj->setScale(0.02, 0.02, 0.02);
+	obj->setPosition(0, 2, 0);
+	obj->attachLogic<MoveLogic>();
+	root.addNode(obj);
+
+	obj = new Object(&resources.getResource("resources/monkey.obj"), prog);
+	obj->setPosition(7, 2, 0);
+	root.addNode(obj);
 
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);

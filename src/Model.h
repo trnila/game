@@ -7,7 +7,7 @@
 
 class Model {
 public:
-	Model(const char *name, float *vertices, float *colors, int size);
+	Model(const char *name, float *vertices, int size);
 
 	Model(const char *path);
 	void render(RenderContext &context);

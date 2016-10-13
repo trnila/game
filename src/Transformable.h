@@ -7,6 +7,7 @@ public:
 	void move(float x, float y, float z);
 	void setPosition(float x, float y, float z);
 	void setPosition(glm::vec3 pos);
+	glm::vec3 getPosition();
 
 	void rotate(float angle, float x, float y, float z);
 	void rotate(float angle, glm::vec3 axis);

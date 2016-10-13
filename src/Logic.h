@@ -38,3 +38,11 @@ private:
 	float maxScale;
 	float currentDeadTime = 0;
 };
+
+class MoveLogic: public Logic {
+public:
+	MoveLogic(Node &obj);
+
+	virtual void update(float diff) override;
+
+};

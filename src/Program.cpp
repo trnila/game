@@ -44,3 +44,8 @@ void Program::setColor(float r, float g, float b) {
 	GLint uniformId = glGetUniformLocation(id, "simpleColor");
 	glUniform3fv(uniformId, 1, glm::value_ptr(glm::vec3(r, g, b)));
 }
+
+void Program::setLight(glm::vec3 position) {
+	GLint uniformId = glGetUniformLocation(id, "lightPos");
+	glUniform3fv(uniformId, 1, glm::value_ptr(position));
+}
