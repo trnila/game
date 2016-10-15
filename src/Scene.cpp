@@ -118,6 +118,13 @@ void Scene::createScene() {
 	obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
+	obj = new Object(&resources.getResource("resources/cube.obj"), prog, new Texture("resources/cube_wood.png"));
+	obj->setPosition(7, 0, 3);
+	obj->setColor(1, 0, 0);
+	obj->rotate(0, -1, 0, 0);
+	obj->attachLogic<RotateLogic>(40);
+	root.addNode(obj);
+
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
