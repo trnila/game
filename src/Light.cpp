@@ -8,5 +8,8 @@ void Light::render(RenderContext &context) {
 
 void Light::update(float diff, const glm::mat4 &parent) {
 	updateLogic(diff);
-	shader.setLight(getPosition());
+
+	glm::vec4 pos = parent * glm::vec4(getPosition(), 1);
+
+	shader.setLight(pos);
 }

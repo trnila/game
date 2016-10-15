@@ -26,6 +26,7 @@ public:
 private:
 	NodeList root;
 	NodeList *windMill, *propeller;
+	NodeList *lightNode;
 
 	Program prog;
 	Camera camera;
