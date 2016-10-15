@@ -5,6 +5,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "Model.h"
+#include "Formatter.h"
 
 struct __attribute__((__packed__)) Vertex {
 	glm::vec3 pos;
@@ -38,7 +39,7 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 	const aiScene* scene = importer.ReadFile(path, aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
 
 	if(!scene) {
-		throw std::runtime_error("Could not load model");
+		throw std::runtime_error(Formatter() << "Could not load model: " << path);
 	}
 
 	aiMesh* m = scene->mMeshes[0];

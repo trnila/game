@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <fstream>
+#include <sstream>
 
 std::string getFileContents(const char* path) {
 	std::ifstream file(path);
