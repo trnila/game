@@ -2,8 +2,11 @@
 #include "Shader.h"
 #include "Observer.h"
 #include "Camera.h"
+#include "Color.h"
 
-class Program : public Observer<Camera> {
+class Light;
+
+class Program : public Observer<Camera>, public Observer<Light> {
 public:
 	Program();
 	void attach(Shader &shader);
@@ -14,9 +17,13 @@ public:
 	void setColor(float r, float g, float b);
 	void setLight(glm::vec3 position);
 	void setBool(const char *var, bool val);
+	void setAmbientColor(const Color &color);
 
 	virtual void updated(Camera &camera) override;
+	virtual void updated(Light &obj) override;
 
 private:
 	GLuint id;
+
+	void sendVector(const char *name, const glm::vec3& vec);
 };

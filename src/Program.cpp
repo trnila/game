@@ -1,5 +1,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Program.h"
+#include "Light.h"
 
 Program::Program() {
 	id = glCreateProgram();
@@ -73,4 +74,22 @@ void Program::setLight(glm::vec3 position) {
 void Program::setBool(const char *var, bool val) {
 	GLint uniformId = glGetUniformLocation(id, var);
 	glUniform1i(uniformId, val);
+}
+
+void Program::updated(Light &obj) {
+	sendVector("diffuseColor", obj.getDiffuseColor());
+	sendVector("specularColor", obj.getSpecularColor());
+}
+
+void Program::sendVector(const char *name, const glm::vec3 &vec) {
+	use();
+	GLint uniformId = glGetUniformLocation(id, name);
+	if(!uniformId) {
+		printf("failed sending %s\n", name);
+	}
+	glUniform3fv(uniformId, 1, glm::value_ptr(vec));
+}
+
+void Program::setAmbientColor(const Color &color) {
+	sendVector("ambientColor", color);
 }

@@ -102,6 +102,8 @@ void Scene::createScene() {
 	root.addNode(lightNode);
 
 	Light *light = new Light(prog);
+	light->setDiffuseColor(Color(1, 1, 1));
+	light->setSpecularColor(Color(0, 0, 1));
 	lightNode->addNode(light);
 
 	obj = new Object(&models.getResource("resources/ball.obj"), prog, nullptr);
@@ -139,6 +141,9 @@ void Scene::createScene() {
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
+
+	prog.setAmbientColor(Color(0.05, 0.05, 0.05));
+	//prog.setAmbientColor(Color(0, 0, 0));
 }
 
 void Scene::initResources() {
@@ -163,7 +168,7 @@ void Scene::update(float time) {
 	glm::mat4 parent(1.0f);
 
 	root.update(time, parent);
-	windMill->move(0.5 * time, 0, 0);
+	windMill->move(0.1 * time, 0, 0);
 	camHandler.update(time);
 }
 
