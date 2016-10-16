@@ -13,11 +13,11 @@ struct __attribute__((__packed__)) Vertex {
 	glm::vec2 uv;
 };
 
-Model::Model(const char *name, float *vertices, int size) : vbo(0), colorsVbo(1), size(size) {
+Model::Model(const char *name, float *vertices, int size) : vbo(), colorsVbo(), size(size) {
 	vao.bind();
 
 	vbo.bind();
-	vbo.setData(vertices, size, 3, 0);
+	vbo.setData(vertices, size, 3);
 	glBufferData(GL_ARRAY_BUFFER, 6*size*sizeof(float), vertices, GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
 	vao.enableAttrib(0);
@@ -33,7 +33,7 @@ void Model::render(RenderContext &context) {
 	}
 }
 
-Model::Model(const char *path) : vbo(0), colorsVbo(1) {
+Model::Model(const char *path) : vbo(), colorsVbo() {
 	Assimp::Importer importer;
 
 	int conf =
@@ -53,12 +53,12 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 	aiMesh* m = scene->mMeshes[0];
 
 	if(!m->mNormals) {
-		printf("obj %s has no normals!\n", path);
+		printf("model %s has no normals!\n", path);
 	}
 
-	vao.bind();
-
-	vbo.bind();
+	if(!m->HasTextureCoords(0)) {
+		printf("model %s has no normals!\n", path);
+	}
 
 	std::vector<Vertex> vertices;
 	for(int i = 0; i < m->mNumVertices; i++) {
@@ -80,10 +80,11 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 		vertices.push_back(vert);
 	}
 
-	vbo.setData(vertices.data(), vertices.size(), 3, 0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) sizeof(vertices[0].pos));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*) sizeof(vertices[0].pos) + sizeof(vertices[0].normal));
+	vao.bind();
+	vbo.setData(vertices.data(), vertices.size(), 3);
+	vbo.setPointer<Vertex>(0, 0);
+	vbo.setPointer<Vertex>(1, sizeof(vertices[0].pos));
+	vbo.setPointer<Vertex>(2, sizeof(vertices[0].pos) + sizeof(vertices[0].normal));
 
 	vao.enableAttrib(0);
 	vao.enableAttrib(1);
