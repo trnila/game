@@ -14,10 +14,8 @@ struct Vertex {
 };
 
 Model::Model(const char *name, float *vertices, int size) : vbo(), colorsVbo(), size(size) {
-	vao.bind();
-
+	auto vao = this->vao.activate();
 	auto vbo = this->vbo.activate();
-
 
 	vbo.setData(vertices, size, 3);
 	glBufferData(GL_ARRAY_BUFFER, 6*size*sizeof(float), vertices, GL_STATIC_DRAW);
@@ -26,7 +24,7 @@ Model::Model(const char *name, float *vertices, int size) : vbo(), colorsVbo(), 
 }
 
 void Model::render(RenderContext &context) {
-	context.bind(vao);
+	auto vao = this->vao.activate();
 
 	if(ibo == 0) {
 		context.drawArrays(GL_TRIANGLES, 0, size);
@@ -81,7 +79,8 @@ Model::Model(const char *path) : vbo(), colorsVbo() {
 
 		vertices.push_back(vert);
 	}
-	vao.bind();
+
+	auto vao = this->vao.activate();
 	auto vbo = this->vbo.activate();
 	vbo.setData(vertices.data(), vertices.size() + 10, 1); //TODO: fixme
 	vbo.setPointer<Vertex>(0, 0);

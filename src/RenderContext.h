@@ -15,10 +15,6 @@ public:
 		program.use();
 	}
 
-	void bind(VAO &vao) {
-		vao.bind();
-	}
-
 	void clearColor(float r, float g, float b, float a) {
 		glClearColor(r, g, b, a);
 	}
