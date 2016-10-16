@@ -36,7 +36,15 @@ void Model::render(RenderContext &context) {
 Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 	Assimp::Importer importer;
 
-	const aiScene* scene = importer.ReadFile(path, aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
+	int conf =
+			  aiProcess_GenSmoothNormals
+			| aiProcess_FlipUVs
+			| aiProcess_CalcTangentSpace
+			| aiProcess_Triangulate
+			| aiProcess_JoinIdenticalVertices
+			| aiProcess_SortByPType;
+
+	const aiScene* scene = importer.ReadFile(path, conf);
 
 	if(!scene) {
 		throw std::runtime_error(Formatter() << "Could not load model: " << path);

@@ -14,7 +14,7 @@ void Scene::createScene() {
 	ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
 
 	Object *obj;
-	Object *terrain = new Object(&models.getResource("resources/terrain.obj"), prog, nullptr);
+	Object *terrain = new Object(&models.getResource("resources/terrain_smooth.obj"), prog, nullptr);
 
 	terrain->setPosition(0, 0, 0);
 	terrain->rotate(0, 0, 0, 1);
@@ -119,6 +119,20 @@ void Scene::createScene() {
 	obj->setPosition(7, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, -1, 0, 0);
+	obj->attachLogic<RotateLogic>(40);
+	root.addNode(obj);
+
+	obj = new Object(&models.getResource("resources/monkey.obj"), prog, nullptr);
+	obj->setPosition(13, 0, 3);
+	obj->setColor(1, 0, 0);
+	obj->rotate(0, 0, -1, 0);
+	obj->attachLogic<RotateLogic>(40);
+	root.addNode(obj);
+
+	obj = new Object(&models.getResource("resources/monkey_smooth.obj"), prog, nullptr);
+	obj->setPosition(10, 0, 3);
+	obj->setColor(1, 0, 0);
+	obj->rotate(0, 0, 1, 0);
 	obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
