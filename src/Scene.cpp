@@ -112,14 +112,14 @@ void Scene::createScene() {
 	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/cube.png"));
 	obj->setPosition(7, 0, 0);
 	obj->setColor(1, 0, 0);
-	obj->attachLogic<RotateLogic>(40);
+	//obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
 	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/cube_wood.png"));
 	obj->setPosition(7, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, -1, 0, 0);
-	obj->attachLogic<RotateLogic>(40);
+	//obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
 	obj = new Object(&models.getResource("resources/monkey.obj"), prog, nullptr);
@@ -145,9 +145,11 @@ void Scene::initResources() {
 	try {
 		Shader vertex = ResourceManager<Shader>::getInstance().getResource<>("triangle.v.glsl", GL_VERTEX_SHADER);
 		Shader fragment = ResourceManager<Shader>::getInstance().getResource<>("triangle.f.glsl", GL_FRAGMENT_SHADER);
+		Shader geometry = ResourceManager<Shader>::getInstance().getResource<>("triangle.g.glsl", GL_GEOMETRY_SHADER);
 
 		prog.attach(vertex);
 		prog.attach(fragment);
+		//prog.attach(geometry);
 		prog.link();
 
 		camera.addListener(&prog);

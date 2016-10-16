@@ -67,6 +67,8 @@ Model::Model(const char *path) : vbo(0), colorsVbo(1) {
 
 		if(m->mNormals) {
 			vert.normal = glm::vec3(m->mNormals[i].x, m->mNormals[i].y, m->mNormals[i].z);
+		} else {
+			vert.normal = glm::vec3(0,0,0);
 		}
 
 		if(m->HasTextureCoords(0)) {

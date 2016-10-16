@@ -55,6 +55,9 @@ void Program::setMatrix(const char* var, const glm::mat4 &mat) {
 void Program::updated(Camera &camera) {
 	setMatrix("viewMatrix", camera.getTransform());
 	setMatrix("projectionMatrix", camera.getPerspective());
+
+	GLint uniformId = glGetUniformLocation(id, "cameraPosition");
+	glUniform3fv(uniformId, 1, glm::value_ptr(camera.getPosition()));
 }
 
 void Program::setColor(float r, float g, float b) {
