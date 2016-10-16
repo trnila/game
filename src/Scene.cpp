@@ -148,8 +148,8 @@ void Scene::createScene() {
 
 void Scene::initResources() {
 	try {
-		Shader vertex = ResourceManager<Shader>::getInstance().getResource<>("triangle.v.glsl", GL_VERTEX_SHADER);
-		Shader fragment = ResourceManager<Shader>::getInstance().getResource<>("triangle.f.glsl", GL_FRAGMENT_SHADER);
+		Shader vertex = ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER);
+		Shader fragment = ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER);
 		//Shader geometry = ResourceManager<Shader>::getInstance().getResource<>("triangle.g.glsl", GL_GEOMETRY_SHADER);
 
 		prog.attach(vertex);
