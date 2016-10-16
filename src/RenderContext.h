@@ -19,10 +19,6 @@ public:
 		vao.bind();
 	}
 
-	void bind(VBO &vbo) {
-		vbo.bind();
-	}
-
 	void clearColor(float r, float g, float b, float a) {
 		glClearColor(r, g, b, a);
 	}

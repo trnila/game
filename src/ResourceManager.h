@@ -10,11 +10,11 @@ public:
 	T& getResource(const char *filename, Args... arg) {
 		auto it = resources.find(std::string(filename));
 		if(it != resources.end()) {
-			return it->second;
+			return *it->second;
 		}
 
-		resources.emplace(filename, T(filename, arg...));
-		return resources.find(filename)->second;
+		resources.emplace(filename, new T(filename, arg...));
+		return *resources.find(filename)->second;
 	}
 
 protected:
@@ -22,5 +22,5 @@ protected:
 
 private:
 	ResourceManager() {}
-	std::unordered_map<std::string, T> resources;
+	std::unordered_map<std::string, T*> resources;
 };

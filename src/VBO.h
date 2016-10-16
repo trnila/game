@@ -3,18 +3,36 @@
 #include <cstddef>
 #include <GL/glew.h>
 #include "Type.h"
+#include "BindableResource.h"
 #include <typeinfo>
+#include <stdexcept>
 
-#include <stdio.h>
-class VBO {
+class VBOHandler;
+
+class VBO: public BindableResource<VBO, VBOHandler> {
 public:
 	VBO();
-	void bind();
-	void unbind();
+	~VBO();
 
+private:
+	GLuint id;
+
+	void open() {
+		glBindBuffer(GL_ARRAY_BUFFER, id);
+	}
+
+	void close() {
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	friend class LockImpl<VBO>;
+};
+
+
+class VBOHandler: public LockImpl<VBO> {
+public:
 	template<typename T>
 	void setData(const T *data, size_t size, size_t blockSize) {
-		bind();
 		glBufferData(GL_ARRAY_BUFFER, size * sizeof(T) * blockSize, data, GL_STATIC_DRAW);
 	}
 
@@ -24,6 +42,7 @@ public:
 	}
 
 private:
-	GLuint id;
-	size_t blockSize;
+	VBOHandler(VBO &t) : LockImpl(t) {}
+
+	friend class BindableResource<VBO, VBOHandler>;
 };
