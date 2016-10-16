@@ -106,7 +106,8 @@ void Scene::createScene() {
 	light->setSpecularColor(Color(0, 0, 1));
 	lightNode->addNode(light);
 
-	obj = new Object(&models.getResource("resources/ball.obj"), prog, nullptr);
+	obj = new Object(&models.getResource("resources/ball.obj"), constantProg, nullptr);
+	obj->setColor(1, 0, 0);
 	obj->setScale(0.02, 0.02, 0.02);
 	lightNode->addNode(obj);
 
@@ -148,16 +149,16 @@ void Scene::createScene() {
 
 void Scene::initResources() {
 	try {
-		Shader vertex = ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER);
-		Shader fragment = ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER);
-		//Shader geometry = ResourceManager<Shader>::getInstance().getResource<>("triangle.g.glsl", GL_GEOMETRY_SHADER);
-
-		prog.attach(vertex);
-		prog.attach(fragment);
-		//prog.attach(geometry);
+		prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
+		prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
 		prog.link();
 
+		constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
+		constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/constant.f.glsl", GL_FRAGMENT_SHADER));
+		constantProg.link();
+
 		camera.addListener(&prog);
+		camera.addListener(&constantProg);
 
 	} catch(GlslCompileError &err) {
 		std::cerr << "GLSL error: " << err.getSource() << " - " << err.what() << "\n";

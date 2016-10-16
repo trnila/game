@@ -45,6 +45,7 @@ void Program::use() {
 }
 
 void Program::setMatrix(const char* var, const glm::mat4 &mat) {
+	use();
 	GLint uniformId = glGetUniformLocation(id, var);
 	if (uniformId == -1) {
 		throw std::runtime_error("could not bind uniform variable");
@@ -62,16 +63,15 @@ void Program::updated(Camera &camera) {
 }
 
 void Program::setColor(float r, float g, float b) {
-	GLint uniformId = glGetUniformLocation(id, "simpleColor");
-	glUniform3fv(uniformId, 1, glm::value_ptr(glm::vec3(r, g, b)));
+	sendVector("simpleColor", glm::vec3(r, g, b));
 }
 
 void Program::setLight(glm::vec3 position) {
-	GLint uniformId = glGetUniformLocation(id, "lightPos");
-	glUniform3fv(uniformId, 1, glm::value_ptr(position));
+	sendVector("lightPos", position);
 }
 
 void Program::setBool(const char *var, bool val) {
+	use();
 	GLint uniformId = glGetUniformLocation(id, var);
 	glUniform1i(uniformId, val);
 }
