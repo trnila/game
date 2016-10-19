@@ -139,6 +139,23 @@ void Scene::createScene() {
 	obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
+	NodeList *balls = new NodeList();
+	balls->move(15, 0, 0);
+	root.addNode(balls);
+
+	float coords[][3] = {
+			{0, 0, -1},
+			{1, 0, 0},
+			{0, 0, 1},
+			{-1, 0, 0}
+	};
+	int modif = 2;
+	for(int i = 0; i < 4; i++) {
+		obj = new Object(&models.getResource("resources/ball.obj"), prog, nullptr);
+		obj->setPosition(modif * coords[i][0], modif * coords[i][1], modif * coords[i][2]);
+		balls->addNode(obj);
+	}
+
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);

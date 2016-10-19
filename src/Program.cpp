@@ -58,7 +58,7 @@ void Program::updated(Camera &camera) {
 	setMatrix("viewMatrix", camera.getTransform());
 	setMatrix("projectionMatrix", camera.getPerspective());
 
-	GLint uniformId = glGetUniformLocation(id, "cameraPosition");
+	GLint uniformId = glGetUniformLocation(id, "cameraPos");
 	glUniform3fv(uniformId, 1, glm::value_ptr(camera.getPosition()));
 }
 
