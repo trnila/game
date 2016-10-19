@@ -81,7 +81,7 @@ Model::Model(const char *path) : vbo(), colorsVbo() {
 	}
 
 	vao.bind();
-	vbo.setData(vertices.data(), vertices.size(), 3);
+	vbo.setData(vertices.data(), vertices.size() + 5, 1); //TODO: fixme
 	vbo.setPointer<Vertex>(0, 0);
 	vbo.setPointer<Vertex>(1, sizeof(vertices[0].pos));
 	vbo.setPointer<Vertex>(2, sizeof(vertices[0].pos) + sizeof(vertices[0].normal));
