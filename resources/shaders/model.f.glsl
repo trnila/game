@@ -16,6 +16,8 @@ uniform vec3 ambientColor;
 uniform vec3 diffuseColor;
 uniform vec3 specularColor;
 
+in vec4 shadCoord;
+
 void main(void) {
 	vec3 color = hasTexture ? texture(myTextureSampler, UV).rgb : simpleColor;
 
@@ -30,5 +32,16 @@ void main(void) {
 	float spec = pow(max(0.0, dot(camDir, reflect(-lightDir, normal_world))), 32);
     vec3 specular = 0.8f * specularColor * spec;
 
-	frag_colour = vec4(ambient + diffuse + specular, 1);
+
+    float visibility = 1.0;
+    if ( texture( myTextureSampler, shadCoord.xy ).z  <  shadCoord.z){
+        visibility = 0.5;
+    }
+
+
+	frag_colour = vec4(ambient + visibility * diffuse + specular, 1);
+
+	if ( texture( myTextureSampler, shadCoord.xy ).z  <  shadCoord.z){
+            //frag_colour = vec4(0, 0, 1, 1);
+        }
 }

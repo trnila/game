@@ -28,7 +28,7 @@ private:
 	NodeList *windMill, *propeller;
 	NodeList *lightNode;
 
-	Program prog, constantProg;
+	Program prog, constantProg, shadow;
 	Camera camera;
 	CameraHandler camHandler;
 

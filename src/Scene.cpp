@@ -2,6 +2,9 @@
 #include "data.h"
 #include "Logic.h"
 #include "Light.h"
+GLuint FramebufferName = 0;
+GLuint depthTexture;
+Program *act;
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	initResources();
@@ -21,7 +24,7 @@ void Scene::createScene() {
 	terrain->setScale(2, 3, 2);
 	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
 
-	root.addNode(terrain);
+	//root.addNode(terrain);
 
 	glm::vec3 center = glm::vec3(0.2787f, 1.811f, -0.48f);
 
@@ -112,17 +115,17 @@ void Scene::createScene() {
 	lightNode->addNode(obj);
 
 
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/cube.png"));
-	obj->setPosition(7, 0, 0);
+	obj = new Object(&models.getResource("resources/cube.obj"), prog, nullptr);
+	obj->setPosition(0, 0, 0);
 	obj->setColor(1, 0, 0);
-	obj->attachLogic<RotateLogic>(40);
+	//obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/cube_wood.png"));
-	obj->setPosition(7, 0, 3);
+	obj = new Object(&models.getResource("resources/cube.obj"), prog, nullptr);
+	obj->setPosition(-2, 0, 3);
 	obj->setColor(1, 0, 0);
-	obj->rotate(0, -1, 0, 0);
-	obj->attachLogic<RotateLogic>(40);
+	//obj->rotate(0, -1, 0, 0);
+	//obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
 	obj = new Object(&models.getResource("resources/monkey.obj"), prog, nullptr);
@@ -162,6 +165,29 @@ void Scene::createScene() {
 
 	prog.setAmbientColor(Color(0.05, 0.05, 0.05));
 	//prog.setAmbientColor(Color(0, 0, 0));
+
+
+	glGenFramebuffers(1, &FramebufferName);
+	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+
+	// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
+	glGenTextures(1, &depthTexture);
+	glBindTexture(GL_TEXTURE_2D, depthTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, 1024, 1024, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
+
+	glDrawBuffer(GL_NONE); // No color buffer is drawn to.
+
+	// Always check that our framebuffer is ok
+	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {printf("err\n");}
+
+
+	act = &prog;
 }
 
 void Scene::initResources() {
@@ -169,6 +195,10 @@ void Scene::initResources() {
 		prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
 		prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
 		prog.link();
+
+		shadow.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/shadow.v.glsl", GL_VERTEX_SHADER));
+		shadow.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/shadow.f.glsl", GL_FRAGMENT_SHADER));
+		shadow.link();
 
 		constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
 		constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/constant.f.glsl", GL_FRAGMENT_SHADER));
@@ -190,10 +220,39 @@ void Scene::update(float time) {
 	camHandler.update(time);
 }
 
+glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,1,0));
 void Scene::renderOneFrame(RenderContext &context) {
+	// Compute the MVP matrix from the light's point of view
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,20);
+	glm::mat4 depthModelMatrix = glm::mat4(1.0);
+	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+	shadow.setMatrix("depthMVP", depthMVP);
+
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	context.setCamera(&camera);
+
+	context.program = &shadow;
+	root.render(context);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	context.clearColor(0, 0, 0, 0);
+	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	context.program = act;
+
+	glm::mat4 biasMatrix(
+			0.5, 0.0, 0.0, 0.0,
+			0.0, 0.5, 0.0, 0.0,
+			0.0, 0.0, 0.5, 0.0,
+			0.5, 0.5, 0.5, 1.0
+	);
+	glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
+	prog.setMatrix("depthBias", depthBiasMVP);
+
+
+	glBindTexture(GL_TEXTURE_2D, depthTexture);
 
 	root.render(context);
 }
@@ -201,8 +260,13 @@ void Scene::renderOneFrame(RenderContext &context) {
 void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
 
-	if(key == GLFW_KEY_SPACE) {
+	if(key == GLFW_KEY_ENTER) {
 		lightNode->setPosition(camera.getPosition());
+		depthViewMatrix = camera.getTransform();
+	}
+
+	if(key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+		act = act == &prog ? &shadow : &prog;
 	}
 }
 

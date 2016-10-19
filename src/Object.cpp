@@ -8,16 +8,16 @@ Object::Object(Model *model, Program &program, Texture *texture) :
 		texture(texture) {}
 
 void Object::render(RenderContext &context) {
-	context.use(program);
+	context.use(*context.program);
 
-	program.setMatrix("modelMatrix", modelMatrix);
-	program.setColor(color.r, color.g, color.b);
+	context.program->setMatrix("modelMatrix", modelMatrix);
+	context.program->setColor(color.r, color.g, color.b);
 
 	if(texture) {
 		texture->bind();
-		program.setBool("hasTexture", true);
+		//program.setBool("hasTexture", true);
 	} else {
-		program.setBool("hasTexture", false);
+		//program.setBool("hasTexture", false);
 	}
 
 

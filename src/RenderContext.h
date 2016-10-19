@@ -37,6 +37,8 @@ public:
 	Camera* getCamera() {
 		return camera;
 	}
+
+	Program *program = nullptr;
 private:
 	Camera *camera;
 };

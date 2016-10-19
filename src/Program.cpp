@@ -48,7 +48,7 @@ void Program::setMatrix(const char* var, const glm::mat4 &mat) {
 	use();
 	GLint uniformId = glGetUniformLocation(id, var);
 	if (uniformId == -1) {
-		throw std::runtime_error("could not bind uniform variable");
+		//throw std::runtime_error("could not bind uniform variable");
 	}
 
 	glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(mat));
