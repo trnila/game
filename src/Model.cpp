@@ -7,7 +7,7 @@
 #include "Model.h"
 #include "Formatter.h"
 
-struct __attribute__((__packed__)) Vertex {
+struct Vertex {
 	glm::vec3 pos;
 	glm::vec3 normal;
 	glm::vec2 uv;

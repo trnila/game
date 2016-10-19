@@ -13,7 +13,7 @@ void Light::update(float diff, const glm::mat4 &parent) {
 
 	glm::vec4 pos = parent * glm::vec4(getPosition(), 1);
 
-	shader.setLight(pos);
+	shader.setLight(glm::vec3(pos));
 }
 
 const Color &Light::getDiffuseColor() const {
