@@ -35,14 +35,10 @@ void main(void) {
 
 
     float visibility = 1.0;
-    if ( texture( myTextureSampler, shadCoord.xy ).z  <  shadCoord.z){
+    if ( texture( myTextureSampler, shadCoord.xy ).z  <  shadCoord.z - 0.005){
         visibility = 0.5;
     }
 
 
 	frag_colour = vec4(ambient + visibility * diffuse + specular, 1);
-
-	if ( texture( myTextureSampler, shadCoord.xy ).z  <  shadCoord.z){
-            //frag_colour = vec4(0, 0, 1, 1);
-        }
 }
