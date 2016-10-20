@@ -5,11 +5,13 @@
 GLuint FramebufferName = 0;
 GLuint depthTexture;
 Program *act;
+Window* win;
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	initResources();
 
 	createScene();
+	win = &window;
 }
 
 void Scene::createScene() {
@@ -18,13 +20,14 @@ void Scene::createScene() {
 
 	Object *obj;
 	Object *terrain = new Object(&models.getResource("resources/terrain_smooth.obj"), prog, nullptr);
+	terrain = new Object(&models.getResource("resources/plane.obj"), prog, nullptr);
 
-	terrain->setPosition(0, 0, 0);
+	terrain->setPosition(0, -1, 0);
 	terrain->rotate(0, 0, 0, 1);
-	terrain->setScale(2, 3, 2);
+	terrain->setScale(10, 10, 10);
 	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
 
-	//root.addNode(terrain);
+	root.addNode(terrain);
 
 	glm::vec3 center = glm::vec3(0.2787f, 1.811f, -0.48f);
 
@@ -109,10 +112,10 @@ void Scene::createScene() {
 	light->setSpecularColor(Color(0, 0, 1));
 	lightNode->addNode(light);
 
-	obj = new Object(&models.getResource("resources/ball.obj"), constantProg, nullptr);
+	/*obj = new Object(&models.getResource("resources/ball.obj"), constantProg, nullptr);
 	obj->setColor(1, 0, 0);
 	obj->setScale(0.02, 0.02, 0.02);
-	lightNode->addNode(obj);
+	lightNode->addNode(obj);*/
 
 
 	obj = new Object(&models.getResource("resources/cube.obj"), prog, nullptr);
@@ -228,6 +231,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
+	glViewport(0, 0, 1024, 1024);
 	shadow.setMatrix("depthMVP", depthMVP);
 
 	context.clearColor(0, 0, 0, 0);
@@ -238,9 +242,11 @@ void Scene::renderOneFrame(RenderContext &context) {
 	root.render(context);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0, 0, win->getWidth(), win->getHeight());
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	context.program = act;
+
 
 	glm::mat4 biasMatrix(
 			0.5, 0.0, 0.0, 0.0,
@@ -250,8 +256,6 @@ void Scene::renderOneFrame(RenderContext &context) {
 	);
 	glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
 	prog.setMatrix("depthBias", depthBiasMVP);
-
-
 	glBindTexture(GL_TEXTURE_2D, depthTexture);
 
 	root.render(context);

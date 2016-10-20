@@ -20,6 +20,7 @@ in vec4 shadCoord;
 
 void main(void) {
 	vec3 color = hasTexture ? texture(myTextureSampler, UV).rgb : simpleColor;
+	color = simpleColor;
 
 	vec3 ambient = ambientColor * color;
 
