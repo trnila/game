@@ -12,6 +12,7 @@
 #include "CameraHandler.h"
 #include "Window.h"
 #include "NodeList.h"
+#include "FrameBuffer.h"
 
 class Scene : public KeyListener, public MouseListener {
 public:
@@ -34,4 +35,7 @@ private:
 
 	void createScene();
 	void initResources();
+
+	FrameBuffer *depthBuffer;
+	Window &window;
 };

@@ -2,16 +2,11 @@
 #include "data.h"
 #include "Logic.h"
 #include "Light.h"
-GLuint FramebufferName = 0;
-GLuint depthTexture;
-Program *act;
-Window* win;
 
-Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
+Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
 	initResources();
 
 	createScene();
-	win = &window;
 }
 
 void Scene::createScene() {
@@ -173,29 +168,6 @@ void Scene::createScene() {
 
 	prog.setAmbientColor(Color(0.05, 0.05, 0.05));
 	//prog.setAmbientColor(Color(0, 0, 0));
-
-
-	glGenFramebuffers(1, &FramebufferName);
-	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-
-	// Depth texture. Slower than a depth buffer, but you can sample it later in your shader
-	glGenTextures(1, &depthTexture);
-	glBindTexture(GL_TEXTURE_2D, depthTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0,GL_DEPTH_COMPONENT16, 1024, 1024, 0,GL_DEPTH_COMPONENT, GL_FLOAT, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, depthTexture, 0);
-
-	glDrawBuffer(GL_NONE); // No color buffer is drawn to.
-
-	// Always check that our framebuffer is ok
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {printf("err\n");}
-
-
-	act = &prog;
 }
 
 void Scene::initResources() {
@@ -215,6 +187,8 @@ void Scene::initResources() {
 		camera.addListener(&prog);
 		camera.addListener(&constantProg);
 
+		depthBuffer = new FrameBuffer();
+
 	} catch(GlslCompileError &err) {
 		std::cerr << "GLSL error: " << err.getSource() << " - " << err.what() << "\n";
 	}
@@ -230,28 +204,31 @@ void Scene::update(float time) {
 
 glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,1,0));
 void Scene::renderOneFrame(RenderContext &context) {
-
 	context.setStage(RenderStage::Shadow);
+
 	// Compute the MVP matrix from the light's point of view
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 40);
+	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix;
 
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,40);
-	glm::mat4 depthModelMatrix = glm::mat4(1.0);
-	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix * depthModelMatrix;
+	GLuint depthId;
+	{
+		auto buffer = depthBuffer->activate();
+		depthId = buffer.getId();
 
-	glBindFramebuffer(GL_FRAMEBUFFER, FramebufferName);
-	glViewport(0, 0, 1024, 1024);
-	shadow.setMatrix("depthMVP", depthMVP);
+		glViewport(0, 0, 1024, 1024);
+		shadow.setMatrix("depthMVP", depthMVP);
 
-	context.clearColor(0, 0, 0, 0);
-	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	context.setCamera(&camera);
+		context.clearColor(0, 0, 0, 0);
+		context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		context.setCamera(&camera);
 
-	shadow.use();
-	root.render(context);
+		shadow.use();
+		root.render(context);
+	}
 
 	context.setStage(RenderStage::Normal);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, win->getWidth(), win->getHeight());
+	glViewport(0, 0, window.getWidth(), window.getHeight());
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -267,10 +244,11 @@ void Scene::renderOneFrame(RenderContext &context) {
 	//glBindTexture(GL_TEXTURE_2D, depthTexture);
 
 
+
 	GLint location = glGetUniformLocation(prog.id, "shadowTexture");
 
 	glActiveTexture(GL_TEXTURE0 + 1);
-	glBindTexture(GL_TEXTURE_2D, depthTexture);
+	glBindTexture(GL_TEXTURE_2D, depthId);
 	glUniform1i(location, 1);
 
 
@@ -283,10 +261,6 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 	if(key == GLFW_KEY_ENTER) {
 		lightNode->setPosition(camera.getPosition());
 		depthViewMatrix = camera.getTransform();
-	}
-
-	if(key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-		act = act == &prog ? &shadow : &prog;
 	}
 }
 
