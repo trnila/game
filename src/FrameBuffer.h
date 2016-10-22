@@ -6,10 +6,11 @@
 
 class FrameBuffer: public BindableResource<FrameBuffer, FrameBufferHandler> {
 public:
-	FrameBuffer();
+	FrameBuffer(int width, int height, int depth);
 
 	void open() {
 		glBindFramebuffer(GL_FRAMEBUFFER, id);
+		glViewport(0, 0, width, height);
 	}
 
 	void close() {
@@ -20,6 +21,7 @@ public:
 	GLuint depthTexture;
 private:
 	GLuint id;
+	int width, height;
 
 
 	friend class LockImpl<FrameBuffer>;

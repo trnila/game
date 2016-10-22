@@ -187,7 +187,7 @@ void Scene::initResources() {
 		camera.addListener(&prog);
 		camera.addListener(&constantProg);
 
-		depthBuffer = new FrameBuffer();
+		depthBuffer = new FrameBuffer(1920, 1080, GL_DEPTH_COMPONENT32);
 
 	} catch(GlslCompileError &err) {
 		std::cerr << "GLSL error: " << err.getSource() << " - " << err.what() << "\n";
@@ -215,7 +215,6 @@ void Scene::renderOneFrame(RenderContext &context) {
 		auto buffer = depthBuffer->activate();
 		depthId = buffer.getId();
 
-		glViewport(0, 0, 1024, 1024);
 		shadow.setMatrix("depthMVP", depthMVP);
 
 		context.clearColor(0, 0, 0, 0);
@@ -227,11 +226,9 @@ void Scene::renderOneFrame(RenderContext &context) {
 	}
 
 	context.setStage(RenderStage::Normal);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, window.getWidth(), window.getHeight());
+	window.setViewport();
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
 	glm::mat4 biasMatrix(
 			0.5, 0.0, 0.0, 0.0,
@@ -241,9 +238,6 @@ void Scene::renderOneFrame(RenderContext &context) {
 	);
 	glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
 	prog.setMatrix("depthBias", depthBiasMVP);
-	//glBindTexture(GL_TEXTURE_2D, depthTexture);
-
-
 
 	GLint location = glGetUniformLocation(prog.id, "shadowTexture");
 

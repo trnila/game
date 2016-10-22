@@ -44,3 +44,8 @@ int Window::getWidth() {
 int Window::getHeight() {
 	return height;
 }
+
+void Window::setViewport() {
+	glViewport(0, 0, width, height);
+
+}

@@ -11,8 +11,9 @@ public:
 	void swapBuffers() const;
 
 	int getWidth();
-
 	int getHeight();
+
+	void setViewport();
 
 private:
 	GLFWwindow *window;
