@@ -22,8 +22,8 @@ public:
 	virtual void updated(Camera &camera) override;
 	virtual void updated(Light &obj) override;
 
-private:
 	GLuint id;
+private:
 
 	void sendVector(const char *name, const glm::vec3& vec);
 };

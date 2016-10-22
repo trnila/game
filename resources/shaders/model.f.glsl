@@ -1,4 +1,7 @@
-#version 400
+#version 420
+
+layout(binding=0) uniform sampler2D modelTexture;
+layout(binding=1) uniform sampler2D shadowTexture;
 
 out vec4 frag_colour;
 
@@ -9,7 +12,6 @@ in vec2 UV;
 uniform vec3 lightPos;
 uniform vec3 simpleColor;
 uniform vec3 cameraPos;
-uniform sampler2D myTextureSampler;
 uniform bool hasTexture;
 
 uniform vec3 ambientColor;
@@ -19,8 +21,7 @@ uniform vec3 specularColor;
 in vec4 shadCoord;
 
 void main(void) {
-	vec3 color = hasTexture ? texture(myTextureSampler, UV).rgb : simpleColor;
-	color = simpleColor;
+	vec3 color = hasTexture ? texture(modelTexture, UV).rgb : simpleColor;
 
 	vec3 ambient = ambientColor * color;
 
@@ -35,7 +36,7 @@ void main(void) {
 
 
     float visibility = 1.0;
-    if ( texture( myTextureSampler, shadCoord.xy ).z  <  shadCoord.z - 0.005){
+    if ( texture( shadowTexture, shadCoord.xy ).z  <  shadCoord.z - 0.005){
         visibility = 0.5;
     }
 

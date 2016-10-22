@@ -121,13 +121,13 @@ void Scene::createScene() {
 	NodeList* cubes = new NodeList();
 	cubes->move(10.7, 0.78, 8.81);
 	root.addNode(cubes);
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/wood.png"));
+	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/cube.png"));
 	obj->setPosition(0, 0, 0);
 	obj->setColor(1, 0, 0);
 	obj->attachLogic<RotateLogic>(40);
 	cubes->addNode(obj);
 
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, nullptr);
+	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/cube_wood.png"));
 	obj->setPosition(-2, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, -1, 0, 0);
@@ -260,7 +260,15 @@ void Scene::renderOneFrame(RenderContext &context) {
 	);
 	glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
 	prog.setMatrix("depthBias", depthBiasMVP);
+	//glBindTexture(GL_TEXTURE_2D, depthTexture);
+
+
+	GLint location = glGetUniformLocation(context.program->id, "shadowTexture");
+
+	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_2D, depthTexture);
+	glUniform1i(location, 1);
+
 
 	root.render(context);
 }

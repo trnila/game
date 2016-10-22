@@ -14,10 +14,10 @@ void Object::render(RenderContext &context) {
 	context.program->setColor(color.r, color.g, color.b);
 
 	if(texture) {
-		texture->bind();
-		//program.setBool("hasTexture", true);
+		texture->bind(*context.program);
+		context.program->setBool("hasTexture", true);
 	} else {
-		//program.setBool("hasTexture", false);
+		context.program->setBool("hasTexture", false);
 	}
 
 
