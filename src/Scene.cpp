@@ -20,9 +20,9 @@ void Scene::createScene() {
 
 	Object *obj;
 	Object *terrain = new Object(&models.getResource("resources/terrain_smooth.obj"), prog, nullptr);
-	terrain = new Object(&models.getResource("resources/plane.obj"), prog, nullptr);
+//	terrain = new Object(&models.getResource("resources/plane.obj"), prog, nullptr);
 
-	terrain->setPosition(0, -1, 0);
+	terrain->setPosition(-7, -3, -2);
 	terrain->rotate(0, 0, 0, 1);
 	terrain->setScale(10, 10, 10);
 	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
@@ -70,7 +70,7 @@ void Scene::createScene() {
 
 
 	NodeList *forest = new NodeList();
-	forest->move(3, 0.1, 5.68);
+	forest->move(17.65, -3.0, 26.88);
 	root.addNode(forest);
 
 	obj = new Object(&models.getResource("resources/tree.obj"), prog, nullptr);
@@ -118,18 +118,21 @@ void Scene::createScene() {
 	lightNode->addNode(obj);*/
 
 
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, nullptr);
+	NodeList* cubes = new NodeList();
+	cubes->move(10.7, 0.78, 8.81);
+	root.addNode(cubes);
+	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/wood.png"));
 	obj->setPosition(0, 0, 0);
 	obj->setColor(1, 0, 0);
-	//obj->attachLogic<RotateLogic>(40);
-	root.addNode(obj);
+	obj->attachLogic<RotateLogic>(40);
+	cubes->addNode(obj);
 
 	obj = new Object(&models.getResource("resources/cube.obj"), prog, nullptr);
 	obj->setPosition(-2, 0, 3);
 	obj->setColor(1, 0, 0);
-	//obj->rotate(0, -1, 0, 0);
-	//obj->attachLogic<RotateLogic>(40);
-	root.addNode(obj);
+	obj->rotate(0, -1, 0, 0);
+	obj->attachLogic<RotateLogic>(40);
+	cubes->addNode(obj);
 
 	obj = new Object(&models.getResource("resources/monkey.obj"), prog, nullptr);
 	obj->setPosition(13, 0, 3);
