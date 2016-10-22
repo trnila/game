@@ -19,7 +19,7 @@ void Scene::createScene() {
 	ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
 
 	Object *obj;
-	Object *terrain = new Object(&models.getResource("resources/terrain_smooth.obj"), prog, nullptr);
+	Object *terrain = new Object(&models.getResource("resources/terrain_smooth.obj"), prog, shadow, nullptr);
 //	terrain = new Object(&models.getResource("resources/plane.obj"), prog, nullptr);
 
 	terrain->setPosition(-7, -3, -2);
@@ -46,20 +46,20 @@ void Scene::createScene() {
 			{1, 1, 0}
 	};
 
-	obj = new Object(&models.getResource("resources/ball.obj"), prog, nullptr);
+	obj = new Object(&models.getResource("resources/ball.obj"), prog, shadow, nullptr);
 	obj->setScale(0.02, 0.02, 0.02);
 	obj->setColor(1, 1, 1);
 	propeller->addNode(obj);
 
 	for (int i = 0; i < 4; i++) {
-		obj = new Object(&models.getResource("redTriangle", triangleVertices, 3), prog, nullptr);
+		obj = new Object(&models.getResource("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
 		obj->rotate(90 * i, 0.6, 0, 1);
 		obj->setScale(1, 1, 1);
 		obj->setColor(colors[i]);
 		propeller->addNode(obj);
 	}
 	// tube
-	obj = new Object(&models.getResource("resources/tube.obj"), prog, nullptr);
+	obj = new Object(&models.getResource("resources/tube.obj"), prog, shadow, nullptr);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.05, 1, 0.05);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
@@ -73,7 +73,7 @@ void Scene::createScene() {
 	forest->move(17.65, -3.0, 26.88);
 	root.addNode(forest);
 
-	obj = new Object(&models.getResource("resources/tree.obj"), prog, nullptr);
+	obj = new Object(&models.getResource("resources/tree.obj"), prog, shadow, nullptr);
 	obj->setPosition(4, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
@@ -81,7 +81,7 @@ void Scene::createScene() {
 	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
 	forest->addNode(obj);
 
-	obj = new Object(&models.getResource("resources/tree.obj"), prog, nullptr);
+	obj = new Object(&models.getResource("resources/tree.obj"), prog, shadow, nullptr);
 	obj->setPosition(0, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
@@ -96,7 +96,7 @@ void Scene::createScene() {
 	origin->rotate(90, 0, 0, 1);
 	origin->attachLogic<RotateLogic>(45);
 
-	obj = new Object(&models.getResource("redTriangle", triangleVertices, 3), prog, nullptr);
+	obj = new Object(&models.getResource("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
 	obj->move(-0.1, -1, 0);
 	obj->setColor(1, 0, 0);
 	origin->addNode(obj);
@@ -121,27 +121,29 @@ void Scene::createScene() {
 	NodeList* cubes = new NodeList();
 	cubes->move(10.7, 0.78, 8.81);
 	root.addNode(cubes);
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/cube.png"));
+	obj = new Object(&models.getResource("resources/cube.obj"), prog, shadow,
+	                 &textures.getResource("resources/cube.png"));
 	obj->setPosition(0, 0, 0);
 	obj->setColor(1, 0, 0);
 	obj->attachLogic<RotateLogic>(40);
 	cubes->addNode(obj);
 
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, &textures.getResource("resources/cube_wood.png"));
+	obj = new Object(&models.getResource("resources/cube.obj"), prog, shadow,
+	                 &textures.getResource("resources/cube_wood.png"));
 	obj->setPosition(-2, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, -1, 0, 0);
 	obj->attachLogic<RotateLogic>(40);
 	cubes->addNode(obj);
 
-	obj = new Object(&models.getResource("resources/monkey.obj"), prog, nullptr);
+	obj = new Object(&models.getResource("resources/monkey.obj"), prog, shadow, nullptr);
 	obj->setPosition(13, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, 0, -1, 0);
 	obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
-	obj = new Object(&models.getResource("resources/monkey_smooth.obj"), prog, nullptr);
+	obj = new Object(&models.getResource("resources/monkey_smooth.obj"), prog, shadow, nullptr);
 	obj->setPosition(10, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, 0, 1, 0);
@@ -160,7 +162,7 @@ void Scene::createScene() {
 	};
 	int modif = 2;
 	for(int i = 0; i < 4; i++) {
-		obj = new Object(&models.getResource("resources/ball.obj"), prog, nullptr);
+		obj = new Object(&models.getResource("resources/ball.obj"), prog, shadow, nullptr);
 		obj->setPosition(modif * coords[i][0], modif * coords[i][1], modif * coords[i][2]);
 		balls->addNode(obj);
 	}
@@ -228,6 +230,8 @@ void Scene::update(float time) {
 
 glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,1,0));
 void Scene::renderOneFrame(RenderContext &context) {
+
+	context.setStage(RenderStage::Shadow);
 	// Compute the MVP matrix from the light's point of view
 
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10,10,-10,10,-10,40);
@@ -242,14 +246,14 @@ void Scene::renderOneFrame(RenderContext &context) {
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	context.setCamera(&camera);
 
-	context.program = &shadow;
+	shadow.use();
 	root.render(context);
 
+	context.setStage(RenderStage::Normal);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, win->getWidth(), win->getHeight());
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	context.program = act;
 
 
 	glm::mat4 biasMatrix(
@@ -263,7 +267,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	//glBindTexture(GL_TEXTURE_2D, depthTexture);
 
 
-	GLint location = glGetUniformLocation(context.program->id, "shadowTexture");
+	GLint location = glGetUniformLocation(prog.id, "shadowTexture");
 
 	glActiveTexture(GL_TEXTURE0 + 1);
 	glBindTexture(GL_TEXTURE_2D, depthTexture);

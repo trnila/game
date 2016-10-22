@@ -4,6 +4,11 @@
 #include "VAO.h"
 #include "Camera.h"
 
+enum class RenderStage {
+	Shadow,
+	Normal
+};
+
 class RenderContext {
 public:
 	void use(Program& program) {
@@ -38,7 +43,16 @@ public:
 		return camera;
 	}
 
-	Program *program = nullptr;
+	RenderStage getStage() const {
+		return stage;
+	}
+
+	void setStage(RenderStage stage) {
+		this->stage = stage;
+	}
+
 private:
 	Camera *camera;
+	RenderStage stage;
+
 };

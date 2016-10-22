@@ -1,25 +1,25 @@
 #include "Object.h"
 #include "Logic.h"
 
-Object::Object(Model *model, Program &program, Texture *texture) :
+Object::Object(Model *model, Program &program, Program &shadow, Texture *texture) :
 		model(model),
 		program(program),
+		shadow(shadow),
 		color(1.0f),
 		texture(texture) {}
 
 void Object::render(RenderContext &context) {
-	context.use(*context.program);
+	Program &currentProgram = context.getStage() == RenderStage::Shadow ? shadow : program;
 
-	context.program->setMatrix("modelMatrix", modelMatrix);
-	context.program->setColor(color.r, color.g, color.b);
+	currentProgram.setMatrix("modelMatrix", modelMatrix);
+	currentProgram.setColor(color.r, color.g, color.b);
 
 	if(texture) {
-		texture->bind(*context.program);
-		context.program->setBool("hasTexture", true);
+		texture->bind(currentProgram);
+		currentProgram.setBool("hasTexture", true);
 	} else {
-		context.program->setBool("hasTexture", false);
+		currentProgram.setBool("hasTexture", false);
 	}
-
 
 	model->render(context);
 }

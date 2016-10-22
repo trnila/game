@@ -12,7 +12,7 @@ class Logic;
 
 class Object : public Node {
 public:
-	Object(Model *model, Program &program, Texture *texture);
+	Object(Model *model, Program &program, Program &shadow, Texture *texture);
 
 	void setColor(float r, float g, float b);
 	void setColor(glm::vec3 color);
@@ -21,7 +21,7 @@ public:
 
 private:
 	Model *model;
-	Program &program;
+	Program &program, &shadow;
 	glm::vec3 color;
 	glm::mat4 modelMatrix;
 	Texture *texture;
