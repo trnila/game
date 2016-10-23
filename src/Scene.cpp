@@ -241,9 +241,9 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 	GLint location = glGetUniformLocation(prog.id, "shadowTexture");
 
-	glActiveTexture(GL_TEXTURE0 + 1);
-	glBindTexture(GL_TEXTURE_2D, depthId);
-	glUniform1i(location, 1);
+	GL_CHECK(glActiveTexture(GL_TEXTURE0 + 1));
+	GL_CHECK(glBindTexture(GL_TEXTURE_2D, depthId));
+	GL_CHECK(glUniform1i(location, 1));
 
 
 	root.render(context);

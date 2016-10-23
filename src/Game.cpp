@@ -20,7 +20,7 @@ void Game::init() {
 		throw std::runtime_error("At least GLEW 3.3 is required");
 	}
 
-	glEnable(GL_DEPTH_TEST);
+	GL_CHECK(glEnable(GL_DEPTH_TEST));
 
 	scene = new Scene(*window);
 }

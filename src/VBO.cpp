@@ -1,9 +1,9 @@
 #include "VBO.h"
 
 VBO::VBO() {
-	glGenBuffers(1, &id);
+	GL_CHECK(glGenBuffers(1, &id));
 }
 
 VBO::~VBO() {
-	//glDeleteBuffers(1, &id);
+	//GL_CHECK(glDeleteBuffers(1, &id));
 }

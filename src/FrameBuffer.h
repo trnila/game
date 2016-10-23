@@ -3,18 +3,19 @@
 #include "BindableResource.h"
 #include "FrameBufferHandler.h"
 #include "GL/glew.h"
+#include "utils.h"
 
 class FrameBuffer: public BindableResource<FrameBuffer, FrameBufferHandler> {
 public:
 	FrameBuffer(int width, int height, int depth);
 
 	void open() {
-		glBindFramebuffer(GL_FRAMEBUFFER, id);
-		glViewport(0, 0, width, height);
+		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, id));
+		GL_CHECK(glViewport(0, 0, width, height));
 	}
 
 	void close() {
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
 

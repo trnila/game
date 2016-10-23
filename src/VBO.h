@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 #include "Type.h"
 #include "BindableResource.h"
+#include "utils.h"
 #include <typeinfo>
 #include <stdexcept>
 
@@ -18,11 +19,11 @@ private:
 	GLuint id;
 
 	void open() {
-		glBindBuffer(GL_ARRAY_BUFFER, id);
+		GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, id));
 	}
 
 	void close() {
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
 	friend class LockImpl<VBO>;
@@ -33,12 +34,12 @@ class VBOHandler: public LockImpl<VBO> {
 public:
 	template<typename T>
 	void setData(const T *data, size_t size, size_t blockSize) {
-		glBufferData(GL_ARRAY_BUFFER, size * sizeof(T) * blockSize, data, GL_STATIC_DRAW);
+		GL_CHECK(glBufferData(GL_ARRAY_BUFFER, size * sizeof(T) * blockSize, data, GL_STATIC_DRAW));
 	}
 
 	template<typename T>
 	void setPointer(GLuint layoutPos, int offset) {
-		glVertexAttribPointer(layoutPos, 3, GL_FLOAT, GL_FALSE, sizeof(T), (void*) offset);
+		GL_CHECK(glVertexAttribPointer(layoutPos, 3, GL_FLOAT, GL_FALSE, sizeof(T), (void*) offset));
 	}
 
 private:

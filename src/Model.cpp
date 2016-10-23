@@ -18,8 +18,8 @@ Model::Model(const char *name, float *vertices, int size) : vbo(), colorsVbo(), 
 	auto vbo = this->vbo.activate();
 
 	vbo.setData(vertices, size, 3);
-	glBufferData(GL_ARRAY_BUFFER, 6*size*sizeof(float), vertices, GL_STATIC_DRAW);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0);
+	GL_CHECK(glBufferData(GL_ARRAY_BUFFER, 6*size*sizeof(float), vertices, GL_STATIC_DRAW));
+	GL_CHECK(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0));
 	vao.enableAttrib(0);
 }
 
@@ -29,7 +29,7 @@ void Model::render(RenderContext &context) {
 	if(ibo == 0) {
 		context.drawArrays(GL_TRIANGLES, 0, size);
 	} else {
-		glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0);
+		GL_CHECK(glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0));
 	}
 }
 
@@ -99,9 +99,9 @@ Model::Model(const char *path) : vbo(), colorsVbo() {
 		index.push_back(face.mIndices[2]);
 	}
 
-	glGenBuffers(1, &ibo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(int), index.data(), GL_STATIC_DRAW);
+	GL_CHECK(glGenBuffers(1, &ibo));
+	GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
+	GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(int), index.data(), GL_STATIC_DRAW));
 
 	size = index.size();
 

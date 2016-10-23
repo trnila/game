@@ -16,15 +16,15 @@ public:
 	}
 
 	void clearColor(float r, float g, float b, float a) {
-		glClearColor(r, g, b, a);
+		GL_CHECK(glClearColor(r, g, b, a));
 	}
 
 	void clear(int flags) {
-		glClear(flags);
+		GL_CHECK(glClear(flags));
 	}
 
 	void drawArrays(int type, int start, int stop) {
-		glDrawArrays(type, start, stop);
+		GL_CHECK(glDrawArrays(type, start, stop));
 	}
 
 	void setCamera(Camera *camera) {

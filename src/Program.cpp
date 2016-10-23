@@ -10,18 +10,18 @@ Program::Program() {
 }
 
 void Program::attach(Shader &shader) {
-	glAttachShader(id, shader.getId());
+	GL_CHECK(glAttachShader(id, shader.getId()));
 }
 
 void Program::link() {
-	glLinkProgram(id);
+	GL_CHECK(glLinkProgram(id));
 
 	GLint link_ok;
-	glGetProgramiv(id, GL_LINK_STATUS, &link_ok);
+	GL_CHECK(glGetProgramiv(id, GL_LINK_STATUS, &link_ok));
 	if(!link_ok) {
 		GLint log_length = 0;
 		if (glIsShader(id)) {
-			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &log_length);
+			GL_CHECK(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &log_length));
 		} else if (glIsProgram(id)) {
 			glGetProgramiv(id, GL_INFO_LOG_LENGTH, &log_length);
 		}
@@ -41,7 +41,7 @@ void Program::link() {
 }
 
 void Program::use() {
-	glUseProgram(id);
+	GL_CHECK(glUseProgram(id));
 }
 
 void Program::setMatrix(const char* var, const glm::mat4 &mat) {
@@ -51,7 +51,7 @@ void Program::setMatrix(const char* var, const glm::mat4 &mat) {
 		//throw std::runtime_error("could not bind uniform variable");
 	}
 
-	glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(mat));
+	GL_CHECK(glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(mat)));
 }
 
 void Program::updated(Camera &camera) {
@@ -59,7 +59,7 @@ void Program::updated(Camera &camera) {
 	setMatrix("projectionMatrix", camera.getPerspective());
 
 	GLint uniformId = glGetUniformLocation(id, "cameraPos");
-	glUniform3fv(uniformId, 1, glm::value_ptr(camera.getPosition()));
+	GL_CHECK(glUniform3fv(uniformId, 1, glm::value_ptr(camera.getPosition())));
 }
 
 void Program::setColor(float r, float g, float b) {
@@ -73,7 +73,7 @@ void Program::setLight(glm::vec3 position) {
 void Program::setBool(const char *var, bool val) {
 	use();
 	GLint uniformId = glGetUniformLocation(id, var);
-	glUniform1i(uniformId, val);
+	GL_CHECK(glUniform1i(uniformId, val));
 }
 
 void Program::updated(Light &obj) {
@@ -87,7 +87,7 @@ void Program::sendVector(const char *name, const glm::vec3 &vec) {
 	if(!uniformId) {
 		printf("failed sending %s\n", name);
 	}
-	glUniform3fv(uniformId, 1, glm::value_ptr(vec));
+	GL_CHECK(glUniform3fv(uniformId, 1, glm::value_ptr(vec)));
 }
 
 void Program::setAmbientColor(const Color &color) {

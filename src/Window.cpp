@@ -20,7 +20,7 @@ Window::Window(int width, int height, const char *title) : width(width), height(
 		Game::getInstance().onMove(x, y);
 	});
 	glfwSetWindowSizeCallback(window, [](GLFWwindow *window, int w, int h) -> void {
-		glViewport(0, 0, w, h);
+		GL_CHECK(glViewport(0, 0, w, h));
 		Window *win = (Window *) glfwGetWindowUserPointer(window);
 		win->width = w;
 		win->height = h;
@@ -46,6 +46,6 @@ int Window::getHeight() {
 }
 
 void Window::setViewport() {
-	glViewport(0, 0, width, height);
+	GL_CHECK(glViewport(0, 0, width, height));
 
 }

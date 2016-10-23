@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include "BindableResource.h"
+#include "utils.h"
 
 class VAOHandler;
 
@@ -14,11 +15,11 @@ private:
 	unsigned int id;
 
 	void open() {
-		glBindVertexArray(id);
+		GL_CHECK(glBindVertexArray(id));
 	}
 
 	void close() {
-		glBindVertexArray(0);
+		GL_CHECK(glBindVertexArray(0));
 	}
 
 	friend class LockImpl<VAO>;
@@ -29,6 +30,6 @@ public:
 	VAOHandler(VAO &t): LockImpl<VAO>(t) {}
 
 	void enableAttrib(GLuint id) {
-		glEnableVertexAttribArray(id);
+		GL_CHECK(glEnableVertexAttribArray(id));
 	}
 };
