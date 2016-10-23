@@ -1,6 +1,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Program.h"
 #include "Light.h"
+#include "Texture.h"
 
 Program::Program() {
 	id = glCreateProgram();
@@ -92,4 +93,12 @@ void Program::sendVector(const char *name, const glm::vec3 &vec) {
 
 void Program::setAmbientColor(const Color &color) {
 	sendVector("ambientColor", color);
+}
+
+void Program::useTexture(const char *name, Texture &texture, int pos) {
+	GLint location = glGetUniformLocation(id, name);
+
+	GL_CHECK(glActiveTexture(GL_TEXTURE0 + pos));
+	texture.bind();
+	GL_CHECK(glUniform1i(location, pos));
 }

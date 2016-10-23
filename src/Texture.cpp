@@ -4,8 +4,10 @@
 #include "Program.h"
 #include "Formatter.h"
 #include "utils.h"
+#include "GL/glew.h"
+#include "FrameBuffer.h"
 
-Texture::Texture(const char *file) {
+Texture::Texture(const char *file): type(GL_TEXTURE_2D) {
 	GL_CHECK(glGenTextures(1, &id));
 	GL_CHECK(glBindTexture(GL_TEXTURE_2D, id));
 
@@ -23,12 +25,21 @@ Texture::Texture(const char *file) {
 	stbi_image_free(data);
 }
 
-void Texture::bind(Program &program) {
-	program.use();
+void Texture::bind() {
+	GL_CHECK(glBindTexture(type, id));
+}
 
-	GLint location = glGetUniformLocation(program.id, "modelTexture");
+Texture::Texture(GLuint type, int width, int height, int depth, int component): type(type) {
+	GL_CHECK(glGenTextures(1, &id));
+	bind();
+	GL_CHECK(glTexImage2D(type, 0, depth, width, height, 0, component, GL_FLOAT, 0));
+}
 
-	GL_CHECK(glActiveTexture(GL_TEXTURE0));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, id));
-	GL_CHECK(glUniform1i(location, 0));
+void Texture::set(int option, int value) {
+	GL_CHECK(glTexParameteri(type, option, value));
+}
+
+void Texture::attachTo(FrameBuffer &frameBuffer) {
+	auto buffer = frameBuffer.activate();
+	GL_CHECK(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, id, 0));
 }

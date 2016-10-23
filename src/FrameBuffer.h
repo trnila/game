@@ -4,6 +4,7 @@
 #include "FrameBufferHandler.h"
 #include "GL/glew.h"
 #include "utils.h"
+#include "Texture.h"
 
 class FrameBuffer: public BindableResource<FrameBuffer, FrameBufferHandler> {
 public:
@@ -18,11 +19,16 @@ public:
 		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
+	Texture& getTexture() {
+		return texture;
+	}
+
 
 	GLuint depthTexture;
 private:
 	GLuint id;
 	int width, height;
+	Texture texture;
 
 
 	friend class LockImpl<FrameBuffer>;

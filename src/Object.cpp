@@ -15,7 +15,7 @@ void Object::render(RenderContext &context) {
 	currentProgram.setColor(color.r, color.g, color.b);
 
 	if(texture) {
-		texture->bind(currentProgram);
+		currentProgram.useTexture("modelTexture", *texture, 0);
 		currentProgram.setBool("hasTexture", true);
 	} else {
 		currentProgram.setBool("hasTexture", false);
