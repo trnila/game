@@ -97,20 +97,11 @@ void Scene::createScene() {
 	origin->addNode(obj);
 
 
-	lightNode = new NodeList();
+	lightNode = new Light(prog);
 	lightNode->setPosition(-0.280287, 6.302092, -4.222088);
-	//lightNode->attachLogic<MoveLogic>();
+	lightNode->setDiffuseColor(Color(1, 1, 1));
+	lightNode->setSpecularColor(Color(0, 0, 1));
 	root.addNode(lightNode);
-
-	Light *light = new Light(prog);
-	light->setDiffuseColor(Color(1, 1, 1));
-	light->setSpecularColor(Color(0, 0, 1));
-	lightNode->addNode(light);
-
-	/*obj = new Object(&models.getResource("resources/ball.obj"), constantProg, nullptr);
-	obj->setColor(1, 0, 0);
-	obj->setScale(0.02, 0.02, 0.02);
-	lightNode->addNode(obj);*/
 
 
 	NodeList* cubes = new NodeList();
@@ -202,12 +193,11 @@ void Scene::update(float time) {
 	camHandler.update(time);
 }
 
-glm::mat4 depthViewMatrix = glm::lookAt(glm::vec3(0,0,0), glm::vec3(0,0,0), glm::vec3(0,1,0));
 void Scene::renderOneFrame(RenderContext &context) {
 	context.setStage(RenderStage::Shadow);
 
-	// Compute the MVP matrix from the light's point of view
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 40);
+	glm::mat4 depthViewMatrix = glm::lookAt(lightNode->getPosition(), lightNode->getPosition() + lightNode->getDirection(), glm::vec3(0,1,0));
 	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix;
 
 	GLuint depthId;
@@ -254,7 +244,7 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 
 	if(key == GLFW_KEY_ENTER) {
 		lightNode->setPosition(camera.getPosition());
-		depthViewMatrix = camera.getTransform();
+		lightNode->setDirection(camera.getDirection());
 	}
 }
 

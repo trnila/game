@@ -37,3 +37,11 @@ void Light::setSpecularColor(const Color &specularColor) {
 Light::~Light() {
 	removeListener(&shader);
 }
+
+const glm::vec3 &Light::getDirection() const {
+	return direction;
+}
+
+void Light::setDirection(const glm::vec3 &direction) {
+	Light::direction = direction;
+}

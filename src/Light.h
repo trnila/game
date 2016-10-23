@@ -19,10 +19,15 @@ public:
 
 	void setSpecularColor(const Color &specularColor);
 
+	const glm::vec3 &getDirection() const;
+
+	void setDirection(const glm::vec3 &direction);
+
 private:
 	Program &shader;
 	Color diffuseColor = Color(0, 0, 0);
 	Color specularColor = Color(0, 0, 0);
+	glm::vec3 direction;
 };
 
 

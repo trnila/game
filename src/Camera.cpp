@@ -107,4 +107,8 @@ void Camera::right(float diff) {
 	notify();
 }
 
+const glm::vec3 &Camera::getDirection() {
+	return target;
+}
+
 

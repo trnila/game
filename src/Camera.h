@@ -34,6 +34,9 @@ public:
 	void right(float diff);
 
 	virtual void updated(Window &camera) override;
+
+	const glm::vec3 &getDirection();
+
 private:
 	Window &window;
 
