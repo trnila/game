@@ -16,23 +16,7 @@ Shader::Shader(const char *file, GLenum type) {
 	GLint compile_ok = GL_FALSE;
 	glGetShaderiv(id, GL_COMPILE_STATUS, &compile_ok);
 	if (compile_ok == GL_FALSE) {
-		GLint log_length = 0;
-		if (glIsShader(id)) {
-			glGetShaderiv(id, GL_INFO_LOG_LENGTH, &log_length);
-		} else if (glIsProgram(id)) {
-			glGetProgramiv(id, GL_INFO_LOG_LENGTH, &log_length);
-		}
-
-		char* log = new char[log_length];
-
-		if (glIsShader(id))
-			glGetShaderInfoLog(id, log_length, NULL, log);
-		else if (glIsProgram(id))
-			glGetProgramInfoLog(id, log_length, NULL, log);
-
 		glDeleteShader(id);
-		GlslCompileError exception(file, std::string(log));
-		delete[] log;
-		throw exception;
+		throw GlslCompileError(file, getGLLog(id));
 	}
 }

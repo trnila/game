@@ -20,24 +20,8 @@ void Program::link() {
 	GLint link_ok;
 	GL_CHECK(glGetProgramiv(id, GL_LINK_STATUS, &link_ok));
 	if(!link_ok) {
-		GLint log_length = 0;
-		if (glIsShader(id)) {
-			GL_CHECK(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &log_length));
-		} else if (glIsProgram(id)) {
-			glGetProgramiv(id, GL_INFO_LOG_LENGTH, &log_length);
-		}
-
-		char* log = new char[log_length];
-
-		if (glIsShader(id))
-			glGetShaderInfoLog(id, log_length, NULL, log);
-		else if (glIsProgram(id))
-			glGetProgramInfoLog(id, log_length, NULL, log);
-
 		glDeleteShader(id);
-		GlslCompileError exception("linking", std::string(log));
-		delete[] log;
-		throw exception;
+		throw GlslCompileError("linking", getGLLog(id));
 	}
 }
 
@@ -48,10 +32,6 @@ void Program::use() {
 void Program::setMatrix(const char* var, const glm::mat4 &mat) {
 	use();
 	GLint uniformId = glGetUniformLocation(id, var);
-	if (uniformId == -1) {
-		//throw std::runtime_error("could not bind uniform variable");
-	}
-
 	GL_CHECK(glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(mat)));
 }
 

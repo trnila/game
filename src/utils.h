@@ -10,3 +10,5 @@ void checkOpenglError(const char *cmd, const char *file, int line);
 		cmd; \
 		checkOpenglError(#cmd, __FILE__, __LINE__); \
 	} while(0);
+
+std::string getGLLog(GLuint id);

@@ -21,3 +21,24 @@ void checkOpenglError(const char *cmd, const char *file, int line) {
 		abort();
 	}
 }
+
+std::string getGLLog(GLuint id) {
+	GLint log_length = 0;
+	if (glIsShader(id)) {
+		GL_CHECK(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &log_length));
+	}
+	else if (glIsProgram(id)) {
+		glGetProgramiv(id, GL_INFO_LOG_LENGTH, &log_length);
+	}
+
+	char* log = new char[log_length];
+
+	if (glIsShader(id))
+		glGetShaderInfoLog(id, log_length, NULL, log);
+	else if (glIsProgram(id))
+		glGetProgramInfoLog(id, log_length, NULL, log);
+
+	std::string result = std::string(log);
+	delete[] log;
+	return result;
+}
