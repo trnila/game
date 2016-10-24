@@ -9,7 +9,7 @@
 
 Texture::Texture(const char *file): type(GL_TEXTURE_2D) {
 	GL_CHECK(glGenTextures(1, &id));
-	GL_CHECK(glBindTexture(GL_TEXTURE_2D, id));
+	bind();
 
 	int x,y,n;
     unsigned char *data = stbi_load(file, &x, &y, &n, 3);
@@ -19,8 +19,8 @@ Texture::Texture(const char *file): type(GL_TEXTURE_2D) {
 
 	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, data));
 
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-	GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+	set(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	set(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 	stbi_image_free(data);
 }
@@ -29,9 +29,13 @@ void Texture::bind() {
 	GL_CHECK(glBindTexture(type, id));
 }
 
-Texture::Texture(GLuint type, int width, int height, int depth, int component): type(type) {
+void Texture::create() {
 	GL_CHECK(glGenTextures(1, &id));
 	bind();
+}
+
+Texture::Texture(GLuint type, int width, int height, int depth, int component): type(type) {
+	create();
 	GL_CHECK(glTexImage2D(type, 0, depth, width, height, 0, component, GL_FLOAT, 0));
 }
 

@@ -20,6 +20,7 @@ private:
 	GLuint id;
 	int type;
 
+	void create();
 };
 
 
