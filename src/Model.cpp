@@ -38,11 +38,12 @@ Model::Model(const char *path) : vbo(), colorsVbo() {
 
 	int conf =
 			  aiProcess_GenSmoothNormals
-			| aiProcess_FlipUVs
-			| aiProcess_CalcTangentSpace
-			| aiProcess_Triangulate
-			| aiProcess_JoinIdenticalVertices
-			| aiProcess_SortByPType;
+			  | aiProcess_FlipUVs
+			  | aiProcess_CalcTangentSpace
+			  | aiProcess_PreTransformVertices
+			  | aiProcess_Triangulate
+			  | aiProcess_JoinIdenticalVertices
+			  | aiProcess_SortByPType;
 
 	const aiScene* scene = importer.ReadFile(path, conf);
 
@@ -91,7 +92,7 @@ Model::Model(const char *path) : vbo(), colorsVbo() {
 	vao.enableAttrib(1);
 	vao.enableAttrib(2);
 
-	std::vector<int> index;
+	std::vector<unsigned int> index;
 	for(unsigned int i = 0; i < m->mNumFaces; i++) {
 		aiFace& face = m->mFaces[i];
 		index.push_back(face.mIndices[0]);
@@ -101,7 +102,7 @@ Model::Model(const char *path) : vbo(), colorsVbo() {
 
 	GL_CHECK(glGenBuffers(1, &ibo));
 	GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-	GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(int), index.data(), GL_STATIC_DRAW));
+	GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW));
 
 	size = index.size();
 
