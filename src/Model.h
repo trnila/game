@@ -4,6 +4,7 @@
 #include "Program.h"
 #include "VAO.h"
 #include "RenderContext.h"
+#include "Mesh.h"
 
 class Model {
 public:
@@ -13,8 +14,5 @@ public:
 	void render(RenderContext &context);
 
 private:
-	VBO vbo, colorsVbo;
-	VAO vao;
-	GLuint ibo = 0;
-	int size;
+	std::vector<Mesh*> meshes;
 };

@@ -7,33 +7,23 @@
 #include "Model.h"
 #include "Formatter.h"
 
-struct Vertex {
-	glm::vec3 pos;
-	glm::vec3 normal;
-	glm::vec2 uv;
-};
-
-Model::Model(const char *name, float *vertices, int size) : vbo(), colorsVbo(), size(size) {
-	auto vao = this->vao.activate();
+Model::Model(const char *name, float *vertices, int size) {
+	/*auto vao = this->vao.activate();
 	auto vbo = this->vbo.activate();
 
 	vbo.setData(vertices, size, 3);
 	GL_CHECK(glBufferData(GL_ARRAY_BUFFER, 6*size*sizeof(float), vertices, GL_STATIC_DRAW));
 	GL_CHECK(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 0));
-	vao.enableAttrib(0);
+	vao.enableAttrib(0);*/
 }
 
 void Model::render(RenderContext &context) {
-	auto vao = this->vao.activate();
-
-	if(ibo == 0) {
-		context.drawArrays(GL_TRIANGLES, 0, size);
-	} else {
-		GL_CHECK(glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0));
+	for(Mesh* mesh: meshes) {
+		mesh->render(context);
 	}
 }
 
-Model::Model(const char *path) : vbo(), colorsVbo() {
+Model::Model(const char *path) {
 	Assimp::Importer importer;
 
 	int conf =
@@ -51,62 +41,7 @@ Model::Model(const char *path) : vbo(), colorsVbo() {
 		throw std::runtime_error(Formatter() << "Could not load model: " << path);
 	}
 
-	aiMesh* m = scene->mMeshes[0];
-
-	if(!m->mNormals) {
-		printf("model %s has no normals!\n", path);
-	}
-
-	if(!m->HasTextureCoords(0)) {
-		printf("model %s has no normals!\n", path);
-	}
-
-	std::vector<Vertex> vertices;
-	for(int i = 0; i < m->mNumVertices; i++) {
-		Vertex vert;
-		vert.pos = glm::vec3(m->mVertices[i].x, m->mVertices[i].y, m->mVertices[i].z);
-
-		if(m->mNormals) {
-			vert.normal = glm::vec3(m->mNormals[i].x, m->mNormals[i].y, m->mNormals[i].z);
-		} else {
-			vert.normal = glm::vec3(0,0,0);
-		}
-
-		if(m->HasTextureCoords(0)) {
-			vert.uv = glm::vec2(m->mTextureCoords[0][i].x, m->mTextureCoords[0][i].y);
-		} else {
-			vert.uv = glm::vec2(0, 0);
-		}
-
-		vertices.push_back(vert);
-	}
-
-	auto vao = this->vao.activate();
-	auto vbo = this->vbo.activate();
-	vbo.setData(vertices.data(), vertices.size() + 10, 1); //TODO: fixme
-	vbo.setPointer<Vertex>(0, 0);
-	vbo.setPointer<Vertex>(1, sizeof(vertices[0].pos));
-	vbo.setPointer<Vertex>(2, sizeof(vertices[0].pos) + sizeof(vertices[0].normal));
-
-	vao.enableAttrib(0);
-	vao.enableAttrib(1);
-	vao.enableAttrib(2);
-
-	std::vector<unsigned int> index;
-	for(unsigned int i = 0; i < m->mNumFaces; i++) {
-		aiFace& face = m->mFaces[i];
-		index.push_back(face.mIndices[0]);
-		index.push_back(face.mIndices[1]);
-		index.push_back(face.mIndices[2]);
-	}
-
-	GL_CHECK(glGenBuffers(1, &ibo));
-	GL_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo));
-	GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW));
-
-	size = index.size();
-
-	if(scene->mNumMaterials >= 1) {
-		//aiMaterial *mat = scene->mMaterials[0]
+	for(int i = 0; i < scene->mNumMeshes; i++) {
+		meshes.push_back(new Mesh(*scene->mMeshes[i]));
 	}
 }
