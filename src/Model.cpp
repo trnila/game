@@ -48,6 +48,12 @@ Model::Model(const char *path) {
 			material = scene->mMaterials[mesh->mMaterialIndex];
 		}
 
-		meshes.push_back(new Mesh(*mesh, material));
+		std::string base = path;
+		std::string::size_type pos = base.rfind('/');
+		if(pos != std::string::npos) {
+			base = std::string(path).substr(0, pos);
+		}
+
+		meshes.push_back(new Mesh(*mesh, material, std::string(base)));
 	}
 }

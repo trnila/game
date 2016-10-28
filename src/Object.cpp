@@ -14,12 +14,11 @@ void Object::render(RenderContext &context) {
 	currentProgram.setMatrix("modelMatrix", modelMatrix);
 	currentProgram.setColor(color.r, color.g, color.b);
 
-	if(texture) {
-		currentProgram.useTexture("modelTexture", *texture, 0);
+	/*if(texture) {
 		currentProgram.setBool("hasTexture", true);
 	} else {
 		currentProgram.setBool("hasTexture", false);
-	}
+	}*/
 
 	model->render(context, currentProgram);
 }

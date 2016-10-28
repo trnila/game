@@ -1,5 +1,7 @@
 #include <assimp/material.h>
 #include "Mesh.h"
+#include "ResourceManager.h"
+#include "Texture.h"
 
 struct Vertex {
 	glm::vec3 pos;
@@ -14,11 +16,18 @@ void Mesh::render(RenderContext &context, Program &program) {
 	program.sendFloat("material.shininess", shininess);
 	program.sendFloat("material.shininessStrength", shininessStrength);
 
+	if(texture) {
+		program.useTexture("modelTexture", *texture, 0);
+		program.setBool("hasTexture", true);
+	} else {
+		program.setBool("hasTexture", false);
+	}
+
 	auto vao = this->vao.activate();
 	GL_CHECK(glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0));
 }
 
-Mesh::Mesh(aiMesh &mesh, aiMaterial *material) {
+Mesh::Mesh(aiMesh &mesh, aiMaterial *material, std::string path) {
 	std::vector<Vertex> vertices;
 	for(int i = 0; i < mesh.mNumVertices; i++) {
 		Vertex vert;
@@ -84,5 +93,11 @@ Mesh::Mesh(aiMesh &mesh, aiMaterial *material) {
 			shininessStrength = n;
 		}
 
+		aiString str;
+		if(material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), str) == AI_SUCCESS) {
+			printf("%s\n", (path + "/" + std::string(str.C_Str())).c_str());
+			ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
+			texture = &textures.getResource((path + "/" + std::string(str.C_Str())).c_str());
+		}
 	}
 }

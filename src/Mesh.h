@@ -9,7 +9,7 @@
 
 class Mesh {
 public:
-	Mesh(aiMesh &mesh, aiMaterial *material);
+	Mesh(aiMesh &mesh, aiMaterial *material, std::string path);
 
 	void render(RenderContext &context, Program &program);
 
@@ -23,6 +23,7 @@ private:
 	glm::vec3 specularColor;
 	float shininess = 32;
 	float shininessStrength = 0.8;
+	Texture* texture = nullptr;
 };
 
 
