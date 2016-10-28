@@ -82,3 +82,12 @@ void Program::useTexture(const char *name, Texture &texture, int pos) {
 	texture.bind();
 	GL_CHECK(glUniform1i(location, pos));
 }
+
+void Program::sendFloat(const char *name, float v) {
+	use();
+	GLint uniformId = glGetUniformLocation(id, name);
+	if(!uniformId) {
+		printf("failed sending %s\n", name);
+	}
+	GL_CHECK(glUniform1f(uniformId, v));
+}

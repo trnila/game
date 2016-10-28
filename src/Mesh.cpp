@@ -1,3 +1,4 @@
+#include <assimp/material.h>
 #include "Mesh.h"
 
 struct Vertex {
@@ -6,12 +7,18 @@ struct Vertex {
 	glm::vec2 uv;
 };
 
-void Mesh::render(RenderContext &context) {
+void Mesh::render(RenderContext &context, Program &program) {
+	program.sendVector("material.ambientColor", ambientColor);
+	program.sendVector("material.diffuseColor", diffuseColor);
+	program.sendVector("material.specularColor", specularColor);
+	program.sendFloat("material.shininess", shininess);
+	program.sendFloat("material.shininessStrength", shininessStrength);
+
 	auto vao = this->vao.activate();
 	GL_CHECK(glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0));
 }
 
-Mesh::Mesh(aiMesh &mesh) {
+Mesh::Mesh(aiMesh &mesh, aiMaterial *material) {
 	std::vector<Vertex> vertices;
 	for(int i = 0; i < mesh.mNumVertices; i++) {
 		Vertex vert;
@@ -56,4 +63,26 @@ Mesh::Mesh(aiMesh &mesh) {
 	GL_CHECK(glBufferData(GL_ELEMENT_ARRAY_BUFFER, index.size() * sizeof(unsigned int), index.data(), GL_STATIC_DRAW));
 
 	size = index.size();
+
+	if(material) {
+		aiColor3D c;
+		if(material->Get(AI_MATKEY_COLOR_AMBIENT, c) == AI_SUCCESS) {
+			ambientColor = Color(c.r, c.g, c.b);
+		}
+		if(material->Get(AI_MATKEY_COLOR_DIFFUSE, c) == AI_SUCCESS) {
+			diffuseColor = Color(c.r, c.g, c.b);
+		}
+		if(material->Get(AI_MATKEY_COLOR_SPECULAR, c) == AI_SUCCESS) {
+			specularColor = Color(c.r, c.g, c.b);
+		}
+		float n;
+		if(material->Get(AI_MATKEY_SHININESS, n) == AI_SUCCESS && n != 0) {
+			shininess = n;
+		}
+
+		if(material->Get(AI_MATKEY_SHININESS_STRENGTH, n) == AI_SUCCESS) {
+			shininessStrength = n;
+		}
+
+	}
 }

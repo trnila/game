@@ -1,5 +1,13 @@
 #version 420
 
+struct Material {
+	vec3 ambientColor;
+	vec3 diffuseColor;
+	vec3 specularColor;
+	float shininess;
+	float shininessStrength;
+};
+
 layout(binding=0) uniform sampler2D modelTexture;
 layout(binding=1) uniform sampler2D shadowTexture;
 
@@ -18,21 +26,23 @@ uniform vec3 ambientColor;
 uniform vec3 diffuseColor;
 uniform vec3 specularColor;
 
+uniform struct Material material;
+
 in vec4 shadCoord;
 
 void main(void) {
 	vec3 color = hasTexture ? texture(modelTexture, UV).rgb : simpleColor;
 
-	vec3 ambient = ambientColor * color;
+	vec3 ambient = material.ambientColor * ambientColor * color;
 
 	vec4 lightVector = normalize(vec4(lightPos, 1.0) - position_world);
 	float dot_product = max(dot(normalize(lightVector), normalize(vec4(normal_world, 1))), 0);
-	vec3 diffuse = diffuseColor * color * dot_product;
+	vec3 diffuse = material.diffuseColor * diffuseColor * color * dot_product;
 
     vec3 lightDir = normalize(lightPos - position_world.xyz);
     vec3 camDir = normalize(cameraPos - position_world.xyz);
-	float spec = pow(max(0.0, dot(camDir, reflect(-lightDir, normal_world))), 32);
-    vec3 specular = 0.8f * specularColor * spec;
+	float spec = pow(max(0.0, dot(camDir, reflect(-lightDir, normal_world))), material.shininess);
+    vec3 specular = material.shininessStrength * material.specularColor * specularColor * spec;
 
 
     float visibility = 1.0;

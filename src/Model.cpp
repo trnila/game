@@ -17,9 +17,9 @@ Model::Model(const char *name, float *vertices, int size) {
 	vao.enableAttrib(0);*/
 }
 
-void Model::render(RenderContext &context) {
+void Model::render(RenderContext &context, Program &program) {
 	for(Mesh* mesh: meshes) {
-		mesh->render(context);
+		mesh->render(context, program);
 	}
 }
 
@@ -42,6 +42,12 @@ Model::Model(const char *path) {
 	}
 
 	for(int i = 0; i < scene->mNumMeshes; i++) {
-		meshes.push_back(new Mesh(*scene->mMeshes[i]));
+		aiMesh* mesh = scene->mMeshes[i];
+		aiMaterial* material = nullptr;
+		if(mesh->mMaterialIndex >= 0) {
+			material = scene->mMaterials[mesh->mMaterialIndex];
+		}
+
+		meshes.push_back(new Mesh(*mesh, material));
 	}
 }

@@ -11,7 +11,7 @@ public:
 	Model(const char *name, float *vertices, int size);
 
 	Model(const char *path);
-	void render(RenderContext &context);
+	void render(RenderContext &context, Program &program);
 
 private:
 	std::vector<Mesh*> meshes;

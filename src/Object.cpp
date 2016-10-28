@@ -21,7 +21,7 @@ void Object::render(RenderContext &context) {
 		currentProgram.setBool("hasTexture", false);
 	}
 
-	model->render(context);
+	model->render(context, currentProgram);
 }
 
 void Object::setColor(float r, float g, float b) {
