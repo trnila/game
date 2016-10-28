@@ -1,5 +1,6 @@
 #include <glm/ext.hpp>
 #include <iostream>
+#include <stdlib.h>
 #include "Logic.h"
 
 void RotateLogic::update(float diff) {
@@ -32,8 +33,19 @@ FollowLogic::FollowLogic(Node &obj, Camera *cam) : Logic(obj), cam(cam) {
 }
 
 void FollowLogic::update(float diff) {
-	glm::vec3 pos = (cam->getPosition() + cam->getDirection() * 2);
-	obj.setPosition(pos);
+	time += diff;
+
+	if(time >= 0.5 || time == -1) {
+		float m = 1.0f;
+		auto r = glm::vec3(m * rand() / RAND_MAX, m* rand() / RAND_MAX, 0.5* rand() / RAND_MAX);
+		int n = rand() % 1 ? 1 : -1;
+		pos = (cam->getPosition() + cam->getDirection() * 2 + r * n);
+		time = 0;
+	}
+
+	auto direction = pos - obj.getPosition();
+	obj.move(direction * diff);
+
 
 	auto objDir = normalize(glm::vec3(0, 0, 1));
 	auto toCamDir = normalize(cam->getPosition() - obj.getPosition());

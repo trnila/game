@@ -55,4 +55,6 @@ public:
 
 private:
 	Camera *cam;
+	float time = -1;
+	glm::vec3 pos;
 };

@@ -5,6 +5,7 @@
 class Transformable {
 public:
 	void move(float x, float y, float z);
+	void move(glm::vec3 pos);
 	void setPosition(float x, float y, float z);
 	void setPosition(glm::vec3 pos);
 	glm::vec3 getPosition();
@@ -21,6 +22,9 @@ public:
 	void multiplyScale(float x, float y, float z);
 	void multiplyScale(glm::vec3 scale);
 	glm::vec3 getScale();
+	glm::vec3 getDirection() {
+		return glm::vec4(0, 0, 1, 1) * getTransform();
+	}
 
 protected:
 	glm::mat4 getTransform();
