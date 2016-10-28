@@ -46,3 +46,13 @@ public:
 	virtual void update(float diff) override;
 
 };
+
+class FollowLogic: public Logic {
+public:
+	FollowLogic(Node &obj, Camera *cam);
+
+	virtual void update(float diff) override;
+
+private:
+	Camera *cam;
+};

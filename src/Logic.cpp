@@ -1,3 +1,5 @@
+#include <glm/ext.hpp>
+#include <iostream>
 #include "Logic.h"
 
 void RotateLogic::update(float diff) {
@@ -23,4 +25,21 @@ MoveLogic::MoveLogic(Node &obj) : Logic(obj) {}
 
 void MoveLogic::update(float diff) {
 	obj.move(0, 1.0 * diff, 0);
+}
+
+FollowLogic::FollowLogic(Node &obj, Camera *cam) : Logic(obj), cam(cam) {
+
+}
+
+void FollowLogic::update(float diff) {
+	glm::vec3 pos = (cam->getPosition() + cam->getDirection() * 2);
+	obj.setPosition(pos);
+
+	auto objDir = normalize(glm::vec3(0, 0, 1));
+	auto toCamDir = normalize(cam->getPosition() - obj.getPosition());
+
+	float angle = acos(glm::dot(objDir, toCamDir));
+	auto axis = glm::cross(objDir, toCamDir);
+	obj.rotate(glm::degrees(angle), axis);
+
 }
