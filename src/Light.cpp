@@ -12,6 +12,7 @@ void Light::update(float diff, const glm::mat4 &parent) {
 	updateLogic(diff);
 
 	glm::vec4 pos = parent * glm::vec4(getPosition(), 1);
+	worldPosition = pos;
 
 	shader.setLight(glm::vec3(pos));
 }
@@ -44,4 +45,8 @@ const glm::vec3 &Light::getDirection() const {
 
 void Light::setDirection(const glm::vec3 &direction) {
 	Light::direction = direction;
+}
+
+const glm::vec3 Light::getWorldPosition() {
+	return worldPosition;
 }

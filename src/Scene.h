@@ -38,4 +38,5 @@ private:
 
 	FrameBuffer *depthBuffer;
 	Window &window;
+	NodeList *lightContainer;
 };

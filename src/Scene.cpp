@@ -1,3 +1,4 @@
+#include <glm/ext.hpp>
 #include "Scene.h"
 #include "data.h"
 #include "Logic.h"
@@ -15,7 +16,7 @@ void Scene::createScene() {
 
 	Object *obj;
 	Object *terrain = new Object(&models.getResource("resources/terrain_smooth.obj"), prog, shadow, nullptr);
-//	terrain = new Object(&models.getResource("resources/plane.obj"), prog, nullptr);
+	//terrain = new Object(&models.getResource("resources/plane.obj"), prog, shadow, nullptr);
 
 	terrain->setPosition(-7, -3, -2);
 	terrain->rotate(0, 0, 0, 1);
@@ -97,11 +98,24 @@ void Scene::createScene() {
 	origin->addNode(obj);
 
 
+	lightContainer = new NodeList();
+	lightContainer->setPosition(15.514797f, 2.126692f, 0.289154f);
+	lightContainer->rotate(0, 0, 1, 0);
+	lightContainer->attachLogic<RotateLogic>(45);
+	root.addNode(lightContainer);
+
 	lightNode = new Light(prog);
-	lightNode->setPosition(-0.280287, 6.302092, -4.222088);
+	lightNode->setPosition(10, 10, 10);
 	lightNode->setDiffuseColor(Color(1, 1, 1));
 	lightNode->setSpecularColor(Color(0, 0, 1));
-	root.addNode(lightNode);
+	lightNode->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
+	lightContainer->addNode(lightNode);
+	//root.addNode(lightNode);
+
+	/*obj = new Object(&models.getResource("resources/ball.obj"), prog, shadow, nullptr);
+	obj->move(12, 10, 10);
+	obj->setColor(1, 0, 0);
+	lightContainer->addNode(obj);*/
 
 
 	NodeList* cubes = new NodeList();
@@ -196,8 +210,8 @@ void Scene::update(float time) {
 void Scene::renderOneFrame(RenderContext &context) {
 	context.setStage(RenderStage::Shadow);
 
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 40);
-	glm::mat4 depthViewMatrix = glm::lookAt(lightNode->getPosition(), lightNode->getPosition() + lightNode->getDirection(), glm::vec3(0,1,0));
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 200);
+	glm::mat4 depthViewMatrix = glm::lookAt(lightNode->getWorldPosition(), lightNode->getDirection(), glm::vec3(0,1,0));
 	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix;
 
 	{
@@ -235,8 +249,8 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
 
 	if(key == GLFW_KEY_ENTER) {
-		lightNode->setPosition(camera.getPosition());
-		lightNode->setDirection(camera.getDirection());
+		//lightNode->setPosition(camera.getPosition());
+		//lightNode->setDirection(camera.getDirection());
 	}
 }
 
