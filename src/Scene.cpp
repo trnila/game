@@ -150,6 +150,41 @@ void Scene::createScene() {
 	obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
+	obj = new Object(&models.getResource("resources/Vortigaunt/vortigaunt.obj"), prog, shadow, &textures.getResource("resources/Vortigaunt/Texture/vortigaunt_sheet.tga"));
+	obj->setColor(1, 1, 1);
+	obj->setPosition(15, 0, 5);
+	obj->setScale(1.f);
+	obj->setScale(0.01);
+	root.addNode(obj);
+
+	obj = new Object(&models.getResource("resources/D0G/a.obj"), prog, shadow, &textures.getResource("resources/D0G/Texture/dog_sheet.tga"));
+	obj->setColor(1, 1, 1);
+	obj->setPosition(16, 0, 5);
+	obj->setScale(1.f);
+	root.addNode(obj);
+
+	obj = new Object(&models.getResource("resources/Headcrab classic/headcrabclassic.obj"), prog, shadow, &textures.getResource("resources/Headcrab classic/Texture/headcrabsheet.tga"));
+	obj->setColor(1, 1, 1);
+	obj->setPosition(18, 0, 5);
+	obj->setScale(0.05f);
+	root.addNode(obj);
+
+	obj = new Object(&models.getResource("resources/Strider/Strider.obj"), prog, shadow, &textures.getResource("resources/Strider/Texture/striderdecalsheet.tga"));
+	obj->setColor(1, 1, 1);
+	obj->setPosition(18, -5, 30);
+	obj->setScale(0.02f);
+	root.addNode(obj);
+
+	//obj = new Object(&models.getResource("resources/Strider/Strider.obj"), prog, shadow, nullptr);
+	//obj = new Object(&models.getResource("resources/Gman/gman.obj"), prog, shadow, nullptr);
+	//obj = new Object(&models.getResource("resources/AntLion/AntLion.obj"), prog, shadow, nullptr);
+	obj = new Object(&models.getResource("resources/Combine Scanner/Combine_Scanner.obj"), prog, shadow, &textures.getResource("resources/Combine Scanner/Texture/scanner_sheet.tga"));
+	obj->setColor(1, 1, 1);
+	obj->setPosition(18, 0, 5);
+	obj->setScale(0.01f);
+	obj->attachLogic<FollowLogic>(&camera);
+	root.addNode(obj);
+
 	NodeList *balls = new NodeList();
 	balls->move(15, 0, 0);
 	root.addNode(balls);
