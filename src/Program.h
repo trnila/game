@@ -27,6 +27,6 @@ public:
 
 	void sendVector(const char *name, const glm::vec3& vec);
 	void sendFloat(const char *name, float v);
-private:
+
 	GLuint id;
 };

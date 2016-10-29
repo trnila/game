@@ -15,7 +15,7 @@ class LockImpl {
 public:
 	LockImpl(T& t): obj(t) {
 		if(active) {
-			throw std::runtime_error("Another object is already activated!");
+			//throw std::runtime_error("Another object is already activated!");
 		}
 
 		active = true;
