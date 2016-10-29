@@ -3,9 +3,6 @@
 #include "data.h"
 #include "Logic.h"
 #include "Light.h"
-#include "stb_image.h"
-#include "Skybox.h"
-#include "ObjectFactory.h"
 
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
@@ -28,8 +25,6 @@ void Scene::createScene() {
 	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
 
 	root.addNode(terrain);
-
-	glm::vec3 center = glm::vec3(0.2787f, 1.811f, -0.48f);
 
 	windMill = new NodeList();
 	windMill->move(0, 0.5, 0);

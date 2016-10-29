@@ -1,5 +1,6 @@
 #include <GL/glew.h>
 #include <iostream>
+#include <stdlib.h>
 #include "utils.h"
 #include "Formatter.h"
 

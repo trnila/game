@@ -1,6 +1,4 @@
 #include <glm/ext.hpp>
-#include <iostream>
-#include <stdlib.h>
 #include "Logic.h"
 
 void RotateLogic::update(float diff) {

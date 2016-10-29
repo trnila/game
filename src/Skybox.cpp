@@ -70,7 +70,7 @@ Skybox::Skybox() {
 	unsigned char* image;
 	for(GLuint i = 0; i < faces.size(); i++)
 	{
-		int x,y,n;
+		int n;
 		image = stbi_load(faces[i], &width, &height, &n, 3);
 		if(!image) {
 			throw std::runtime_error("ff");
