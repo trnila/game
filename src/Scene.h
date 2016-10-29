@@ -13,6 +13,7 @@
 #include "Window.h"
 #include "NodeList.h"
 #include "FrameBuffer.h"
+#include "Skybox.h"
 
 class Scene : public KeyListener, public MouseListener {
 public:
@@ -40,4 +41,5 @@ private:
 	Window &window;
 	NodeList *lightContainer;
 	Program skyboxProg;
+	Skybox *skybox;
 };
