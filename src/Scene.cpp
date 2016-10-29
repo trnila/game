@@ -5,6 +5,7 @@
 #include "Light.h"
 #include "stb_image.h"
 #include "Skybox.h"
+#include "ObjectFactory.h"
 
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
@@ -18,8 +19,8 @@ void Scene::createScene() {
 	ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
 
 	Object *obj;
-	Object *terrain = new Object(&models.getResource("resources/terrain_smooth.obj"), prog, shadow, nullptr);
-	//terrain = new Object(&models.getResource("resources/plane.obj"), prog, shadow, nullptr);
+	Object *terrain = factory->create("resources/terrain_smooth.obj");
+	//terrain = factory->create("resources/plane.obj");
 
 	terrain->setPosition(-7, -3, -2);
 	terrain->rotate(0, 0, 0, 1);
@@ -45,7 +46,7 @@ void Scene::createScene() {
 			{1, 1, 0}
 	};
 
-	obj = new Object(&models.getResource("resources/ball.obj"), prog, shadow, nullptr);
+	obj = factory->create("resources/ball.obj");
 	obj->setScale(0.02, 0.02, 0.02);
 	obj->setColor(1, 1, 1);
 	propeller->addNode(obj);
@@ -58,7 +59,7 @@ void Scene::createScene() {
 		propeller->addNode(obj);
 	}
 	// tube
-	obj = new Object(&models.getResource("resources/tube.obj"), prog, shadow, nullptr);
+	obj = factory->create("resources/tube.obj");
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.05, 1, 0.05);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
@@ -72,7 +73,7 @@ void Scene::createScene() {
 	forest->move(17.65, -3.0, 26.88);
 	root.addNode(forest);
 
-	obj = new Object(&models.getResource("resources/tree.obj"), prog, shadow, nullptr);
+	obj = factory->create("resources/tree.obj");
 	obj->setPosition(4, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
@@ -80,7 +81,7 @@ void Scene::createScene() {
 	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
 	forest->addNode(obj);
 
-	obj = new Object(&models.getResource("resources/tree.obj"), prog, shadow, nullptr);
+	obj = factory->create("resources/tree.obj");
 	obj->setPosition(0, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
@@ -115,7 +116,7 @@ void Scene::createScene() {
 	lightContainer->addNode(lightNode);
 	//root.addNode(lightNode);
 
-	/*obj = new Object(&models.getResource("resources/ball.obj"), prog, shadow, nullptr);
+	/*obj = factory->create("resources/ball.obj");
 	obj->move(12, 10, 10);
 	obj->setColor(1, 0, 0);
 	lightContainer->addNode(obj);*/
@@ -124,64 +125,62 @@ void Scene::createScene() {
 	NodeList* cubes = new NodeList();
 	cubes->move(10.7, 0.78, 8.81);
 	root.addNode(cubes);
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, shadow,
-	                 &textures.getResource("resources/cube.png"));
+	obj = factory->create("resources/cube.obj");
 	obj->setPosition(0, 0, 0);
 	obj->setColor(1, 0, 0);
 	obj->attachLogic<RotateLogic>(40);
 	cubes->addNode(obj);
 
-	obj = new Object(&models.getResource("resources/cube.obj"), prog, shadow,
-	                 &textures.getResource("resources/cube_wood.png"));
+	obj = factory->create("resources/cube.obj");
 	obj->setPosition(-2, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, -1, 0, 0);
 	obj->attachLogic<RotateLogic>(40);
 	cubes->addNode(obj);
 
-	obj = new Object(&models.getResource("resources/monkey.obj"), prog, shadow, nullptr);
+	obj = factory->create("resources/monkey.obj");
 	obj->setPosition(13, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, 0, -1, 0);
 	obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
-	obj = new Object(&models.getResource("resources/monkey_smooth.obj"), prog, shadow, nullptr);
+	obj = factory->create("resources/monkey_smooth.obj");
 	obj->setPosition(10, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, 0, 1, 0);
 	obj->attachLogic<RotateLogic>(40);
 	root.addNode(obj);
 
-	obj = new Object(&models.getResource("resources/Vortigaunt/vortigaunt.obj"), prog, shadow, &textures.getResource("resources/Vortigaunt/Texture/vortigaunt_sheet.tga"));
+	obj = factory->create("resources/Vortigaunt/vortigaunt.obj");
 	obj->setColor(1, 1, 1);
 	obj->setPosition(15, 0, 5);
 	obj->setScale(1.f);
 	obj->setScale(0.01);
 	root.addNode(obj);
 
-	obj = new Object(&models.getResource("resources/D0G/a.obj"), prog, shadow, &textures.getResource("resources/D0G/Texture/dog_sheet.tga"));
+	obj = factory->create("resources/D0G/a.obj");
 	obj->setColor(1, 1, 1);
 	obj->setPosition(16, 0, 5);
 	obj->setScale(1.f);
 	root.addNode(obj);
 
-	obj = new Object(&models.getResource("resources/Headcrab classic/headcrabclassic.obj"), prog, shadow, &textures.getResource("resources/Headcrab classic/Texture/headcrabsheet.tga"));
+	obj = factory->create("resources/Headcrab classic/headcrabclassic.obj");
 	obj->setColor(1, 1, 1);
 	obj->setPosition(18, 0, 5);
 	obj->setScale(0.05f);
 	root.addNode(obj);
 
-	obj = new Object(&models.getResource("resources/Strider/Strider.obj"), prog, shadow, &textures.getResource("resources/Strider/Texture/striderdecalsheet.tga"));
+	obj = factory->create("resources/Strider/Strider.obj");
 	obj->setColor(1, 1, 1);
 	obj->setPosition(18, -5, 30);
 	obj->setScale(0.02f);
 	root.addNode(obj);
 
-	//obj = new Object(&models.getResource("resources/Strider/Strider.obj"), prog, shadow, nullptr);
-	//obj = new Object(&models.getResource("resources/Gman/gman.obj"), prog, shadow, nullptr);
-	//obj = new Object(&models.getResource("resources/AntLion/AntLion.obj"), prog, shadow, nullptr);
-	obj = new Object(&models.getResource("resources/Combine Scanner/Combine_Scanner.obj"), prog, shadow, &textures.getResource("resources/Combine Scanner/Texture/scanner_sheet.tga"));
+	//obj = factory->create("resources/Strider/Strider.obj");
+	//obj = factory->create("resources/Gman/gman.obj");
+	//obj = factory->create("resources/AntLion/AntLion.obj");
+	obj = factory->create("resources/Combine Scanner/Combine_Scanner.obj");
 	obj->setColor(1, 1, 1);
 	obj->setPosition(18, 0, 5);
 	obj->setScale(0.01f);
@@ -200,7 +199,7 @@ void Scene::createScene() {
 	};
 	int modif = 2;
 	for(int i = 0; i < 4; i++) {
-		obj = new Object(&models.getResource("resources/ball.obj"), prog, shadow, nullptr);
+		obj = factory->create("resources/ball.obj");
 		obj->setPosition(modif * coords[i][0], modif * coords[i][1], modif * coords[i][2]);
 		balls->addNode(obj);
 	}
@@ -233,6 +232,7 @@ void Scene::initResources() {
 		camera.addListener(&constantProg);
 
 		depthBuffer = new FrameBuffer(1920, 1080, GL_DEPTH_COMPONENT16);
+		factory = new ObjectFactory(prog, shadow);
 
 	} catch(GlslCompileError &err) {
 		std::cerr << "GLSL error: " << err.getSource() << " - " << err.what() << "\n";

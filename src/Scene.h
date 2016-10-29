@@ -14,6 +14,7 @@
 #include "NodeList.h"
 #include "FrameBuffer.h"
 #include "Skybox.h"
+#include "ObjectFactory.h"
 
 class Scene : public KeyListener, public MouseListener {
 public:
@@ -40,6 +41,6 @@ private:
 	FrameBuffer *depthBuffer;
 	Window &window;
 	NodeList *lightContainer;
-	Program skyboxProg;
 	Skybox *skybox;
+	ObjectFactory* factory;
 };
