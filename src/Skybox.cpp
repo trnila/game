@@ -20,16 +20,11 @@ Skybox::Skybox(): cubemap() {
 	model = new Model("resources/cube.obj");
 }
 
-void Skybox::render(Camera camera) {
+void Skybox::render(RenderContext &c) {
 	program.use();
 	GL_CHECK(glDepthMask(GL_FALSE));
 
-	glm::mat4 view = glm::mat4(glm::mat3(camera.getTransform()));
-	program.setMatrix("viewMatrix", view);
-	program.setMatrix("projectionMatrix", camera.getPerspective());
-
 	program.useTexture("skybox", *cubemap, 0);
-	RenderContext c;
 	model->render(c, program);
 
 	GL_CHECK(glDepthMask(GL_TRUE));

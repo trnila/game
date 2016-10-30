@@ -207,6 +207,8 @@ void Scene::createScene() {
 	//prog.setAmbientColor(Color(0, 0, 0));
 
 	skybox = new Skybox();
+
+	camera.addListener(&skybox->program);
 }
 
 void Scene::initResources() {
@@ -267,7 +269,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	skybox->render(camera);
+	skybox->render(context);
 
 	glm::mat4 biasMatrix(
 			0.5, 0.0, 0.0, 0.0,

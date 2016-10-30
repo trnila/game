@@ -12,10 +12,10 @@ public:
 	Skybox();
 	~Skybox();
 
-	void render(Camera camera);
+	void render(RenderContext &c);
 
-private:
 	Program program;
+private:
 	CubeMap* cubemap;
 	Model *model;
 };

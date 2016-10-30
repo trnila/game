@@ -6,8 +6,7 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 
 
-void main()
-{
-    gl_Position = projectionMatrix * viewMatrix * vec4(position, 1.0);
+void main() {
+    gl_Position = projectionMatrix * mat4(mat3(viewMatrix)) * vec4(position, 1.0);
     TexCoords = position;
 }
