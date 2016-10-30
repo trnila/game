@@ -13,7 +13,7 @@ public:
 	void rotate(float angle, float x, float y, float z);
 	void rotate(float angle, glm::vec3 axis);
 	void rotate(float angle);
-	void setAngle(float angle);
+
 	void addAngle(float angle);
 
 	void setScale(float x, float y, float z);
@@ -28,6 +28,8 @@ public:
 
 protected:
 	glm::mat4 getTransform();
+
+	virtual void transformed();
 
 private:
 	glm::vec3 position = glm::vec3(0, 0, 0);

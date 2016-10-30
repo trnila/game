@@ -11,62 +11,63 @@ glm::mat4 Transformable::getTransform() {
 }
 
 void Transformable::move(float x, float y, float z) {
-	position.x += x;
-	position.y += y;
-	position.z += z;
+	setPosition(position.x + x, position.y + y, position.z + z);
+}
+
+void Transformable::move(glm::vec3 pos) {
+	move(pos.x, pos.y, pos.z);
 }
 
 void Transformable::setPosition(float x, float y, float z) {
-	position = glm::vec3(x, y, z);
-}
-
-void Transformable::rotate(float angle, float x, float y, float z) {
-	this->angle = angle;
-	rotateAxis = glm::vec3(x, y, z);
-}
-
-void Transformable::setAngle(float angle) {
-	this->angle = angle;
-}
-
-void Transformable::addAngle(float angle) {
-	this->angle += angle;
-}
-
-void Transformable::setScale(float x, float y, float z) {
-	scale = glm::vec3(x, y, z);
-}
-
-void Transformable::multiplyScale(float x, float y, float z) {
-	scale.x *= x;
-	scale.y *= y;
-	scale.z *= z;
-}
-
-glm::vec3 Transformable::getScale() {
-	return scale;
+	setPosition(glm::vec3(x, y, z));
 }
 
 void Transformable::setPosition(glm::vec3 pos) {
 	position = pos;
+	transformed();
+}
+
+void Transformable::rotate(float angle) {
+	this->angle = angle;
+	transformed();
+}
+
+void Transformable::addAngle(float angle) {
+	rotate(this->angle = angle);
 }
 
 void Transformable::rotate(float angle, glm::vec3 axis) {
 	this->angle = angle;
 	this->rotateAxis = axis;
-
+	transformed();
 }
 
-void Transformable::rotate(float angle) {
-	this->angle = angle;
+void Transformable::rotate(float angle, float x, float y, float z) {
+	rotate(angle, glm::vec3(x, y, z));
+}
+
+void Transformable::setScale(glm::vec3 scale) {
+	this->scale = scale;
+	transformed();
+}
+
+void Transformable::setScale(float x, float y, float z) {
+	setScale(glm::vec3(x, y, z));
 }
 
 void Transformable::setScale(float s) {
 	setScale(s, s, s);
 }
 
-void Transformable::setScale(glm::vec3 scale) {
-	this->scale = scale;
+void Transformable::multiplyScale(float x, float y, float z) {
+	scale.x *= x;
+	scale.y *= y;
+	scale.z *= z;
+	transformed();
+}
+
+glm::vec3 Transformable::getScale() {
+	return scale;
 }
 
 void Transformable::multiplyScale(glm::vec3 scale) {
@@ -77,6 +78,4 @@ glm::vec3 Transformable::getPosition() {
 	return position;
 }
 
-void Transformable::move(glm::vec3 pos) {
-	move(pos.x, pos.y, pos.z);
-}
+void Transformable::transformed() {}
