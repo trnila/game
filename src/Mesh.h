@@ -6,25 +6,20 @@
 #include "VBO.h"
 #include "VAO.h"
 #include "RenderContext.h"
+#include "Material.h"
 
 class Mesh {
 public:
 	Mesh(aiMesh &mesh, aiMaterial *material, std::string path);
-	Mesh(std::vector<float> vertices);
 
 	void render(RenderContext &context, Program &program);
 
 private:
-	VBO vbo, colorsVbo;
+	VBO vbo;
 	VAO vao;
-	GLuint ibo = 0;
+	GLuint ibo;
 	int size;
-	Color ambientColor;
-	Color diffuseColor;
-	glm::vec3 specularColor;
-	float shininess = 32;
-	float shininessStrength = 0.8;
-	Texture* texture = nullptr;
+	Material material;
 };
 
 

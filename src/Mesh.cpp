@@ -1,7 +1,6 @@
 #include <assimp/material.h>
 #include "Mesh.h"
 #include "ResourceManager.h"
-#include "Texture.h"
 
 struct Vertex {
 	glm::vec3 pos;
@@ -10,18 +9,7 @@ struct Vertex {
 };
 
 void Mesh::render(RenderContext &context, Program &program) {
-	program.sendVector("material.ambientColor", ambientColor);
-	program.sendVector("material.diffuseColor", diffuseColor);
-	program.sendVector("material.specularColor", specularColor);
-	program.sendFloat("material.shininess", shininess);
-	program.sendFloat("material.shininessStrength", shininessStrength);
-
-	if(texture) {
-		program.useTexture("modelTexture", *texture, 0);
-		program.setBool("hasTexture", true);
-	} else {
-		program.setBool("hasTexture", false);
-	}
+	material.apply(program);
 
 	auto vao = this->vao.activate();
 	GL_CHECK(glDrawElements(GL_TRIANGLES, size, GL_UNSIGNED_INT, 0));
@@ -74,30 +62,7 @@ Mesh::Mesh(aiMesh &mesh, aiMaterial *material, std::string path) {
 	size = index.size();
 
 	if(material) {
-		aiColor3D c;
-		if(material->Get(AI_MATKEY_COLOR_AMBIENT, c) == AI_SUCCESS) {
-			ambientColor = Color(c.r, c.g, c.b);
-		}
-		if(material->Get(AI_MATKEY_COLOR_DIFFUSE, c) == AI_SUCCESS) {
-			diffuseColor = Color(c.r, c.g, c.b);
-		}
-		if(material->Get(AI_MATKEY_COLOR_SPECULAR, c) == AI_SUCCESS) {
-			specularColor = Color(c.r, c.g, c.b);
-		}
-		float n;
-		if(material->Get(AI_MATKEY_SHININESS, n) == AI_SUCCESS && n != 0) {
-			shininess = n;
-		}
-
-		if(material->Get(AI_MATKEY_SHININESS_STRENGTH, n) == AI_SUCCESS) {
-			shininessStrength = n;
-		}
-
-		aiString str;
-		if(material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), str) == AI_SUCCESS) {
-			printf("%s\n", (path + "/" + std::string(str.C_Str())).c_str());
-			ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
-			texture = &textures.getResource((path + "/" + std::string(str.C_Str())).c_str());
-		}
+		this->material.createMaterial(material, path);
 	}
 }
+
