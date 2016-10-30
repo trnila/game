@@ -15,6 +15,7 @@ public:
 	void rotate(float angle);
 
 	void addAngle(float angle);
+	float getAngle();
 
 	void setScale(float x, float y, float z);
 	void setScale(float s);

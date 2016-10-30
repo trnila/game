@@ -33,7 +33,7 @@ void Transformable::rotate(float angle) {
 }
 
 void Transformable::addAngle(float angle) {
-	rotate(this->angle = angle);
+	rotate(this->angle + angle);
 }
 
 void Transformable::rotate(float angle, glm::vec3 axis) {
@@ -79,3 +79,5 @@ glm::vec3 Transformable::getPosition() {
 }
 
 void Transformable::transformed() {}
+
+float Transformable::getAngle() {return angle;}

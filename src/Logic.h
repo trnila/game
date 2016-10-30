@@ -47,14 +47,22 @@ public:
 
 };
 
-class FollowLogic: public Logic {
+class FollowLogic: public Logic, Observer<Camera> {
 public:
 	FollowLogic(Node &obj, Camera *cam);
 
 	virtual void update(float diff) override;
 
 private:
+	virtual void updated(Camera &obj) override;
+
+private:
 	Camera *cam;
 	float time = -1;
 	glm::vec3 pos;
+
+	float angle = 0;
+	glm::vec3 axis;
+
+	bool wandering = false;
 };
