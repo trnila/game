@@ -10,6 +10,7 @@
 class Mesh {
 public:
 	Mesh(aiMesh &mesh, aiMaterial *material, std::string path);
+	Mesh(std::vector<float> vertices);
 
 	void render(RenderContext &context, Program &program);
 

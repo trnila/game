@@ -9,6 +9,7 @@ class Texture {
 public:
 	Texture(const char *file);
 	Texture(GLuint type, int width, int height, int depth, int component);
+	Texture(GLuint type);
 
 	void set(int option, int value);
 	void attachTo(FrameBuffer& frameBuffer);

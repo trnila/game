@@ -1,6 +1,11 @@
 #pragma once
 
 #include "Program.h"
+#include "Texture.h"
+#include "CubeMap.h"
+#include "VAO.h"
+#include "VBO.h"
+#include "Model.h"
 
 class Skybox {
 public:
@@ -10,8 +15,8 @@ public:
 
 private:
 	Program program;
-	GLuint textureID;
-	GLuint skyboxVAO, skyboxVBO;
+	CubeMap* cubemap;
+	Model *model;
 };
 
 

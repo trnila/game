@@ -44,3 +44,7 @@ void Texture::attachTo(FrameBuffer &frameBuffer) {
 	auto buffer = frameBuffer.activate();
 	GL_CHECK(glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, id, 0));
 }
+
+Texture::Texture(GLuint type): type(type) {
+	create();
+}

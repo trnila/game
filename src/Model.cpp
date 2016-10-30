@@ -8,6 +8,8 @@
 #include "Formatter.h"
 
 Model::Model(const char *name, float *vertices, int size) {
+
+
 	/*auto vao = this->vao.activate();
 	auto vbo = this->vbo.activate();
 
