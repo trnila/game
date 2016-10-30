@@ -47,10 +47,6 @@ void Program::setColor(float r, float g, float b) {
 	sendVector("simpleColor", glm::vec3(r, g, b));
 }
 
-void Program::setLight(glm::vec3 position) {
-	sendVector("lightPos", position);
-}
-
 void Program::setBool(const char *var, bool val) {
 	use();
 	GLint uniformId = glGetUniformLocation(id, var);
@@ -58,8 +54,11 @@ void Program::setBool(const char *var, bool val) {
 }
 
 void Program::updated(Light &obj) {
-	sendVector("diffuseColor", obj.getDiffuseColor());
-	sendVector("specularColor", obj.getSpecularColor());
+	std::string prefix = "lights[" + std::to_string(obj.getId()) + "].";
+
+	sendVector((prefix + "position").c_str(), obj.getWorldPosition());
+	sendVector((prefix + "diffuseColor").c_str(), obj.getDiffuseColor());
+	sendVector((prefix + "specularColor").c_str(), obj.getSpecularColor());
 }
 
 void Program::sendVector(const char *name, const glm::vec3 &vec) {

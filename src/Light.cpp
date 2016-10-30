@@ -1,6 +1,6 @@
 #include "Light.h"
 
-Light::Light(Program &shader) : shader(shader) {
+Light::Light(Program &shader, int id) : shader(shader), id(id) {
 	addListener(&shader);
 }
 
@@ -13,8 +13,6 @@ void Light::update(float diff, const glm::mat4 &parent) {
 
 	glm::vec4 pos = parent * glm::vec4(getPosition(), 1);
 	worldPosition = pos;
-
-	shader.setLight(glm::vec3(pos));
 }
 
 const Color &Light::getDiffuseColor() const {
@@ -49,4 +47,13 @@ void Light::setDirection(const glm::vec3 &direction) {
 
 const glm::vec3 Light::getWorldPosition() {
 	return worldPosition;
+}
+
+void Light::transformed() {
+	Transformable::transformed();
+	notify();
+}
+
+int Light::getId() {
+	return id;
 }

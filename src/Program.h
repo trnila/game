@@ -16,7 +16,7 @@ public:
 	void setMatrix(const char* var, const glm::mat4 &mat);
 
 	void setColor(float r, float g, float b);
-	void setLight(glm::vec3 position);
+
 	void setBool(const char *var, bool val);
 	void setAmbientColor(const Color &color);
 

@@ -17,7 +17,7 @@ void Scene::createScene() {
 
 	Object *obj;
 	Object *terrain = factory->create("resources/terrain_smooth.obj");
-	//terrain = factory->create("resources/plane.obj");
+	terrain = factory->create("resources/plane.obj");
 
 	terrain->setPosition(-7, -3, -2);
 	terrain->rotate(0, 0, 0, 1);
@@ -97,7 +97,7 @@ void Scene::createScene() {
 	origin->addNode(obj);
 
 
-	lightContainer = new NodeList();
+	/*lightContainer = new NodeList();
 	lightContainer->setPosition(15.514797f, 2.126692f, 0.289154f);
 	lightContainer->rotate(0, 0, 1, 0);
 	lightContainer->attachLogic<RotateLogic>(45);
@@ -109,7 +109,7 @@ void Scene::createScene() {
 	lightNode->setSpecularColor(Color(0, 0, 1));
 	lightNode->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
 	lightContainer->addNode(lightNode);
-	//root.addNode(lightNode);
+	//root.addNode(lightNode);*/
 
 	/*obj = factory->create("resources/ball.obj");
 	obj->move(12, 10, 10);
@@ -208,32 +208,40 @@ void Scene::createScene() {
 
 	skybox = new Skybox();
 
+
 	camera.addListener(&skybox->program);
+
+	lights[0] = new Light(prog, 0);
+	lights[0]->setDiffuseColor(Color(0, 1, 0));
+	lights[0]->setSpecularColor(Color(0, 1, 0));
+	lights[0]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
+	root.addNode(lights[0]);
+
+	lights[1] = new Light(prog, 1);
+	lights[1]->setDiffuseColor(Color(1, 0, 0));
+	lights[1]->setSpecularColor(Color(1, 0, 0));
+	lights[1]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
+	root.addNode(lights[1]);
 }
 
 void Scene::initResources() {
-	try {
-		prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
-		prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
-		prog.link();
+	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
+	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
+	prog.link();
 
-		shadow.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/shadow.v.glsl", GL_VERTEX_SHADER));
-		shadow.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/shadow.f.glsl", GL_FRAGMENT_SHADER));
-		shadow.link();
+	shadow.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/shadow.v.glsl", GL_VERTEX_SHADER));
+	shadow.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/shadow.f.glsl", GL_FRAGMENT_SHADER));
+	shadow.link();
 
-		constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
-		constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/constant.f.glsl", GL_FRAGMENT_SHADER));
-		constantProg.link();
+	constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
+	constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/constant.f.glsl", GL_FRAGMENT_SHADER));
+	constantProg.link();
 
-		camera.addListener(&prog);
-		camera.addListener(&constantProg);
+	camera.addListener(&prog);
+	camera.addListener(&constantProg);
 
-		depthBuffer = new FrameBuffer(1920, 1080, GL_DEPTH_COMPONENT16);
-		factory = new ObjectFactory(prog, shadow);
-
-	} catch(GlslCompileError &err) {
-		std::cerr << "GLSL error: " << err.getSource() << " - " << err.what() << "\n";
-	}
+	depthBuffer = new FrameBuffer(1920, 1080, GL_DEPTH_COMPONENT16);
+	factory = new ObjectFactory(prog, shadow);
 }
 
 void Scene::update(float time) {
@@ -247,8 +255,8 @@ void Scene::update(float time) {
 void Scene::renderOneFrame(RenderContext &context) {
 	context.setStage(RenderStage::Shadow);
 
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -10, 200);
-	glm::mat4 depthViewMatrix = glm::lookAt(lightNode->getWorldPosition(), lightNode->getDirection(), glm::vec3(0,1,0));
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -20, 20);
+	glm::mat4 depthViewMatrix = glm::lookAt(lights[0]->getWorldPosition(), lights[0]->getDirection(), glm::vec3(0,1,0));
 	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix;
 
 	{
@@ -287,9 +295,13 @@ void Scene::renderOneFrame(RenderContext &context) {
 void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
 
-	if(key == GLFW_KEY_ENTER) {
-		//lightNode->setPosition(camera.getPosition());
-		//lightNode->setDirection(camera.getDirection());
+	if(key == GLFW_KEY_B) {
+		lights[0]->setPosition(camera.getPosition());
+		lights[0]->setDirection(camera.getDirection());
+	}
+	if(key == GLFW_KEY_A) {
+		lights[1]->setPosition(camera.getPosition());
+		lights[1]->setDirection(camera.getDirection());
 	}
 }
 
