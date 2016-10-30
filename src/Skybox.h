@@ -10,6 +10,7 @@
 class Skybox {
 public:
 	Skybox();
+	~Skybox();
 
 	void render(Camera camera);
 

@@ -34,3 +34,8 @@ void Skybox::render(Camera camera) {
 
 	GL_CHECK(glDepthMask(GL_TRUE));
 }
+
+Skybox::~Skybox() {
+	delete model;
+	delete cubemap;
+}
