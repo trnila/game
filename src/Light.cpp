@@ -1,6 +1,6 @@
 #include "Light.h"
 
-Light::Light(Program &shader, int id) : shader(shader), id(id) {
+Light::Light(Program &shader, int id) : id(id) {
 	addListener(&shader);
 }
 
@@ -34,7 +34,7 @@ void Light::setSpecularColor(const Color &specularColor) {
 }
 
 Light::~Light() {
-	removeListener(&shader);
+	setActive(false);
 }
 
 const glm::vec3 &Light::getDirection() const {
@@ -56,4 +56,13 @@ void Light::transformed() {
 
 int Light::getId() {
 	return id;
+}
+
+void Light::setActive(bool active) {
+	this->active = active;
+	notify();
+}
+
+bool Light::isActive() {
+	return active;
 }

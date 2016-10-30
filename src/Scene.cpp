@@ -303,6 +303,14 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 		lights[1]->setPosition(camera.getPosition());
 		lights[1]->setDirection(camera.getDirection());
 	}
+
+	if(key == GLFW_KEY_C && action == GLFW_PRESS) {
+		lights[1]->setActive(!lights[1]->isActive());
+	}
+
+	if(key == GLFW_KEY_D && action == GLFW_PRESS) {
+		lights[0]->setActive(!lights[0]->isActive());
+	}
 }
 
 void Scene::onMove(double x, double y) {

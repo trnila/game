@@ -29,4 +29,9 @@ public:
 	void sendFloat(const char *name, float v);
 
 	GLuint id;
+
+private:
+	int activeLights = 0;
+
+	void sendInt(const char *name, int value);
 };

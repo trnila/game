@@ -56,9 +56,16 @@ void Program::setBool(const char *var, bool val) {
 void Program::updated(Light &obj) {
 	std::string prefix = "lights[" + std::to_string(obj.getId()) + "].";
 
-	sendVector((prefix + "position").c_str(), obj.getWorldPosition());
-	sendVector((prefix + "diffuseColor").c_str(), obj.getDiffuseColor());
-	sendVector((prefix + "specularColor").c_str(), obj.getSpecularColor());
+	if(obj.isActive()) {
+		activeLights |= 1 << obj.getId();
+		sendVector((prefix + "position").c_str(), obj.getWorldPosition());
+		sendVector((prefix + "diffuseColor").c_str(), obj.getDiffuseColor());
+		sendVector((prefix + "specularColor").c_str(), obj.getSpecularColor());
+	} else {
+		activeLights &= ~(1 << obj.getId());
+	}
+
+	sendInt("activeLights", activeLights);
 }
 
 void Program::sendVector(const char *name, const glm::vec3 &vec) {
@@ -74,6 +81,15 @@ void Program::setAmbientColor(const Color &color) {
 	sendVector("ambientColor", color);
 }
 
+void Program::sendFloat(const char *name, float v) {
+	use();
+	GLint uniformId = glGetUniformLocation(id, name);
+	if(!uniformId) {
+		printf("failed sending %s\n", name);
+	}
+	GL_CHECK(glUniform1f(uniformId, v));
+}
+
 void Program::useTexture(const char *name, Texture &texture, int pos) {
 	GLint location = glGetUniformLocation(id, name);
 
@@ -82,11 +98,8 @@ void Program::useTexture(const char *name, Texture &texture, int pos) {
 	GL_CHECK(glUniform1i(location, pos));
 }
 
-void Program::sendFloat(const char *name, float v) {
+void Program::sendInt(const char *name, int value) {
 	use();
 	GLint uniformId = glGetUniformLocation(id, name);
-	if(!uniformId) {
-		printf("failed sending %s\n", name);
-	}
-	GL_CHECK(glUniform1f(uniformId, v));
+	GL_CHECK(glUniform1i(uniformId, value));
 }

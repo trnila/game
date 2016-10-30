@@ -20,17 +20,19 @@ public:
 	const glm::vec3 getWorldPosition();
 
 	int getId();
+	void setActive(bool active);
+	bool isActive();
 
 protected:
 	virtual void transformed() override;
 
 private:
-	Program &shader;
 	Color diffuseColor = Color(0, 0, 0);
 	Color specularColor = Color(0, 0, 0);
 	glm::vec3 direction;
 	glm::vec4 worldPosition;
 	int id;
+	bool active = true;
 };
 
 
