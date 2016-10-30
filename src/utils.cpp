@@ -34,10 +34,13 @@ std::string getGLLog(GLuint id) {
 
 	char* log = new char[log_length];
 
-	if (glIsShader(id))
+	if (glIsShader(id)) {
 		glGetShaderInfoLog(id, log_length, NULL, log);
-	else if (glIsProgram(id))
+	} else if (glIsProgram(id)) {
 		glGetProgramInfoLog(id, log_length, NULL, log);
+	} else {
+
+	}
 
 	std::string result = std::string(log);
 	delete[] log;

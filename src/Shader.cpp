@@ -10,13 +10,14 @@ Shader::Shader(const char *file, GLenum type) {
 
 	std::string source = getFileContents(file);
 	const GLchar *addr = (GLchar*) source.data();
-	glShaderSource(id, 1, &addr, NULL);
+	GL_CHECK(glShaderSource(id, 1, &addr, NULL));
 
-	glCompileShader(id);
+	GL_CHECK(glCompileShader(id));
 	GLint compile_ok = GL_FALSE;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &compile_ok);
+	GL_CHECK(glGetShaderiv(id, GL_COMPILE_STATUS, &compile_ok));
 	if (compile_ok == GL_FALSE) {
+		std::string error = getGLLog(id);
 		glDeleteShader(id);
-		throw GlslCompileError(file, getGLLog(id));
+		throw GlslCompileError(file, error);
 	}
 }
