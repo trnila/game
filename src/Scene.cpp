@@ -17,7 +17,7 @@ void Scene::createScene() {
 
 	Object *obj;
 	Object *terrain = factory->create("resources/terrain_smooth.obj");
-	terrain = factory->create("resources/plane.obj");
+//	terrain = factory->create("resources/plane.obj");
 
 	terrain->setPosition(-7, -3, -2);
 	terrain->rotate(0, 0, 0, 1);
