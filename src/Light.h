@@ -23,6 +23,10 @@ public:
 	void setActive(bool active);
 	bool isActive();
 
+	virtual Object* find(int id) {
+		return nullptr;
+	}
+
 protected:
 	virtual void transformed() override;
 

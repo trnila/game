@@ -9,7 +9,7 @@ void Game::init() {
 		throw std::runtime_error("failed to init glfw");
 	}
 
-	window = new Window(640, 480, "The Game");
+	window = new Window(800, 600, "The Game");
 
 
 	GLenum err = glewInit();
@@ -21,6 +21,8 @@ void Game::init() {
 	}
 
 	GL_CHECK(glEnable(GL_DEPTH_TEST));
+	GL_CHECK(glEnable(GL_STENCIL_TEST));
+	GL_CHECK(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
 
 	scene = new Scene(*window);
 }

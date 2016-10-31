@@ -9,6 +9,17 @@ public:
 	void addNode(Node *node);
 	void removeNode(Node *node);
 
+	virtual Object* find(int id) {
+		for (auto o : nodes) {
+			Object* f = o->find(id);
+			if (f) {
+				return f;
+			}
+		}
+
+		return nullptr;
+	}
+
 private:
 	std::vector<Node *> nodes;
 };

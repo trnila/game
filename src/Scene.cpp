@@ -47,7 +47,7 @@ void Scene::createScene() {
 	propeller->addNode(obj);
 
 	for (int i = 0; i < 4; i++) {
-		obj = new Object(&models.getResource("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
+		obj = new Object(-1, &models.getResource("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
 		obj->rotate(90 * i, 0.6, 0, 1);
 		obj->setScale(1, 1, 1);
 		obj->setColor(colors[i]);
@@ -91,7 +91,7 @@ void Scene::createScene() {
 	origin->rotate(90, 0, 0, 1);
 	origin->attachLogic<RotateLogic>(45);
 
-	obj = new Object(&models.getResource("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
+	obj = new Object(-1, &models.getResource("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
 	obj->move(-0.1, -1, 0);
 	obj->setColor(1, 0, 0);
 	origin->addNode(obj);
@@ -211,17 +211,34 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	lights[0] = new Light(prog, 0);
+	/*lights[0] = new Light(prog, 0);
 	lights[0]->setDiffuseColor(Color(0, 1, 0));
 	lights[0]->setSpecularColor(Color(0, 1, 0));
 	lights[0]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
 	root.addNode(lights[0]);
-
+	
 	lights[1] = new Light(prog, 1);
 	lights[1]->setDiffuseColor(Color(1, 0, 0));
 	lights[1]->setSpecularColor(Color(1, 0, 0));
 	lights[1]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
-	root.addNode(lights[1]);
+	root.addNode(lights[1]);*/
+
+
+	NodeList *node = new NodeList();
+	node->rotate(0, 0, 1, 0);
+	node->attachLogic<RotateLogic>(45);
+
+/*	obj = factory->create("resources/ball.obj");
+	obj->setPosition(15, 15, 0);
+	node->addNode(obj);*/
+
+	lights[2] = new Light(prog, 2);
+	lights[2]->setDiffuseColor(Color(1, 1, 1));
+	lights[2]->setSpecularColor(Color(1, 1, 1));
+	lights[2]->setDirection(glm::vec3(0, 1, 1));
+	lights[2]->setPosition(15, 15, 0);
+	node->addNode(lights[2]);
+	root.addNode(node);
 }
 
 void Scene::initResources() {
@@ -247,6 +264,9 @@ void Scene::initResources() {
 void Scene::update(float time) {
 	glm::mat4 parent(1.0f);
 
+	glm::vec3 pos = lights[2]->getPosition();
+	lights[2]->setDirection(glm::vec3(0, -pos.x, -pos.z));
+
 	root.update(time, parent);
 	windMill->move(0.1 * time, 0, 0);
 	camHandler.update(time);
@@ -255,8 +275,8 @@ void Scene::update(float time) {
 void Scene::renderOneFrame(RenderContext &context) {
 	context.setStage(RenderStage::Shadow);
 
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -20, 20);
-	glm::mat4 depthViewMatrix = glm::lookAt(lights[0]->getWorldPosition(), lights[0]->getDirection(), glm::vec3(0,1,0));
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -20, 60);
+	glm::mat4 depthViewMatrix = glm::lookAt(lights[2]->getWorldPosition(), lights[2]->getDirection(), glm::vec3(0,1,0));
 	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix;
 
 	{

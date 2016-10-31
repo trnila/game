@@ -19,6 +19,11 @@ Window::Window(int width, int height, const char *title) : width(width), height(
 	glfwSetCursorPosCallback(window, [](GLFWwindow *window, double x, double y) {
 		Game::getInstance().onMove(x, y);
 	});
+	glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+		Game::getInstance().onClick(button, action, xpos, ypos);
+	});
 	glfwSetWindowSizeCallback(window, [](GLFWwindow *window, int w, int h) -> void {
 		GL_CHECK(glViewport(0, 0, w, h));
 		Window *win = (Window *) glfwGetWindowUserPointer(window);

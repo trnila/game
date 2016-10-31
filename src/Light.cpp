@@ -13,6 +13,7 @@ void Light::update(float diff, const glm::mat4 &parent) {
 
 	glm::vec4 pos = parent * glm::vec4(getPosition(), 1);
 	worldPosition = pos;
+	transformed();
 }
 
 const Color &Light::getDiffuseColor() const {
@@ -46,7 +47,7 @@ void Light::setDirection(const glm::vec3 &direction) {
 }
 
 const glm::vec3 Light::getWorldPosition() {
-	return worldPosition;
+	return glm::vec3(worldPosition);
 }
 
 void Light::transformed() {

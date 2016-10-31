@@ -12,6 +12,7 @@ public:
 
 private:
 	Program &shader, &shadower;
+	int lastId = -1;
 };
 
 

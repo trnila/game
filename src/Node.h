@@ -4,6 +4,7 @@
 #include "Transformable.h"
 
 class Logic;
+class Object;
 
 class Node : public Transformable {
 public:
@@ -18,6 +19,8 @@ public:
 	}
 
 	void updateLogic(float diff);
+
+	virtual Object* find(int id) = 0;
 
 private:
 	Logic *logic = nullptr;

@@ -6,5 +6,5 @@ ObjectFactory::ObjectFactory(Program &shader, Program &shadower) : shader(shader
 
 Object *ObjectFactory::create(const char *name) {
 	ResourceManager<Model> &models = ResourceManager<Model>::getInstance();
-	return new Object(&models.getResource(name), shader, shadower, nullptr);
+	return new Object(++lastId, &models.getResource(name), shader, shadower, nullptr);
 }

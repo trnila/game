@@ -1,7 +1,8 @@
 #include "Object.h"
 #include "Logic.h"
 
-Object::Object(Model *model, Program &program, Program &shadow, Texture *texture) :
+Object::Object(int id, Model *model, Program &program, Program &shadow, Texture *texture) :
+		id(id),
 		model(model),
 		program(program),
 		shadow(shadow),
@@ -13,12 +14,7 @@ void Object::render(RenderContext &context) {
 
 	currentProgram.setMatrix("modelMatrix", modelMatrix);
 	currentProgram.setColor(color.r, color.g, color.b);
-
-	/*if(texture) {
-		currentProgram.setBool("hasTexture", true);
-	} else {
-		currentProgram.setBool("hasTexture", false);
-	}*/
+	GL_CHECK(glStencilFunc(GL_ALWAYS, id, 0xFF));
 
 	model->render(context, currentProgram);
 }

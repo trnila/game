@@ -12,14 +12,26 @@ class Logic;
 
 class Object : public Node {
 public:
-	Object(Model *model, Program &program, Program &shadow, Texture *texture);
+	Object(int id, Model *model, Program &program, Program &shadow, Texture *texture);
 
 	void setColor(float r, float g, float b);
 	void setColor(glm::vec3 color);
 	virtual void render(RenderContext &context);
 	virtual void update(float diff, const glm::mat4 &parent);
 
+	int getId() {
+		return id;
+	}
+
+	virtual Object* find(int id) {
+		if (this->id == id) {
+			return this;
+		}
+		return nullptr;
+	}
+
 private:
+	int id;
 	Model *model;
 	Program &program, &shadow;
 	glm::vec3 color;
