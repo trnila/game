@@ -9,12 +9,18 @@ Skybox::Skybox(): cubemap() {
 	program.use();
 
 	std::vector<const char*> faces;
-	faces.push_back("resources/skyboxes/ely_hills/hills_rt.tga");
+	/*faces.push_back("resources/skyboxes/ely_hills/hills_rt.tga");
 	faces.push_back("resources/skyboxes/ely_hills/hills_lf.tga");
 	faces.push_back("resources/skyboxes/ely_hills/hills_up.tga");
 	faces.push_back("resources/skyboxes/ely_hills/hills_dn.tga");
 	faces.push_back("resources/skyboxes/ely_hills/hills_bk.tga");
-	faces.push_back("resources/skyboxes/ely_hills/hills_ft.tga");
+	faces.push_back("resources/skyboxes/ely_hills/hills_ft.tga");*/
+	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_rt.tga");
+	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_lf.tga");
+	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_up.tga");
+	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_dn.tga");
+	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_bk.tga");
+	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_ft.tga");
 
 	cubemap = new CubeMap(faces);
 	model = new Model("resources/cube.obj");

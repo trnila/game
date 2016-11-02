@@ -165,6 +165,45 @@ void Scene::createScene() {
 	obj->setScale(0.05f);
 	root.addNode(obj);
 
+	NodeList *ro = new NodeList();
+	ro->rotate(0, 0, 1, 0);
+	ro->attachLogic<RotateLogic>(20);
+	root.addNode(ro);
+
+	NodeList *e1 = new NodeList();
+	e1->rotate(0, 0, 1, 0);
+	ro->addNode(e1);
+
+	NodeList *e2 = new NodeList();
+	e2->rotate(0, 0, 1, 0);
+	e2->setPosition(100, 0, 0);
+	e1->addNode(e2);
+
+	obj = factory->create("resources/earth/earth.obj");
+	obj->setColor(1, 1, 1);
+	obj->setScale(0.05f);
+	e2->addNode(obj);
+
+	NodeList *m = new NodeList();
+	m->rotate(0, 0, 1, 0);
+	m->attachLogic<RotateLogic>(-90);
+	e2->addNode(m);
+
+	obj = factory->create("resources/moon/moon.obj");
+	obj->setColor(1, 1, 1);
+	obj->setPosition(20, 0, 0);
+	obj->setScale(0.05f);
+	m->addNode(obj);
+
+	/*obj = factory->create("resources/earth/earth.obj");
+	obj->setColor(1, 1, 1);
+	obj->setPosition(100, 0, 0);
+	obj->setScale(0.05f);
+	obj->attachLogic<RotateLogic>(15);
+	ro->addNode(obj);*/
+
+
+
 	obj = factory->create("resources/Strider/Strider.obj");
 	obj->setColor(1, 1, 1);
 	obj->setPosition(18, -5, 30);
@@ -201,6 +240,7 @@ void Scene::createScene() {
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
+	camera.setZFar(200);
 
 	prog.setAmbientColor(Color(0.1, 0.1, 0.1));
 	//prog.setAmbientColor(Color(0, 0, 0));
