@@ -1,7 +1,6 @@
 #include <glm/ext.hpp>
 #include "Scene.h"
 #include "data.h"
-#include "Logic.h"
 #include "Light.h"
 
 
@@ -203,7 +202,7 @@ void Scene::createScene() {
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
 
-	prog.setAmbientColor(Color(0.05, 0.05, 0.05));
+	prog.setAmbientColor(Color(0.1, 0.1, 0.1));
 	//prog.setAmbientColor(Color(0, 0, 0));
 
 	skybox = new Skybox();
@@ -211,7 +210,7 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	/*lights[0] = new Light(prog, 0);
+	lights[0] = new Light(prog, 0);
 	lights[0]->setDiffuseColor(Color(0, 1, 0));
 	lights[0]->setSpecularColor(Color(0, 1, 0));
 	lights[0]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
@@ -221,7 +220,7 @@ void Scene::createScene() {
 	lights[1]->setDiffuseColor(Color(1, 0, 0));
 	lights[1]->setSpecularColor(Color(1, 0, 0));
 	lights[1]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
-	root.addNode(lights[1]);*/
+	root.addNode(lights[1]);
 
 
 	NodeList *node = new NodeList();
@@ -324,12 +323,18 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 		lights[1]->setDirection(camera.getDirection());
 	}
 
-	if(key == GLFW_KEY_C && action == GLFW_PRESS) {
-		lights[1]->setActive(!lights[1]->isActive());
-	}
+	if(action == GLFW_PRESS) {
+		if(key == GLFW_KEY_C) {
+			lights[1]->setActive(!lights[1]->isActive());
+		}
 
-	if(key == GLFW_KEY_D && action == GLFW_PRESS) {
-		lights[0]->setActive(!lights[0]->isActive());
+		if(key == GLFW_KEY_D) {
+			lights[0]->setActive(!lights[0]->isActive());
+		}
+
+		if(key == GLFW_KEY_E) {
+			lights[2]->setActive(!lights[2]->isActive());
+		}
 	}
 }
 
