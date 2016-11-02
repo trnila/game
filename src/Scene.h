@@ -49,7 +49,7 @@ public:
 			glm::mat4 view = camera.getTransform();
 			glm::mat4 projection = camera.getPerspective();
 
-			glm::vec4& viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());
+			glm::vec4 viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());
 			glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
 			printf("unProject[%f, %f, %f, %f]\n", pos.x, pos.y, pos.z, depth);
