@@ -21,10 +21,10 @@ void Scene::createScene() {
 
 	root.addNode(terrain);
 
-	windMill = new NodeList();
+	/*NodeList *windMill = new NodeList();
 	windMill->move(0, 0.5, 0);
 
-	propeller = new NodeList();
+	NodeList *propeller = new NodeList();
 	propeller->move(0, 1, -0.05f);
 	propeller->rotate(0, 0.6, 0, 1);
 	propeller->attachLogic<RotateLogic>(45);
@@ -56,7 +56,7 @@ void Scene::createScene() {
 	windMill->addNode(obj);
 	windMill->addNode(propeller);
 
-	root.addNode(windMill);
+	root.addNode(windMill);*/
 
 
 	NodeList *forest = new NodeList();
@@ -86,10 +86,10 @@ void Scene::createScene() {
 	origin->rotate(90, 0, 0, 1);
 	origin->attachLogic<RotateLogic>(45);
 
-	obj = new Object(-1, new Model("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
+	/*obj = new Object(-1, new Model("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
 	obj->move(-0.1, -1, 0);
 	obj->setColor(1, 0, 0);
-	origin->addNode(obj);
+	origin->addNode(obj);*/
 
 
 	/*lightContainer = new NodeList();
@@ -259,7 +259,7 @@ void Scene::createScene() {
 	light = new Light(prog, 0, LightType::Directional);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
-	light->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
+	light->setDirection(glm::vec3(-0.550664, -0.395870, 0.734885));
 	root.addNode(light);
 	
 /*	light = new Light(prog, 1, LightType::Point);
@@ -291,19 +291,9 @@ void Scene::initResources() {
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
 	prog.link();
 
-	shadow.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/shadow.v.glsl", GL_VERTEX_SHADER));
-	shadow.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/shadow.f.glsl", GL_FRAGMENT_SHADER));
-	shadow.link();
-
-	constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
-	constantProg.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/constant.f.glsl", GL_FRAGMENT_SHADER));
-	constantProg.link();
-
 	camera.addListener(&prog);
-	camera.addListener(&constantProg);
 
-	depthBuffer = new FrameBuffer(1920, 1080, GL_DEPTH_COMPONENT16);
-	factory = new ObjectFactory(prog, shadow);
+	factory = new ObjectFactory(prog, shadowRenderer.program);
 	//state = new Insert(*factory);
 	states.add(StateType::Normal, new NoState(states));
 	states.add(StateType::Insert, new Insert(states, *factory));
@@ -315,32 +305,13 @@ void Scene::initResources() {
 
 void Scene::update(float time) {
 	glm::mat4 parent(1.0f);
-
 	root.update(time, parent);
-	windMill->move(0.1 * time, 0, 0);
 	camHandler.update(time);
 }
 
 void Scene::renderOneFrame(RenderContext &context) {
-	context.setStage(RenderStage::Shadow);
-
-	Light* light = root.getLight(6);
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -20, 60);
-	glm::mat4 depthViewMatrix = glm::lookAt(light->getWorldPosition(), light->getDirection(), glm::vec3(0,1,0));
-	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix;
-
-	{
-		auto buffer = depthBuffer->activate();
-
-		shadow.setMatrix("depthMVP", depthMVP);
-
-		context.clearColor(0, 0, 0, 0);
-		context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		context.setCamera(&camera);
-
-		shadow.use();
-		root.render(context);
-	}
+	glm::mat4 depthMVP;
+	Texture& shadowTexture = shadowRenderer.render(context, root, depthMVP);
 
 	context.setStage(RenderStage::Normal);
 	window.setViewport();
@@ -358,7 +329,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
 	prog.setMatrix("depthBias", depthBiasMVP);
 
-	prog.useTexture("shadowTexture", depthBuffer->getTexture(), 1);
+	prog.useTexture("shadowTexture", shadowTexture, 1);
 	root.render(context);
 }
 
@@ -369,5 +340,31 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 
 void Scene::onMove(double x, double y) {
 	camHandler.onMove(x, y);
+}
+
+void Scene::onClick(int button, int action, double x, double y) {
+	if (action != GLFW_PRESS) {
+		return;
+	}
+
+	int newY = window.getHeight() - y;
+	float depth;
+
+	//glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
+	glReadPixels(x, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	int index;
+	glReadPixels(x, newY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+	Object* o = root.find(index);
+
+	glm::vec3 screenX = glm::vec3(x, newY, depth);
+	glm::mat4 view = camera.getTransform();
+	glm::mat4 projection = camera.getPerspective();
+
+	glm::vec4 viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());
+	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
+
+	states.current().onClick(pos, o, root);
+	std::cout << glm::to_string(camera.getDirection()) << "\n";
 }
 

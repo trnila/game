@@ -73,7 +73,7 @@ void main(void) {
 
 		    float visibility = 1.0;
 	        if ( texture( shadowTexture, shadCoord.xy ).z  <  shadCoord.z - 0.005){
-	       //     visibility = 0.5;
+	            visibility = 0.5;
 	        }
 
 	        total += visibility * attenuation * (diffuse + specular);
