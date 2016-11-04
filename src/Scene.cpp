@@ -299,6 +299,13 @@ void Scene::initResources() {
 
 	depthBuffer = new FrameBuffer(1920, 1080, GL_DEPTH_COMPONENT16);
 	factory = new ObjectFactory(prog, shadow);
+	//state = new Insert(*factory);
+	states.add(StateType::Normal, new NoState(states));
+	states.add(StateType::Insert, new Insert(states, *factory));
+	states.add(StateType::Delete, new Delete(states));
+	states.add(StateType::Scale, new Scale(states));
+	states.add(StateType::Lights, new Lights(states, camera));
+	states.change(StateType::Normal);
 }
 
 void Scene::update(float time) {
@@ -377,6 +384,8 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 			lights[2]->setActive(!lights[2]->isActive());
 		}
 	}
+
+	states.current().onKey(key, scancode, action, mods, root);
 }
 
 void Scene::onMove(double x, double y) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Node.h"
+#include "Light.h"
 
 class NodeList : public Node {
 public:
@@ -14,6 +15,24 @@ public:
 			Object* f = o->find(id);
 			if (f) {
 				return f;
+			}
+		}
+
+		return nullptr;
+	}
+
+	virtual Light* getLight(int id) {
+		for (auto o : nodes) {
+			Light* l = dynamic_cast<Light*>(o);
+			if (l && l->getId() == id) {
+				return l;
+			}
+
+			if(NodeList* list = dynamic_cast<NodeList*>(o)) {
+				l = list->getLight(id);
+				if(l) {
+					return l;
+				}
 			}
 		}
 

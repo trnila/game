@@ -16,6 +16,7 @@
 #include "Graphics/Skybox.h"
 #include "ObjectFactory.h"
 #include "Logic.h"
+#include "Graphics/State.h"
 
 class Scene : public KeyListener, public MouseListener {
 public:
@@ -39,41 +40,16 @@ public:
 		int index;
 		glReadPixels(x, newY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 
-		printf("%f %f %d\n", x, y, index);
 		Object* o = root.find(index);
-		if (o && button == GLFW_MOUSE_BUTTON_1) {
-			o->move(1, 1, 1);
-		}
-		else if(button == GLFW_MOUSE_BUTTON_2) {
-			glm::vec3 screenX = glm::vec3(x, newY, depth);
-			glm::mat4 view = camera.getTransform();
-			glm::mat4 projection = camera.getPerspective();
 
-			glm::vec4 viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());
-			glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
+		glm::vec3 screenX = glm::vec3(x, newY, depth);
+		glm::mat4 view = camera.getTransform();
+		glm::mat4 projection = camera.getPerspective();
 
-			printf("unProject[%f, %f, %f, %f]\n", pos.x, pos.y, pos.z, depth);
+		glm::vec4 viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());
+		glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
-
-
-			/*Object *obj;
-			obj = factory->create("resources/Headcrab classic/headcrabclassic.obj");
-			obj->setColor(1, 1, 1);
-			obj->setPosition(pos.x, pos.y, pos.z);
-			obj->setScale(0.05f);
-			obj->attachLogic<FollowLogic>(&camera);
-			root.addNode(obj);*/
-
-			Object *obj;
-			obj = factory->create("resources/tree.obj");
-			obj->setPosition(pos.x, pos.y, pos.z);
-			obj->rotate(0, 0, 0, 1);
-			obj->setScale(0.01);
-			obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-			obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
-			root.addNode(obj);
-		}
-
+		states.current().onClick(pos, o, root);
 	}
 
 private:
@@ -93,4 +69,5 @@ private:
 	NodeList *lightContainer;
 	Skybox *skybox;
 	ObjectFactory* factory;
+	States states;
 };
