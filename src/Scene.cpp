@@ -209,12 +209,22 @@ void Scene::createScene() {
 	//obj = factory->create("resources/Strider/Strider.obj");
 	//obj = factory->create("resources/Gman/gman.obj");
 	//obj = factory->create("resources/AntLion/AntLion.obj");
+	NodeList *center = new NodeList();
+	center->setPosition(18, 0, 5);
+	root.addNode(center);
+
 	obj = factory->create("resources/Combine Scanner/Combine_Scanner.obj");
 	obj->setColor(1, 1, 1);
-	obj->setPosition(18, 0, 5);
 	obj->setScale(0.01f);
-	obj->attachLogic<FollowLogic>(&camera);
-	root.addNode(obj);
+	center->addNode(obj);
+
+	Light *light = new Light(prog, 6, LightType::SpotLight);
+	light->setDiffuseColor(Color(1, 1, 1));
+	light->setSpecularColor(Color(1, 1, 1));
+	light->setConeAngle(15);
+	center->addNode(light);
+	center->attachLogic<FollowLogic>(&camera, light);
+
 
 	NodeList *balls = new NodeList();
 	balls->move(15, 0, 0);
@@ -246,15 +256,13 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	Light *light;
-	light = new Light(prog, 0, LightType::SpotLight);
+	light = new Light(prog, 0, LightType::Directional);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
-	light->setConeAngle(45);
 	root.addNode(light);
 	
-	light = new Light(prog, 1, LightType::Point);
+/*	light = new Light(prog, 1, LightType::Point);
 	light->setDiffuseColor(Color(1, 0, 0));
 	light->setSpecularColor(Color(1, 0, 0));
 	light->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
@@ -269,13 +277,13 @@ void Scene::createScene() {
 	obj->setPosition(15, 15, 0);
 	node->addNode(obj);*/
 
-	light = new Light(prog, 2, LightType::Point);
+	/*light = new Light(prog, 2, LightType::Point);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setDirection(glm::vec3(0, 1, 1));
 	light->setPosition(15, 15, 0);
 	node->addNode(light);
-	root.addNode(node);
+	root.addNode(node);*/
 }
 
 void Scene::initResources() {
@@ -316,7 +324,7 @@ void Scene::update(float time) {
 void Scene::renderOneFrame(RenderContext &context) {
 	context.setStage(RenderStage::Shadow);
 
-	Light* light = root.getLight(0);
+	Light* light = root.getLight(6);
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -20, 60);
 	glm::mat4 depthViewMatrix = glm::lookAt(light->getWorldPosition(), light->getDirection(), glm::vec3(0,1,0));
 	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix;

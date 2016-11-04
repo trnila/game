@@ -24,7 +24,7 @@ public:
 	void multiplyScale(glm::vec3 scale);
 	glm::vec3 getScale();
 	glm::vec3 getDirection() {
-		return glm::vec3(glm::vec4(0, 0, 1, 1) * getTransform());
+		return glm::vec3(0) - glm::vec3(getTransform() * glm::vec4(0, 1, 0, 1));
 	}
 
 protected:

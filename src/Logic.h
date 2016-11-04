@@ -49,7 +49,7 @@ public:
 
 class FollowLogic: public Logic, Observer<Camera> {
 public:
-	FollowLogic(Node &obj, Camera *cam);
+	FollowLogic(Node &obj, Camera *cam, Light *light);
 
 	virtual void update(float diff) override;
 
@@ -65,4 +65,5 @@ private:
 	glm::vec3 axis;
 
 	bool wandering = false;
+	Light* light;
 };

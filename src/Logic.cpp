@@ -1,5 +1,6 @@
 #include <glm/ext.hpp>
 #include "Logic.h"
+#include "Scene/Light.h"
 
 void RotateLogic::update(float diff) {
 	obj.addAngle(anglePerSec * diff);
@@ -26,7 +27,7 @@ void MoveLogic::update(float diff) {
 	obj.move(0, 1.0 * diff, 0);
 }
 
-FollowLogic::FollowLogic(Node &obj, Camera *cam) : Logic(obj), cam(cam) {
+FollowLogic::FollowLogic(Node &obj, Camera *cam, Light *light) : Logic(obj), cam(cam), light(light) {
 	cam->addListener(this);
 }
 
@@ -55,6 +56,7 @@ void FollowLogic::update(float diff) {
 		auto direction = pos - obj.getPosition();
 		obj.move(direction * diff);
 		obj.rotate(obj.getAngle() + (angle - obj.getAngle()) * diff, axis);
+		light->setDirection(glm::vec3(0, -1, 0));
 	} else {
 		if(time > 3) {
 			wandering = true;
@@ -68,6 +70,7 @@ void FollowLogic::update(float diff) {
 			angle = glm::degrees(acos(glm::dot(objDir, toCamDir)));
 			axis = glm::cross(objDir, toCamDir);
 			obj.rotate(angle, axis);
+			light->setDirection(glm::vec3(0, -1, 0));
 		}
 	}
 }
