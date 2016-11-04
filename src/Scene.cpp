@@ -6,14 +6,10 @@
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
 	initResources();
-
 	createScene();
 }
 
 void Scene::createScene() {
-	ResourceManager<Model> &models = ResourceManager<Model>::getInstance();
-	ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
-
 	Object *obj;
 	Object *terrain = factory->create("resources/terrain_smooth.obj");
 //	terrain = factory->create("resources/plane.obj");
@@ -46,7 +42,7 @@ void Scene::createScene() {
 	propeller->addNode(obj);
 
 	for (int i = 0; i < 4; i++) {
-		obj = new Object(-1, &models.getResource("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
+		obj = new Object(-1, new Model("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
 		obj->rotate(90 * i, 0.6, 0, 1);
 		obj->setScale(1, 1, 1);
 		obj->setColor(colors[i]);
@@ -90,7 +86,7 @@ void Scene::createScene() {
 	origin->rotate(90, 0, 0, 1);
 	origin->attachLogic<RotateLogic>(45);
 
-	obj = new Object(-1, &models.getResource("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
+	obj = new Object(-1, new Model("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
 	obj->move(-0.1, -1, 0);
 	obj->setColor(1, 0, 0);
 	origin->addNode(obj);
