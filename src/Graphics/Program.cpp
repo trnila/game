@@ -59,16 +59,17 @@ void Program::updated(Light &obj) {
 	if(obj.isActive()) {
 		activeLights |= 1 << obj.getId();
 
-		if(obj.getType() == LightType::Point) {
-			sendVector((prefix + "position").c_str(), glm::vec4(obj.getWorldPosition(), 1));
-		} else if(obj.getType() == LightType::Directional) {
+		if(obj.getType() == LightType::Directional) {
 			sendVector((prefix + "position").c_str(), glm::vec4(obj.getDirection(), 0));
 		} else {
-			assert("unknown light");
+			sendVector((prefix + "position").c_str(), glm::vec4(obj.getWorldPosition(), 1));
 		}
 		sendVector((prefix + "diffuseColor").c_str(), obj.getDiffuseColor());
 		sendVector((prefix + "specularColor").c_str(), obj.getSpecularColor());
-		sendFloat((prefix + "attenuation").c_str(), 50);
+		sendFloat((prefix + "attenuation").c_str(), 0.3);
+
+		sendVector((prefix + "coneDirection").c_str(), obj.getDirection());
+		sendFloat((prefix + "coneAngle").c_str(), obj.getType() == LightType::SpotLight ? obj.getConeAngle() : 360);
 	} else {
 		activeLights &= ~(1 << obj.getId());
 	}

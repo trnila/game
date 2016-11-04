@@ -250,10 +250,11 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	lights[0] = new Light(prog, 0, LightType::Directional);
-	lights[0]->setDiffuseColor(Color(0, 1, 0));
-	lights[0]->setSpecularColor(Color(0, 1, 0));
+	lights[0] = new Light(prog, 0, LightType::SpotLight);
+	lights[0]->setDiffuseColor(Color(1, 1, 1));
+	lights[0]->setSpecularColor(Color(1, 1, 1));
 	lights[0]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
+	lights[0]->setConeAngle(45);
 	root.addNode(lights[0]);
 	
 	lights[1] = new Light(prog, 1, LightType::Point);
@@ -355,7 +356,7 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
 
 	if(key == GLFW_KEY_B) {
-//		lights[0]->setPosition(camera.getPosition());
+		lights[0]->setPosition(camera.getPosition());
 		lights[0]->setDirection(camera.getDirection());
 	}
 	if(key == GLFW_KEY_A) {

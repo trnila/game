@@ -73,3 +73,11 @@ LightType Light::getType() const {
 void Light::setType(LightType type) {
 	Light::type = type;
 }
+
+float Light::getConeAngle() const {
+	return coneAngle;
+}
+
+void Light::setConeAngle(float coneAngle) {
+	Light::coneAngle = coneAngle;
+}

@@ -13,6 +13,8 @@ struct Light {
 	vec3 diffuseColor;
     vec3 specularColor;
     float attenuation;
+    vec3 coneDirection;
+    float coneAngle;
 };
 
 layout(binding=0) uniform sampler2D modelTexture;
@@ -50,9 +52,15 @@ void main(void) {
 			if(lights[i].position.w == 0.0) {
 				lightVector = vec4(normalize(-lights[i].position.xyz), 1);
 			} else {
-				lightVector = normalize(lights[i].position - position_world);
+				lightVector = normalize(vec4(lights[i].position.xyz, 1.0) - position_world);
 				float distanceToLight = length(lights[i].position.xyz - position_world.xyz);
-				attenuation = 1.0 / (1.0 + lights[i].attenuation * pow(distanceToLight, 2));
+				//attenuation = 1.0 / (1.0 + lights[i].attenuation * pow(distanceToLight, 2));
+
+				//cone restrictions (affects attenuation)
+                float lightToSurfaceAngle = degrees(acos(dot(vec3(-lightVector), normalize(lights[i].coneDirection))));
+                if(lightToSurfaceAngle > lights[i].coneAngle){
+                    attenuation = 0.0;
+                }
 			}
 
 			float dot_product = max(dot(normalize(lightVector), normalize(vec4(normal_world, 1))), 0);

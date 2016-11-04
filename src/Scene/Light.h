@@ -31,11 +31,19 @@ public:
 
 	LightType getType() const;
 
+
+
 	void setType(LightType type);
 
 	virtual Object* find(int id) {
 		return nullptr;
 	}
+
+protected:
+public:
+	float getConeAngle() const;
+
+	void setConeAngle(float coneAngle);
 
 protected:
 	virtual void transformed() override;
@@ -48,6 +56,7 @@ private:
 	int id;
 	bool active = true;
 	LightType type;
+	float coneAngle = 360;
 };
 
 
