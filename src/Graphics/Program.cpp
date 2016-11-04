@@ -58,9 +58,17 @@ void Program::updated(Light &obj) {
 
 	if(obj.isActive()) {
 		activeLights |= 1 << obj.getId();
-		sendVector((prefix + "position").c_str(), obj.getWorldPosition());
+
+		if(obj.getType() == LightType::Point) {
+			sendVector((prefix + "position").c_str(), glm::vec4(obj.getWorldPosition(), 1));
+		} else if(obj.getType() == LightType::Directional) {
+			sendVector((prefix + "position").c_str(), glm::vec4(obj.getDirection(), 0));
+		} else {
+			assert("unknown light");
+		}
 		sendVector((prefix + "diffuseColor").c_str(), obj.getDiffuseColor());
 		sendVector((prefix + "specularColor").c_str(), obj.getSpecularColor());
+		sendFloat((prefix + "attenuation").c_str(), 50);
 	} else {
 		activeLights &= ~(1 << obj.getId());
 	}
@@ -102,4 +110,13 @@ void Program::sendInt(const char *name, int value) {
 	use();
 	GLint uniformId = glGetUniformLocation(id, name);
 	GL_CHECK(glUniform1i(uniformId, value));
+}
+
+void Program::sendVector(const char *name, const glm::vec4 &vec) {
+	use();
+	GLint uniformId = glGetUniformLocation(id, name);
+	if(!uniformId) {
+		printf("failed sending %s\n", name);
+	}
+	GL_CHECK(glUniform4fv(uniformId, 1, glm::value_ptr(vec)));
 }

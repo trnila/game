@@ -3,9 +3,15 @@
 #include "Node.h"
 #include "../Utils/Color.h"
 
+enum class LightType {
+	Point,
+	Directional,
+	SpotLight
+};
+
 class Light: public Node, public Subject<Light> {
 public:
-	Light(Program &shader, int id);
+	Light(Program &shader, int id, LightType type);
 	~Light();
 
 	virtual void render(RenderContext &context) override;
@@ -23,6 +29,10 @@ public:
 	void setActive(bool active);
 	bool isActive();
 
+	LightType getType() const;
+
+	void setType(LightType type);
+
 	virtual Object* find(int id) {
 		return nullptr;
 	}
@@ -37,6 +47,7 @@ private:
 	glm::vec4 worldPosition;
 	int id;
 	bool active = true;
+	LightType type;
 };
 
 

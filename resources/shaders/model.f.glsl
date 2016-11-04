@@ -9,9 +9,10 @@ struct Material {
 };
 
 struct Light {
-	vec3 position;
+	vec4 position;
 	vec3 diffuseColor;
     vec3 specularColor;
+    float attenuation;
 };
 
 layout(binding=0) uniform sampler2D modelTexture;
@@ -44,11 +45,20 @@ void main(void) {
 	vec3 total = vec3(0);
 	for(int i = 0; i < MAX_LIGHTS; i++) {
 		if((activeLights & (1 << i)) > 0) {
-			vec4 lightVector = normalize(vec4(lights[i].position, 1.0) - position_world);
+			vec4 lightVector;
+			float attenuation = 1.0;
+			if(lights[i].position.w == 0.0) {
+				lightVector = vec4(normalize(lights[i].position.xyz), 1);
+			} else {
+				lightVector = normalize(lights[i].position - position_world);
+				float distanceToLight = length(lights[i].position.xyz - position_world.xyz);
+				attenuation = 1.0 / (1.0 + lights[i].attenuation * pow(distanceToLight, 2));
+			}
+
 			float dot_product = max(dot(normalize(lightVector), normalize(vec4(normal_world, 1))), 0);
 			vec3 diffuse = material.diffuseColor * lights[i].diffuseColor * color * dot_product;
 
-		    vec3 lightDir = normalize(lights[i].position - position_world.xyz);
+		    vec3 lightDir = vec3(normalize(lights[i].position - position_world));
 		    vec3 camDir = normalize(cameraPos - position_world.xyz);
 			float spec = pow(max(0.0, dot(camDir, reflect(-lightDir, normal_world))), material.shininess);
 		    vec3 specular = material.shininessStrength * material.specularColor * lights[i].specularColor * spec;
@@ -58,7 +68,7 @@ void main(void) {
 	       //     visibility = 0.5;
 	        }
 
-	        total += visibility * diffuse + specular;
+	        total += visibility * attenuation * (diffuse + specular);
 	    }
 	}
 

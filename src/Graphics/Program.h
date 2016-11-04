@@ -26,6 +26,7 @@ public:
 	virtual void updated(Light &obj) override;
 
 	void sendVector(const char *name, const glm::vec3& vec);
+	void sendVector(const char *name, const glm::vec4& vec);
 	void sendFloat(const char *name, float v);
 
 	GLuint id;

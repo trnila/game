@@ -250,13 +250,13 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	lights[0] = new Light(prog, 0);
+	lights[0] = new Light(prog, 0, LightType::Directional);
 	lights[0]->setDiffuseColor(Color(0, 1, 0));
 	lights[0]->setSpecularColor(Color(0, 1, 0));
 	lights[0]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
 	root.addNode(lights[0]);
 	
-	lights[1] = new Light(prog, 1);
+	lights[1] = new Light(prog, 1, LightType::Point);
 	lights[1]->setDiffuseColor(Color(1, 0, 0));
 	lights[1]->setSpecularColor(Color(1, 0, 0));
 	lights[1]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
@@ -271,7 +271,7 @@ void Scene::createScene() {
 	obj->setPosition(15, 15, 0);
 	node->addNode(obj);*/
 
-	lights[2] = new Light(prog, 2);
+	lights[2] = new Light(prog, 2, LightType::Point);
 	lights[2]->setDiffuseColor(Color(1, 1, 1));
 	lights[2]->setSpecularColor(Color(1, 1, 1));
 	lights[2]->setDirection(glm::vec3(0, 1, 1));
@@ -355,11 +355,11 @@ void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
 
 	if(key == GLFW_KEY_B) {
-		lights[0]->setPosition(camera.getPosition());
+//		lights[0]->setPosition(camera.getPosition());
 		lights[0]->setDirection(camera.getDirection());
 	}
 	if(key == GLFW_KEY_A) {
-		lights[1]->setPosition(camera.getPosition());
+//		lights[1]->setPosition(camera.getPosition());
 		lights[1]->setDirection(camera.getDirection());
 	}
 

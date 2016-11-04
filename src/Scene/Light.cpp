@@ -1,19 +1,17 @@
 #include "Light.h"
 
-Light::Light(Program &shader, int id) : id(id) {
+Light::Light(Program &shader, int id, LightType type) : id(id), type(type) {
 	addListener(&shader);
 }
 
-void Light::render(RenderContext &context) {
-
-}
+void Light::render(RenderContext &context) {}
 
 void Light::update(float diff, const glm::mat4 &parent) {
 	updateLogic(diff);
 
 	glm::vec4 pos = parent * glm::vec4(getPosition(), 1);
 	worldPosition = pos;
-	transformed();
+	transformed(); //TODO: dont do this!
 }
 
 const Color &Light::getDiffuseColor() const {
@@ -34,16 +32,12 @@ void Light::setSpecularColor(const Color &specularColor) {
 	notify();
 }
 
-Light::~Light() {
-	setActive(false);
-}
-
 const glm::vec3 &Light::getDirection() const {
 	return direction;
 }
 
 void Light::setDirection(const glm::vec3 &direction) {
-	Light::direction = direction;
+	this->direction = direction;
 }
 
 const glm::vec3 Light::getWorldPosition() {
@@ -66,4 +60,16 @@ void Light::setActive(bool active) {
 
 bool Light::isActive() {
 	return active;
+}
+
+Light::~Light() {
+	setActive(false);
+}
+
+LightType Light::getType() const {
+	return type;
+}
+
+void Light::setType(LightType type) {
+	Light::type = type;
 }
