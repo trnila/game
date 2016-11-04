@@ -250,18 +250,19 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	lights[0] = new Light(prog, 0, LightType::SpotLight);
-	lights[0]->setDiffuseColor(Color(1, 1, 1));
-	lights[0]->setSpecularColor(Color(1, 1, 1));
-	lights[0]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
-	lights[0]->setConeAngle(45);
-	root.addNode(lights[0]);
+	Light *light;
+	light = new Light(prog, 0, LightType::SpotLight);
+	light->setDiffuseColor(Color(1, 1, 1));
+	light->setSpecularColor(Color(1, 1, 1));
+	light->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
+	light->setConeAngle(45);
+	root.addNode(light);
 	
-	lights[1] = new Light(prog, 1, LightType::Point);
-	lights[1]->setDiffuseColor(Color(1, 0, 0));
-	lights[1]->setSpecularColor(Color(1, 0, 0));
-	lights[1]->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
-	root.addNode(lights[1]);
+	light = new Light(prog, 1, LightType::Point);
+	light->setDiffuseColor(Color(1, 0, 0));
+	light->setSpecularColor(Color(1, 0, 0));
+	light->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
+	root.addNode(light);
 
 
 	NodeList *node = new NodeList();
@@ -272,12 +273,12 @@ void Scene::createScene() {
 	obj->setPosition(15, 15, 0);
 	node->addNode(obj);*/
 
-	lights[2] = new Light(prog, 2, LightType::Point);
-	lights[2]->setDiffuseColor(Color(1, 1, 1));
-	lights[2]->setSpecularColor(Color(1, 1, 1));
-	lights[2]->setDirection(glm::vec3(0, 1, 1));
-	lights[2]->setPosition(15, 15, 0);
-	node->addNode(lights[2]);
+	light = new Light(prog, 2, LightType::Point);
+	light->setDiffuseColor(Color(1, 1, 1));
+	light->setSpecularColor(Color(1, 1, 1));
+	light->setDirection(glm::vec3(0, 1, 1));
+	light->setPosition(15, 15, 0);
+	node->addNode(light);
 	root.addNode(node);
 }
 
@@ -311,9 +312,6 @@ void Scene::initResources() {
 void Scene::update(float time) {
 	glm::mat4 parent(1.0f);
 
-	glm::vec3 pos = lights[2]->getPosition();
-	lights[2]->setDirection(glm::vec3(0, -pos.x, -pos.z));
-
 	root.update(time, parent);
 	windMill->move(0.1 * time, 0, 0);
 	camHandler.update(time);
@@ -322,8 +320,9 @@ void Scene::update(float time) {
 void Scene::renderOneFrame(RenderContext &context) {
 	context.setStage(RenderStage::Shadow);
 
+	Light* light = root.getLight(0);
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -20, 60);
-	glm::mat4 depthViewMatrix = glm::lookAt(lights[2]->getWorldPosition(), lights[2]->getDirection(), glm::vec3(0,1,0));
+	glm::mat4 depthViewMatrix = glm::lookAt(light->getWorldPosition(), light->getDirection(), glm::vec3(0,1,0));
 	glm::mat4 depthMVP = depthProjectionMatrix * depthViewMatrix;
 
 	{
@@ -361,30 +360,6 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
-
-	if(key == GLFW_KEY_B) {
-		lights[0]->setPosition(camera.getPosition());
-		lights[0]->setDirection(camera.getDirection());
-	}
-	if(key == GLFW_KEY_A) {
-//		lights[1]->setPosition(camera.getPosition());
-		lights[1]->setDirection(camera.getDirection());
-	}
-
-	if(action == GLFW_PRESS) {
-		if(key == GLFW_KEY_C) {
-			lights[1]->setActive(!lights[1]->isActive());
-		}
-
-		if(key == GLFW_KEY_D) {
-			lights[0]->setActive(!lights[0]->isActive());
-		}
-
-		if(key == GLFW_KEY_E) {
-			lights[2]->setActive(!lights[2]->isActive());
-		}
-	}
-
 	states.current().onKey(key, scancode, action, mods, root);
 }
 

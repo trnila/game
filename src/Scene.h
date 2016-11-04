@@ -55,7 +55,6 @@ public:
 private:
 	NodeList root;
 	NodeList *windMill, *propeller;
-	Light *lights[8];
 
 	Program prog, constantProg, shadow;
 	Camera camera;
@@ -66,7 +65,6 @@ private:
 
 	FrameBuffer *depthBuffer;
 	Window &window;
-	NodeList *lightContainer;
 	Skybox *skybox;
 	ObjectFactory* factory;
 	States states;
