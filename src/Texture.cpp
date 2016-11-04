@@ -48,3 +48,7 @@ void Texture::attachTo(FrameBuffer &frameBuffer) {
 Texture::Texture(GLuint type): type(type) {
 	create();
 }
+
+Texture::~Texture() {
+	GL_CHECK(glDeleteTextures(1, &id));
+}

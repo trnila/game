@@ -9,6 +9,7 @@ class VAOHandler;
 class VAO: public BindableResource<VAO, VAOHandler> {
 public:
 	VAO();
+	~VAO();
 	void enableAttrib(GLuint id);
 
 private:

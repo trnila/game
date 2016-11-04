@@ -9,6 +9,7 @@
 class FrameBuffer: public BindableResource<FrameBuffer, FrameBufferHandler> {
 public:
 	FrameBuffer(int width, int height, int depth);
+	~FrameBuffer();
 
 	void open() {
 		GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, id));

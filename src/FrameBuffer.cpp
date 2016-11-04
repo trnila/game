@@ -19,3 +19,7 @@ FrameBuffer::FrameBuffer(int width, int height, int depth): width(width), height
 		throw std::runtime_error("Could not create frame buffer");
 	}
 }
+
+FrameBuffer::~FrameBuffer() {
+	GL_CHECK(glDeleteFramebuffers(1, &id));
+}

@@ -7,6 +7,7 @@
 class Window : public Subject<Window> {
 public:
 	Window(int width, int height, const char *title);
+	~Window();
 	bool shouldClose() const;
 	void swapBuffers() const;
 

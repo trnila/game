@@ -59,3 +59,9 @@ Model::Model(const char *path) {
 		meshes.push_back(new Mesh(*mesh, material, std::string(base)));
 	}
 }
+
+Model::~Model() {
+	for(Mesh* i: meshes) {
+		delete i;
+	}
+}

@@ -5,5 +5,5 @@ VBO::VBO() {
 }
 
 VBO::~VBO() {
-	//GL_CHECK(glDeleteBuffers(1, &id));
+	GL_CHECK(glDeleteBuffers(1, &id));
 }

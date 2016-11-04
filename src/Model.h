@@ -9,6 +9,7 @@
 class Model {
 public:
 	Model(const char *name, float *vertices, int size);
+	~Model();
 
 	Model(const char *path);
 	void render(RenderContext &context, Program &program);

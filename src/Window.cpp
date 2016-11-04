@@ -54,3 +54,7 @@ void Window::setViewport() {
 	GL_CHECK(glViewport(0, 0, width, height));
 
 }
+
+Window::~Window() {
+	glfwDestroyWindow(window);
+}

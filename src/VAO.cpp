@@ -8,3 +8,7 @@ VAO::VAO() {
 void VAO::enableAttrib(GLuint id) {
 	GL_CHECK(glEnableVertexAttribArray(id));
 }
+
+VAO::~VAO() {
+	GL_CHECK(glDeleteVertexArrays(1, &id));
+}
