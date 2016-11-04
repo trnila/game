@@ -48,7 +48,7 @@ void main(void) {
 			vec4 lightVector;
 			float attenuation = 1.0;
 			if(lights[i].position.w == 0.0) {
-				lightVector = vec4(normalize(lights[i].position.xyz), 1);
+				lightVector = vec4(normalize(-lights[i].position.xyz), 1);
 			} else {
 				lightVector = normalize(lights[i].position - position_world);
 				float distanceToLight = length(lights[i].position.xyz - position_world.xyz);
