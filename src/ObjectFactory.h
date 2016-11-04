@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Program.h"
-#include "Object.h"
+#include "Graphics/Program.h"
+#include "Scene/Object.h"
 
 class ObjectFactory {
 public:

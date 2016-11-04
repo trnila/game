@@ -2,8 +2,8 @@
 
 #include "Camera.h"
 #include "Object.h"
-#include "KeyListener.h"
-#include "MouseListener.h"
+#include "../Input/KeyListener.h"
+#include "../Input/MouseListener.h"
 
 class CameraHandler : public KeyListener, public MouseListener {
 public:

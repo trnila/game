@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "Observer.h"
+#include "Utils/Observer.h"
 
 class Window : public Subject<Window> {
 public:

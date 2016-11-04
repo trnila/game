@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 #include "Program.h"
-#include "utils.h"
+#include "../Utils/utils.h"
 class FrameBuffer;
 
 class Texture {

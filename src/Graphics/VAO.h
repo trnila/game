@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 #include "BindableResource.h"
-#include "utils.h"
+#include "../Utils/utils.h"
 
 class VAOHandler;
 

@@ -1,7 +1,7 @@
 #include "Texture.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-#include "Formatter.h"
+#include "../stb_image.h"
+#include "../Utils/Formatter.h"
 #include "FrameBuffer.h"
 
 Texture::Texture(const char *file): type(GL_TEXTURE_2D) {

@@ -1,5 +1,5 @@
 #include "Node.h"
-#include "Logic.h"
+#include "../Logic.h"
 
 void Node::updateLogic(float diff) {
 	if (logic) {

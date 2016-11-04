@@ -2,11 +2,11 @@
 
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "Program.h"
-#include "Model.h"
-#include "RenderContext.h"
+#include "../Graphics/Program.h"
+#include "../Graphics/Model.h"
+#include "../Graphics/RenderContext.h"
 #include "Node.h"
-#include "Texture.h"
+#include "../Graphics/Texture.h"
 
 class Logic;
 

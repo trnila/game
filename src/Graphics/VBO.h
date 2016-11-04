@@ -2,9 +2,9 @@
 
 #include <cstddef>
 #include <GL/glew.h>
-#include "Type.h"
+#include "../Type.h"
 #include "BindableResource.h"
-#include "utils.h"
+#include "../Utils/utils.h"
 #include <typeinfo>
 #include <stdexcept>
 

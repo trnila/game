@@ -1,8 +1,8 @@
 #pragma once
 #include "Shader.h"
-#include "Observer.h"
-#include "Camera.h"
-#include "Color.h"
+#include "../Utils/Observer.h"
+#include "../Scene/Camera.h"
+#include "../Utils/Color.h"
 
 class Light;
 class Texture;

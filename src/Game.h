@@ -1,9 +1,9 @@
 #pragma once
 #include <glm/vec4.hpp>
 #include "Scene.h"
-#include "Singleton.h"
-#include "KeyListener.h"
-#include "MouseListener.h"
+#include "Utils/Singleton.h"
+#include "Input/KeyListener.h"
+#include "Input/MouseListener.h"
 #include "Window.h"
 
 class Game : public Singleton<Game>, public KeyListener, public MouseListener {

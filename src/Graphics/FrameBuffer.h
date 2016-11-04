@@ -3,7 +3,7 @@
 #include "BindableResource.h"
 #include "FrameBufferHandler.h"
 #include "GL/glew.h"
-#include "utils.h"
+#include "../Utils/utils.h"
 #include "Texture.h"
 
 class FrameBuffer: public BindableResource<FrameBuffer, FrameBufferHandler> {

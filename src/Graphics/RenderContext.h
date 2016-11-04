@@ -2,7 +2,7 @@
 #include "Program.h"
 #include "VBO.h"
 #include "VAO.h"
-#include "Camera.h"
+#include "../Scene/Camera.h"
 
 enum class RenderStage {
 	Shadow,

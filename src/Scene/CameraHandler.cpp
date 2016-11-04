@@ -1,4 +1,4 @@
-#include "Scene.h"
+#include "../Scene.h"
 
 CameraHandler::CameraHandler(Camera *camera) :
 		camera(camera),

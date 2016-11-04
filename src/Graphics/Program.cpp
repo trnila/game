@@ -1,6 +1,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Program.h"
-#include "Light.h"
+#include "../Scene/Light.h"
 #include "Texture.h"
 
 Program::Program() {

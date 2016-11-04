@@ -1,7 +1,7 @@
 #include <glm/ext.hpp>
 #include "Scene.h"
 #include "data.h"
-#include "Light.h"
+#include "Scene/Light.h"
 
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {

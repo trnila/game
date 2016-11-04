@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Node.h"
-#include "Color.h"
+#include "../Utils/Color.h"
 
 class Light: public Node, public Subject<Light> {
 public:

@@ -1,6 +1,6 @@
 #include <GL/glew.h>
 #include "Shader.h"
-#include "utils.h"
+#include "../Utils/utils.h"
 
 Shader::Shader(const char *file, GLenum type) {
 	id = glCreateShader(type);

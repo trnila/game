@@ -3,17 +3,17 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 #include <vector>
-#include "Program.h"
-#include "Object.h"
-#include "ResourceManager.h"
-#include "RenderContext.h"
-#include "KeyListener.h"
-#include "MouseListener.h"
-#include "CameraHandler.h"
+#include "Graphics/Program.h"
+#include "Scene/Object.h"
+#include "Utils/ResourceManager.h"
+#include "Graphics/RenderContext.h"
+#include "Input/KeyListener.h"
+#include "Input/MouseListener.h"
+#include "Scene/CameraHandler.h"
 #include "Window.h"
-#include "NodeList.h"
-#include "FrameBuffer.h"
-#include "Skybox.h"
+#include "Scene/NodeList.h"
+#include "Graphics/FrameBuffer.h"
+#include "Graphics/Skybox.h"
 #include "ObjectFactory.h"
 #include "Logic.h"
 

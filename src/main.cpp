@@ -1,5 +1,5 @@
 #include "Game.h"
-#include "StreamLog.h"
+#include "Utils/StreamLog.h"
 #include <assimp/DefaultLogger.hpp>
 
 int main() {

@@ -1,6 +1,6 @@
 #include <assimp/material.h>
 #include "Mesh.h"
-#include "ResourceManager.h"
+#include "../Utils/ResourceManager.h"
 
 struct Vertex {
 	glm::vec3 pos;

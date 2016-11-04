@@ -1,6 +1,6 @@
 #include "CubeMap.h"
-#include "stb_image.h"
-#include "Formatter.h"
+#include "../stb_image.h"
+#include "../Utils/Formatter.h"
 
 CubeMap::CubeMap(std::vector<const char *> images): Texture(GL_TEXTURE_CUBE_MAP) {
 	set(GL_TEXTURE_MAG_FILTER, GL_LINEAR);

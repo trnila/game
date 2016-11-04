@@ -1,7 +1,8 @@
 #pragma once
 
-#include "RenderContext.h"
-#include "Transformable.h"
+
+#include "../Transformable.h"
+#include "../Graphics/RenderContext.h"
 
 class Logic;
 class Object;

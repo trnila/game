@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Object.h"
+#include "Scene/Object.h"
 
 class Object;
 

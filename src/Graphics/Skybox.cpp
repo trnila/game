@@ -1,5 +1,5 @@
 #include "Skybox.h"
-#include "ResourceManager.h"
+#include "../Utils/ResourceManager.h"
 
 Skybox::Skybox(): cubemap() {
 	program.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/skybox.v.glsl", GL_VERTEX_SHADER));

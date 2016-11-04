@@ -3,8 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <math.h>
-#include "Observer.h"
-#include "Window.h"
+#include "../Utils/Observer.h"
+#include "../Window.h"
 
 class Camera : public Subject<Camera>, public Observer<Window> {
 public:

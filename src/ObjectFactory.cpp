@@ -1,6 +1,6 @@
 
 #include "ObjectFactory.h"
-#include "ResourceManager.h"
+#include "Utils/ResourceManager.h"
 
 ObjectFactory::ObjectFactory(Program &shader, Program &shadower) : shader(shader), shadower(shadower) {}
 

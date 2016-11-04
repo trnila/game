@@ -5,7 +5,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "Model.h"
-#include "Formatter.h"
+#include "../Utils/Formatter.h"
 
 Model::Model(const char *name, float *vertices, int size) {
 
