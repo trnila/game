@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "data.h"
 #include "Scene/Light.h"
+#include "States.h"
+#include "State.h"
 
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
@@ -294,10 +296,11 @@ void Scene::initResources() {
 	camera.addListener(&prog);
 
 	factory = new ObjectFactory(prog, shadowRenderer.program);
-	states.add(StateType::Insert, new Insert(states, *factory), GLFW_KEY_I);
-	states.add(StateType::Delete, new Delete(states), GLFW_KEY_X);
-	states.add(StateType::Scale, new Scale(states), GLFW_KEY_S);
-	states.add(StateType::Lights, new Lights(states, camera), GLFW_KEY_L);
+	states.add(StateType::Insert, new Insert(), GLFW_KEY_I);
+	states.add(StateType::Delete, new Delete(), GLFW_KEY_X);
+	states.add(StateType::Scale, new Scale(), GLFW_KEY_S);
+	states.add(StateType::Lights, new Lights(), GLFW_KEY_L);
+	states.add(StateType::Shoot, new Shoot(), GLFW_KEY_SPACE);
 	states.change(StateType::Normal);
 }
 
@@ -333,7 +336,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
 	camHandler.onKey(key, scancode, action, mods);
-	states.current().onKey(key, scancode, action, mods, root);
+	states.current().onKey(key, scancode, action, mods, *this);
 }
 
 void Scene::onMove(double x, double y) {
@@ -362,7 +365,7 @@ void Scene::onClick(int button, int action, double x, double y) {
 	glm::vec4 viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());
 	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
-	states.current().onClick(pos, o, root);
+	states.current().onClick(pos, o, *this);
 	std::cout << glm::to_string(camera.getDirection()) << "\n";
 }
 

@@ -21,10 +21,10 @@ void TreeLogic::update(float diff) {
 	}
 }
 
-MoveLogic::MoveLogic(Node &obj) : Logic(obj) {}
+MoveLogic::MoveLogic(Node &obj, glm::vec3 dir) : Logic(obj), dir(dir) {}
 
 void MoveLogic::update(float diff) {
-	obj.move(0, 1.0 * diff, 0);
+	obj.move(dir * diff);
 }
 
 FollowLogic::FollowLogic(Node &obj, Camera *cam, Light *light) : Logic(obj), cam(cam), light(light) {

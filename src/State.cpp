@@ -1,7 +1,8 @@
+#include "States.h"
 #include "State.h"
 
 States::States() {
-	states[StateType::Normal] = new State(*this);
+	states[StateType::Normal] = new State();
 }
 
 void States::add(StateType type, State *state, int key) {

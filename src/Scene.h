@@ -16,8 +16,10 @@
 #include "Graphics/Skybox.h"
 #include "ObjectFactory.h"
 #include "Logic.h"
-#include "State.h"
 #include "ShadowRenderer.h"
+#include "States.h"
+
+
 
 class Scene : public KeyListener, public MouseListener {
 public:
@@ -29,6 +31,22 @@ public:
 	virtual void onKey(int key, int scancode, int action, int mods) override;
 	virtual void onMove(double x, double y) override;
 	virtual void onClick(int button, int action, double x, double y);
+
+	NodeList &getRootNode() {
+		return root;
+	}
+
+	Camera& getActiveCamera() {
+		return camera;
+	}
+
+	ObjectFactory& getObjectFactory() {
+		return *factory;
+	}
+
+	States& getStates() {
+		return states;
+	}
 
 private:
 	NodeList root;

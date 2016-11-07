@@ -41,9 +41,12 @@ private:
 
 class MoveLogic: public Logic {
 public:
-	MoveLogic(Node &obj);
+	MoveLogic(Node &obj, glm::vec3 dir);
 
 	virtual void update(float diff) override;
+
+private:
+	glm::vec3 dir;
 
 };
 
