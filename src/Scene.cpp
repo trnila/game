@@ -325,7 +325,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 			0.5, 0.5, 0.5, 1.0
 	);
 	glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
-	prog.setMatrix("depthBias", depthBiasMVP);
+	prog.send("depthBias", depthBiasMVP);
 
 	prog.useTexture("shadowTexture", shadowTexture, 1);
 	root.render(context);

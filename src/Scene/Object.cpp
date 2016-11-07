@@ -12,7 +12,7 @@ Object::Object(int id, Model *model, Program &program, Program &shadow, Texture 
 void Object::render(RenderContext &context) {
 	Program &currentProgram = context.getStage() == RenderStage::Shadow ? shadow : program;
 
-	currentProgram.setMatrix("modelMatrix", modelMatrix);
+	currentProgram.send("modelMatrix", modelMatrix);
 	currentProgram.setColor(color.r, color.g, color.b);
 	GL_CHECK(glStencilFunc(GL_ALWAYS, id, 0xFF));
 

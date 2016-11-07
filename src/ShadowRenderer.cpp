@@ -13,7 +13,7 @@ Texture & ShadowRenderer::render(RenderContext &context, NodeList &root, glm::ma
 	{
 		auto buffer = depthBuffer->activate();
 
-		program.setMatrix("depthMVP", depthMVP);
+		program.send("depthMVP", depthMVP);
 
 		context.clearColor(0, 0, 0, 0);
 		context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

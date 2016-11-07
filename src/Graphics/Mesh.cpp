@@ -38,7 +38,7 @@ Mesh::Mesh(aiMesh &mesh, aiMaterial *material, std::string path) {
 
 	auto vao = this->vao.activate();
 	auto vbo = this->vbo.activate();
-	vbo.setData(vertices.data(), vertices.size() + 10, 1); //TODO: fixme
+	vbo.setData(vertices.data(), vertices.size() + 1, 1); //TODO: fixme
 	vbo.setPointer<Vertex>(0, 0);
 	vbo.setPointer<Vertex>(1, sizeof(vertices[0].pos));
 	vbo.setPointer<Vertex>(2, sizeof(vertices[0].pos) + sizeof(vertices[0].normal));

@@ -29,28 +29,14 @@ void Program::use() {
 	GL_CHECK(glUseProgram(id));
 }
 
-void Program::setMatrix(const char* var, const glm::mat4 &mat) {
-	use();
-	GLint uniformId = glGetUniformLocation(id, var);
-	GL_CHECK(glUniformMatrix4fv(uniformId, 1, GL_FALSE, glm::value_ptr(mat)));
-}
-
 void Program::updated(Camera &camera) {
-	setMatrix("viewMatrix", camera.getTransform());
-	setMatrix("projectionMatrix", camera.getPerspective());
-
-	GLint uniformId = glGetUniformLocation(id, "cameraPos");
-	GL_CHECK(glUniform3fv(uniformId, 1, glm::value_ptr(camera.getPosition())));
+	send("viewMatrix", camera.getTransform());
+	send("projectionMatrix", camera.getPerspective());
+	send("cameraPos", camera.getPosition());
 }
 
 void Program::setColor(float r, float g, float b) {
-	sendVector("simpleColor", glm::vec3(r, g, b));
-}
-
-void Program::setBool(const char *var, bool val) {
-	use();
-	GLint uniformId = glGetUniformLocation(id, var);
-	GL_CHECK(glUniform1i(uniformId, val));
+	send("simpleColor", glm::vec3(r, g, b));
 }
 
 void Program::updated(Light &obj) {
@@ -60,64 +46,64 @@ void Program::updated(Light &obj) {
 		activeLights |= 1 << obj.getId();
 
 		if(obj.getType() == LightType::Directional) {
-			sendVector((prefix + "position").c_str(), glm::vec4(obj.getDirection(), 0));
+			send((prefix + "position").c_str(), glm::vec4(obj.getDirection(), 0));
 		} else {
-			sendVector((prefix + "position").c_str(), glm::vec4(obj.getWorldPosition(), 1));
+			send((prefix + "position").c_str(), glm::vec4(obj.getWorldPosition(), 1));
 		}
-		sendVector((prefix + "diffuseColor").c_str(), obj.getDiffuseColor());
-		sendVector((prefix + "specularColor").c_str(), obj.getSpecularColor());
-		sendFloat((prefix + "attenuation").c_str(), 0.3);
+		send((prefix + "diffuseColor").c_str(), obj.getDiffuseColor());
+		send((prefix + "specularColor").c_str(), obj.getSpecularColor());
+		send((prefix + "attenuation").c_str(), 0.3f);
 
-		sendVector((prefix + "coneDirection").c_str(), obj.getDirection());
-		sendFloat((prefix + "coneAngle").c_str(), obj.getType() == LightType::SpotLight ? obj.getConeAngle() : 360);
+		send((prefix + "coneDirection").c_str(), obj.getDirection());
+		send((prefix + "coneAngle").c_str(), obj.getType() == LightType::SpotLight ? obj.getConeAngle() : 360);
 	} else {
 		activeLights &= ~(1 << obj.getId());
 	}
 
-	sendInt("activeLights", activeLights);
+	send("activeLights", activeLights);
 }
 
-void Program::sendVector(const char *name, const glm::vec3 &vec) {
-	use();
-	GLint uniformId = glGetUniformLocation(id, name);
-	if(!uniformId) {
-		printf("failed sending %s\n", name);
-	}
-	GL_CHECK(glUniform3fv(uniformId, 1, glm::value_ptr(vec)));
+void Program::send(const char *name, const glm::vec3 &vec) {
+	GL_CHECK(glUniform3fv(getUniformLocation(name), 1, glm::value_ptr(vec)));
 }
 
 void Program::setAmbientColor(const Color &color) {
-	sendVector("ambientColor", color);
+	send("ambientColor", color);
 }
 
-void Program::sendFloat(const char *name, float v) {
-	use();
-	GLint uniformId = glGetUniformLocation(id, name);
-	if(!uniformId) {
-		printf("failed sending %s\n", name);
-	}
-	GL_CHECK(glUniform1f(uniformId, v));
+void Program::send(const char *name, float v) {
+	GL_CHECK(glUniform1f(getUniformLocation(name), v));
 }
 
 void Program::useTexture(const char *name, Texture &texture, int pos) {
-	GLint location = glGetUniformLocation(id, name);
+	GLint location = getUniformLocation(name);
 
 	GL_CHECK(glActiveTexture(GL_TEXTURE0 + pos));
 	texture.bind();
 	GL_CHECK(glUniform1i(location, pos));
 }
 
-void Program::sendInt(const char *name, int value) {
-	use();
-	GLint uniformId = glGetUniformLocation(id, name);
-	GL_CHECK(glUniform1i(uniformId, value));
+void Program::send(const char *name, int value) {
+	GL_CHECK(glUniform1i(getUniformLocation(name), value));
 }
 
-void Program::sendVector(const char *name, const glm::vec4 &vec) {
+void Program::send(const char *name, const glm::vec4 &vec) {
+	GL_CHECK(glUniform4fv(getUniformLocation(name), 1, glm::value_ptr(vec)));
+}
+
+void Program::send(const char* var, const glm::mat4 &mat) {
+	GL_CHECK(glUniformMatrix4fv(getUniformLocation(var), 1, GL_FALSE, glm::value_ptr(mat)));
+}
+
+void Program::send(const char *var, bool val) {
+	GL_CHECK(glUniform1i(getUniformLocation(var), val));
+}
+
+int Program::getUniformLocation(const char * name) {
 	use();
 	GLint uniformId = glGetUniformLocation(id, name);
-	if(!uniformId) {
+	if (!uniformId) {
 		printf("failed sending %s\n", name);
 	}
-	GL_CHECK(glUniform4fv(uniformId, 1, glm::value_ptr(vec)));
+	return uniformId;
 }

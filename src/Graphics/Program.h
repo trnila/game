@@ -13,11 +13,11 @@ public:
 	void attach(Shader &shader);
 	void link();
 	void use();
-	void setMatrix(const char* var, const glm::mat4 &mat);
+	void send(const char* var, const glm::mat4 &mat);
 
 	void setColor(float r, float g, float b);
 
-	void setBool(const char *var, bool val);
+	void send(const char *var, bool val);
 	void setAmbientColor(const Color &color);
 
 	void useTexture(const char *name, Texture &texture, int pos);
@@ -25,14 +25,13 @@ public:
 	virtual void updated(Camera &camera) override;
 	virtual void updated(Light &obj) override;
 
-	void sendVector(const char *name, const glm::vec3& vec);
-	void sendVector(const char *name, const glm::vec4& vec);
-	void sendFloat(const char *name, float v);
-
-	GLuint id;
-
+	void send(const char *name, const glm::vec3& vec);
+	void send(const char *name, const glm::vec4& vec);
+	void send(const char *name, float v);
+	void send(const char *name, int value);
 private:
+	GLuint id;
 	int activeLights = 0;
 
-	void sendInt(const char *name, int value);
+	int getUniformLocation(const char* name);
 };

@@ -3,17 +3,17 @@
 #include "Texture.h"
 
 void Material::apply(Program &program) const {
-	program.sendVector("material.ambientColor", ambientColor);
-	program.sendVector("material.diffuseColor", diffuseColor);
-	program.sendVector("material.specularColor", specularColor);
-	program.sendFloat("material.shininess", shininess);
-	program.sendFloat("material.shininessStrength", shininessStrength);
+	program.send("material.ambientColor", ambientColor);
+	program.send("material.diffuseColor", diffuseColor);
+	program.send("material.specularColor", specularColor);
+	program.send("material.shininess", shininess);
+	program.send("material.shininessStrength", shininessStrength);
 
 	if(texture) {
 		program.useTexture("modelTexture", *texture, 0);
-		program.setBool("hasTexture", true);
+		program.send("hasTexture", true);
 	} else {
-		program.setBool("hasTexture", false);
+		program.send("hasTexture", false);
 	}
 }
 
