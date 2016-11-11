@@ -18,7 +18,7 @@
 #include "Logic.h"
 #include "ShadowRenderer.h"
 #include "States.h"
-
+#include "Terrain.h"
 
 
 class Scene : public KeyListener, public MouseListener {
@@ -63,4 +63,5 @@ private:
 	ObjectFactory* factory;
 	States states;
 	ShadowRenderer shadowRenderer;
+	Terrain *terrain;
 };

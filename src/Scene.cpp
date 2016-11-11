@@ -13,15 +13,15 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(windo
 
 void Scene::createScene() {
 	Object *obj;
-	Object *terrain = factory->create("resources/terrain_smooth.obj");
+	//Object *terrain = factory->create("resources/terrain_smooth.obj");
 //	terrain = factory->create("resources/plane.obj");
 
-	terrain->setPosition(-7, -3, -2);
+	/*terrain->setPosition(-7, -3, -2);
 	terrain->rotate(0, 0, 0, 1);
 	terrain->setScale(10, 10, 10);
 	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
 
-	root.addNode(terrain);
+	root.addNode(terrain);*/
 
 	/*NodeList *windMill = new NodeList();
 	windMill->move(0, 0.5, 0);
@@ -286,6 +286,7 @@ void Scene::createScene() {
 	light->setPosition(15, 15, 0);
 	node->addNode(light);
 	root.addNode(node);*/
+	terrain = new Terrain();
 }
 
 void Scene::initResources() {
@@ -312,7 +313,7 @@ void Scene::update(float time) {
 
 void Scene::renderOneFrame(RenderContext &context) {
 	glm::mat4 depthMVP;
-	Texture& shadowTexture = shadowRenderer.render(context, root, depthMVP);
+	//Texture& shadowTexture = shadowRenderer.render(context, root, depthMVP);
 
 	context.setStage(RenderStage::Normal);
 	window.setViewport();
@@ -320,8 +321,9 @@ void Scene::renderOneFrame(RenderContext &context) {
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	skybox->render(context);
+	terrain->draw(camera);
 
-	glm::mat4 biasMatrix(
+	/*glm::mat4 biasMatrix(
 			0.5, 0.0, 0.0, 0.0,
 			0.0, 0.5, 0.0, 0.0,
 			0.0, 0.0, 0.5, 0.0,
@@ -331,7 +333,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	prog.send("depthBias", depthBiasMVP);
 
 	prog.useTexture("shadowTexture", shadowTexture, 1);
-	root.render(context);
+	root.render(context);*/
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
