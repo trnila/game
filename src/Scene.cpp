@@ -248,7 +248,7 @@ void Scene::createScene() {
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
-	camera.setZFar(200);
+	camera.setZFar(20000);
 
 	prog.setAmbientColor(Color(0.1, 0.1, 0.1));
 	//prog.setAmbientColor(Color(0, 0, 0));

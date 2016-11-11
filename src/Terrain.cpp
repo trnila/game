@@ -6,6 +6,7 @@
 
 GLuint vao, vbo;
 int n;
+int x, y;
 
 struct Data {
 	glm::vec3 points;
@@ -18,8 +19,9 @@ Terrain::Terrain() {
 	prog.link();
 	prog.use();
 
-	int x,y,n;
-	unsigned char *data = stbi_load("resources/heightmap.jpg", &x, &y, &n, 1);
+
+	//unsigned char *data = stbi_load("resources/heightmap.jpg", &x, &y, &n, 1);
+	unsigned char *data = stbi_load("resources/5.png", &x, &y, &n, 1);
 	if(!data) {
 		abort();
 	}
@@ -32,17 +34,17 @@ Terrain::Terrain() {
 		}
 	}*/
 
-	glm::vec3 map[10][10];
-	for(int i = 0; i < 10; i++) {
-		for(int j = 0; j < 10; j++) {
-			map[i][j] = glm::vec3(i*10 , i % 2 == 0, j*10 );
+	glm::vec3 map[x][y];
+	for(int i = 0; i < x; i++) {
+		for(int j = 0; j < y; j++) {
+			map[i][j] = glm::vec3(i*10 , data[i * x + j], j*10 );
 		}
 	}
 
 
 
-	for(int j = 0; j < 9; j++)
-	for(int i = 0; i < 10; i++) {
+	for(int j = 0; j < y-1; j++)
+	for(int i = 0; i < x; i++) {
 		Data a;
 		a.points = map[i][j + 1];
 		a.color = glm::vec3(1, 1, 1);
@@ -73,14 +75,14 @@ void Terrain::draw(Camera &cam) {
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	for(int i = 0; i < 10; i++) {
+	for(int i = 0; i < y; i++) {
 		glVertexAttribPointer(
 				0,
 				3,
 				GL_FLOAT,
 				GL_FALSE,
 				sizeof(Data),
-				(void *) (sizeof(Data)*20*i)
+				(void *) (sizeof(Data)*2*x*i)
 		);
 		glVertexAttribPointer(
 				1,
@@ -88,10 +90,10 @@ void Terrain::draw(Camera &cam) {
 				GL_FLOAT,
 				GL_FALSE,
 				sizeof(Data),
-				(void *) (sizeof(Data)*20*i)+(sizeof(float) * 3)
+				(void *) (sizeof(Data)*2*x*i)+(sizeof(float) * 3)
 		);
 
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 20);
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*x);
 	}
 	glDisableVertexAttribArray(0);
 }
