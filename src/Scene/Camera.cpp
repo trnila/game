@@ -87,7 +87,7 @@ void Camera::updated(Window &camera) {
 }
 
 void Camera::forward(float diff) {
-	position += glm::normalize(target) * diff;
+	position += glm::normalize(target) * diff*20.0f;
 	printf("%f %f %f\n", position.x, position.y, position.z);
 	notify();
 }

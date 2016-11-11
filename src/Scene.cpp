@@ -13,15 +13,15 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(windo
 
 void Scene::createScene() {
 	Object *obj;
-	Object *terrain = factory->create("resources/terrain_smooth.obj");
+	//Object *terrain = factory->create("resources/terrain_smooth.obj");
 //	terrain = factory->create("resources/plane.obj");
 
-	terrain->setPosition(-7, -3, -2);
+	/*terrain->setPosition(-7, -3, -2);
 	terrain->rotate(0, 0, 0, 1);
 	terrain->setScale(10, 10, 10);
 	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
 
-	root.addNode(terrain);
+	root.addNode(terrain);*/
 
 	/*NodeList *windMill = new NodeList();
 	windMill->move(0, 0.5, 0);
@@ -248,7 +248,7 @@ void Scene::createScene() {
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
-	camera.setZFar(200);
+	camera.setZFar(20000);
 
 	prog.setAmbientColor(Color(0.1, 0.1, 0.1));
 	//prog.setAmbientColor(Color(0, 0, 0));
@@ -286,6 +286,9 @@ void Scene::createScene() {
 	light->setPosition(15, 15, 0);
 	node->addNode(light);
 	root.addNode(node);*/
+	terrain = new Terrain();
+	terrain->getTransform().setPosition(0, -5, -30);
+	terrain->getTransform().setScale(5, 1, 5);
 }
 
 void Scene::initResources() {
@@ -320,6 +323,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	skybox->render(context);
+	terrain->draw(camera);
 
 	glm::mat4 biasMatrix(
 			0.5, 0.0, 0.0, 0.0,

@@ -1,6 +1,6 @@
 #include "CubeMap.h"
-#include "../stb_image.h"
 #include "../Utils/Formatter.h"
+#include "../Utils/Image.h"
 
 CubeMap::CubeMap(std::vector<const char *> images): Texture(GL_TEXTURE_CUBE_MAP) {
 	set(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -19,12 +19,6 @@ void CubeMap::setFaces(const std::vector<const char *> &images) {
 }
 
 void CubeMap::setFace(GLuint i, const char *path) {
-	int width, height, n;
-	unsigned char* image = stbi_load(path, &width, &height, &n, 3);
-	if(!image) {
-		throw std::runtime_error(Formatter() << "Could not load texture: " << path);
-	}
-
-	GL_CHECK(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image));
-	stbi_image_free(image);
+	Image image(path);
+	GL_CHECK(glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, image.getWidth(), image.getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image.getData()));
 }
