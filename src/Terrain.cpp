@@ -11,8 +11,8 @@ int x, y;
 
 struct Data {
 	glm::vec3 points;
-	glm::vec2 uvcoord;
 	glm::vec3 normal;
+	glm::vec2 uvcoord;
 };
 std::vector<Data> points;
 Texture *grass;
@@ -85,6 +85,7 @@ void Terrain::draw(Camera &cam) {
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	prog.useTexture("grass", *grass, 0);
@@ -105,6 +106,14 @@ void Terrain::draw(Camera &cam) {
 				GL_FALSE,
 				sizeof(Data),
 				(void *) (sizeof(Data)*2*x*i)+(sizeof(float) * 3)
+		);
+		glVertexAttribPointer(
+				2,
+				2,
+				GL_FLOAT,
+				GL_FALSE,
+				sizeof(Data),
+				(void *) (sizeof(Data)*2*x*i)+(sizeof(float) * 6)
 		);
 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 2*x);
