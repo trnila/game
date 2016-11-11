@@ -41,7 +41,7 @@ Terrain::Terrain() {
 
 
 
-	int j = 0;
+	for(int j = 0; j < 9; j++)
 	for(int i = 0; i < 10; i++) {
 		Data a;
 		a.points = map[i][j + 1];
@@ -72,23 +72,26 @@ void Terrain::draw(Camera &cam) {
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(
-			0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,                  // size
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			sizeof(Data),                  // stride
-			(void*)0            // array buffer offset
-	);
-	glVertexAttribPointer(
-			1,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-			3,                  // size
-			GL_FLOAT,           // type
-			GL_FALSE,           // normalized?
-			sizeof(Data),                  // stride
-			(void*)(sizeof(float)*3)            // array buffer offset
-	);
 
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, points.size());
+	for(int i = 0; i < 10; i++) {
+		glVertexAttribPointer(
+				0,
+				3,
+				GL_FLOAT,
+				GL_FALSE,
+				sizeof(Data),
+				(void *) (sizeof(Data)*20*i)
+		);
+		glVertexAttribPointer(
+				1,
+				3,
+				GL_FLOAT,
+				GL_FALSE,
+				sizeof(Data),
+				(void *) (sizeof(Data)*20*i)+(sizeof(float) * 3)
+		);
+
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, 20);
+	}
 	glDisableVertexAttribArray(0);
 }
