@@ -287,6 +287,8 @@ void Scene::createScene() {
 	node->addNode(light);
 	root.addNode(node);*/
 	terrain = new Terrain();
+	terrain->getTransform().setPosition(0, -5, -30);
+	terrain->getTransform().setScale(5, 1, 5);
 }
 
 void Scene::initResources() {
@@ -313,7 +315,7 @@ void Scene::update(float time) {
 
 void Scene::renderOneFrame(RenderContext &context) {
 	glm::mat4 depthMVP;
-	//Texture& shadowTexture = shadowRenderer.render(context, root, depthMVP);
+	Texture& shadowTexture = shadowRenderer.render(context, root, depthMVP);
 
 	context.setStage(RenderStage::Normal);
 	window.setViewport();
@@ -323,7 +325,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	skybox->render(context);
 	terrain->draw(camera);
 
-	/*glm::mat4 biasMatrix(
+	glm::mat4 biasMatrix(
 			0.5, 0.0, 0.0, 0.0,
 			0.0, 0.5, 0.0, 0.0,
 			0.0, 0.0, 0.5, 0.0,
@@ -333,7 +335,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	prog.send("depthBias", depthBiasMVP);
 
 	prog.useTexture("shadowTexture", shadowTexture, 1);
-	root.render(context);*/
+	root.render(context);
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {

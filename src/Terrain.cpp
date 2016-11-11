@@ -15,9 +15,7 @@ struct Data {
 Terrain::Terrain() {
 	createShader();
 	loadTextures();
-	createTerrain();
-	t.setScale(10, 1, 10);
-}
+	createTerrain(); }
 
 void Terrain::createTerrain() {
 	Image image("resources/5.png", 1);

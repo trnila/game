@@ -12,6 +12,10 @@ public:
 	Terrain();
 	void draw(Camera &cam);
 
+	Transformable& getTransform() {
+		return t;
+	}
+
 private:
 	Program prog;
 	Texture *grass;
