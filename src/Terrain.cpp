@@ -3,6 +3,7 @@
 #include "stb_image.h"
 #include <GL/glew.h>
 #include <stdlib.h>
+#include "Graphics/Texture.h"
 
 GLuint vao, vbo;
 int n;
@@ -10,15 +11,16 @@ int x, y;
 
 struct Data {
 	glm::vec3 points;
-	glm::vec3 color;
+	glm::vec2 uvcoord;
+	glm::vec3 normal;
 };
 std::vector<Data> points;
+Texture *grass;
 Terrain::Terrain() {
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/terrain.v.glsl", GL_VERTEX_SHADER));
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/terrain.f.glsl", GL_FRAGMENT_SHADER));
 	prog.link();
 	prog.use();
-
 
 	//unsigned char *data = stbi_load("resources/heightmap.jpg", &x, &y, &n, 1);
 	unsigned char *data = stbi_load("resources/5.png", &x, &y, &n, 1);
@@ -43,18 +45,28 @@ Terrain::Terrain() {
 
 
 
+	grass = new Texture("resources/grass.jpg");
+	float fTextureU = float(x)*0.1f;
+	float fTextureV = float(y)*0.1f;
+
 	for(int j = 0; j < y-1; j++)
 	for(int i = 0; i < x; i++) {
+
+		float fScaleC = float(j)/float(x-1);
+		float fScaleR = float(i)/float(y-1);
 		Data a;
 		a.points = map[i][j + 1];
-		a.color = glm::vec3(1, 1, 1);
+		a.uvcoord = glm::vec2(fTextureU*fScaleC, fTextureV*fScaleR);
 		points.push_back(a);
 
 
+		fScaleC = float(j+1)/float(x-1);
+		fScaleR = float(i)/float(y-1);
 		a.points = map[i][j];
-		a.color = glm::vec3(1, 0, 1);
+		a.uvcoord = glm::vec2(fTextureU*fScaleC, fTextureV*fScaleR);
 		points.push_back(a);
 	}
+
 
 
 
@@ -74,6 +86,8 @@ void Terrain::draw(Camera &cam) {
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	prog.useTexture("grass", *grass, 0);
 
 	for(int i = 0; i < y; i++) {
 		glVertexAttribPointer(

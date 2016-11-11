@@ -1,10 +1,11 @@
-#version 400
+#version 420
 
 out vec4 frag_colour;
 
-in vec3 color;
+in vec2 UV;
+layout(binding=0) uniform sampler2D grass;
 
 
 void main() {
-	frag_colour = vec4(color, 1);
+	frag_colour = texture2D(grass, UV);
 }
