@@ -27,8 +27,9 @@ public:
 		return glm::vec3(0) - glm::vec3(getTransform() * glm::vec4(0, 1, 0, 1));
 	}
 
-protected:
 	glm::mat4 getTransform();
+
+protected:
 
 	virtual void transformed();
 

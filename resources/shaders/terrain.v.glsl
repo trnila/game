@@ -14,7 +14,7 @@ out vec2 UV;
 out vec3 worldPos;
 
 void main() {
-	gl_Position = projectionMatrix * viewMatrix * /*modelMatrix * */vec4(vp, 1.0);
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vp, 1.0);
 	worldPos = vp;
 	UV = uv;
 	normal_out = normalize(normal);

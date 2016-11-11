@@ -5,6 +5,7 @@
 #include "Graphics/Program.h"
 #include "Graphics/VBO.h"
 #include "Graphics/VAO.h"
+#include "Transformable.h"
 
 class Terrain {
 public:
@@ -13,8 +14,15 @@ public:
 
 private:
 	Program prog;
-	/*VBO vbo;
-	VAO vao;*/
+	Texture *grass;
+	Texture *dirt;
+	Transformable t;
+	int x, y;
+	VBO vbo;
+
+	void createShader();
+	void loadTextures();
+	void createTerrain();
 };
 
 
