@@ -16,6 +16,7 @@ struct Data {
 };
 std::vector<Data> points;
 Texture *grass;
+Texture *dirt;
 Terrain::Terrain() {
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/terrain.v.glsl", GL_VERTEX_SHADER));
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/terrain.f.glsl", GL_FRAGMENT_SHADER));
@@ -28,13 +29,6 @@ Terrain::Terrain() {
 		abort();
 	}
 
-	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, data));
-
-	/*for(int i = 0; i < x; i++) {
-		for(int j = 0; j < y; j++) {
-			points.push_back(glm::vec3(i*100, 10, j * 100));
-		}
-	}*/
 
 	glm::vec3 map[x][y];
 	for(int i = 0; i < x; i++) {
@@ -46,6 +40,7 @@ Terrain::Terrain() {
 
 
 	grass = new Texture("resources/grass.jpg");
+	dirt = new Texture("resources/dirt.jpg");
 	float fTextureU = float(x)*0.1f;
 	float fTextureV = float(y)*0.1f;
 
@@ -89,6 +84,7 @@ void Terrain::draw(Camera &cam) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	prog.useTexture("grass", *grass, 0);
+	prog.useTexture("dirt", *dirt, 0);
 
 	for(int i = 0; i < y; i++) {
 		glVertexAttribPointer(
