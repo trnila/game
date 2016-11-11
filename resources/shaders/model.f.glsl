@@ -1,21 +1,5 @@
 #version 420
-
-struct Material {
-	vec3 ambientColor;
-	vec3 diffuseColor;
-	vec3 specularColor;
-	float shininess;
-	float shininessStrength;
-};
-
-struct Light {
-	vec4 position;
-	vec3 diffuseColor;
-    vec3 specularColor;
-    float attenuation;
-    vec3 coneDirection;
-    float coneAngle;
-};
+#include "phong.h"
 
 layout(binding=0) uniform sampler2D modelTexture;
 layout(binding=1) uniform sampler2D shadowTexture;

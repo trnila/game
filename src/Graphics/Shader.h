@@ -29,6 +29,8 @@ public:
 
 private:
 	GLuint id;
+
+	std::string preprocessShader(const char *path);
 };
 
 

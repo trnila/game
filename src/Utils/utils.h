@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 
-std::string getFileContents(const char* path);
+std::string preprocessShader(const char *path);
 void checkOpenglError(const char *cmd, const char *file, int line);
 
 #define GL_CHECK(cmd) do { \
