@@ -1,10 +1,10 @@
 #include "Utils/ResourceManager.h"
 #include "Terrain.h"
-#include "stb_image.h"
 #include <GL/glew.h>
 #include <stdlib.h>
 #include "Graphics/Texture.h"
 #include "Transformable.h"
+#include "Utils/Image.h"
 
 struct Data {
 	glm::vec3 points;
@@ -20,16 +20,15 @@ Terrain::Terrain() {
 }
 
 void Terrain::createTerrain() {
-	unsigned char *data = stbi_load("resources/5.png", &x, &y, NULL, 1);
-	if(!data) {
-		abort();
-	}
+	Image image("resources/5.png", 1);
+	x = image.getWidth();
+	y = image.getHeight();
 
 
 	glm::vec3 map[x][y];
 	for(int i = 0; i < x; i++) {
 		for(int j = 0; j < y; j++) {
-			map[i][j] = glm::vec3(i , data[i * x + j], j);
+			map[i][j] = glm::vec3(i , image[i * x + j], j);
 		}
 	}
 

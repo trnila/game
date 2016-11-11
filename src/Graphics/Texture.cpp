@@ -1,25 +1,18 @@
 #include "Texture.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "../stb_image.h"
 #include "../Utils/Formatter.h"
 #include "FrameBuffer.h"
+#include "../Utils/Image.h"
 
 Texture::Texture(const char *file): type(GL_TEXTURE_2D) {
 	GL_CHECK(glGenTextures(1, &id));
 	bind();
 
-	int x,y,n;
-    unsigned char *data = stbi_load(file, &x, &y, &n, 3);
-	if(!data) {
-		throw std::runtime_error(Formatter() << "Could not load texture: " << file);
-	}
+	Image image(file);
 
-	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, x, y, 0, GL_RGB, GL_UNSIGNED_BYTE, data));
+	GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.getWidth(), image.getHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, image.getData()));
 
 	set(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	set(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	stbi_image_free(data);
 }
 
 void Texture::bind() {
