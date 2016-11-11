@@ -294,12 +294,10 @@ void Scene::initResources() {
 	camera.addListener(&prog);
 
 	factory = new ObjectFactory(prog, shadowRenderer.program);
-	//state = new Insert(*factory);
-	states.add(StateType::Normal, new NoState(states));
-	states.add(StateType::Insert, new Insert(states, *factory));
-	states.add(StateType::Delete, new Delete(states));
-	states.add(StateType::Scale, new Scale(states));
-	states.add(StateType::Lights, new Lights(states, camera));
+	states.add(StateType::Insert, new Insert(states, *factory), GLFW_KEY_I);
+	states.add(StateType::Delete, new Delete(states), GLFW_KEY_X);
+	states.add(StateType::Scale, new Scale(states), GLFW_KEY_S);
+	states.add(StateType::Lights, new Lights(states, camera), GLFW_KEY_L);
 	states.change(StateType::Normal);
 }
 

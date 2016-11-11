@@ -16,7 +16,7 @@
 #include "Graphics/Skybox.h"
 #include "ObjectFactory.h"
 #include "Logic.h"
-#include "Graphics/State.h"
+#include "State.h"
 #include "ShadowRenderer.h"
 
 class Scene : public KeyListener, public MouseListener {

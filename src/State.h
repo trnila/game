@@ -1,10 +1,10 @@
 #pragma once
 
 #include <unordered_map>
-#include "../Input/KeyListener.h"
-#include "../Scene/Object.h"
-#include "../Scene/NodeList.h"
-#include "../ObjectFactory.h"
+#include "Input/KeyListener.h"
+#include "Scene/Object.h"
+#include "Scene/NodeList.h"
+#include "ObjectFactory.h"
 
 enum class StateType {
 	Normal,
@@ -18,9 +18,9 @@ class State;
 
 class States {
 public:
-	void add(StateType type, State* state) {
-		states[type] = state;
-	}
+	States();
+
+	void add(StateType type, State *state, int key);
 
 	void change(StateType type) {
 		actual = states[type];
@@ -35,45 +35,38 @@ private:
 	State* actual = nullptr;
 };
 
+
 class State {
 public:
 	State(States& states): states(states) {}
 
 	virtual void onClick(glm::vec3 pos, Object *object, NodeList &root){}
 	virtual void onKey(int key, int scancode, int action, int mods, NodeList &root) {
-		std::unordered_map<int, StateType> m {
-			  {GLFW_KEY_ESCAPE, StateType::Normal},
-			  {GLFW_KEY_I, StateType::Insert},
-			  {GLFW_KEY_X, StateType::Delete},
-			  {GLFW_KEY_S, StateType::Scale},
-			  {GLFW_KEY_L, StateType::Lights}
-		};
-
 		if(action == GLFW_PRESS) {
-			auto it = m.find(key);
-			if(it != m.end()) {
+			if(key == GLFW_KEY_ESCAPE) {
+				states.change(StateType::Normal);
+			}
+
+			auto it = transitionKeys.find(key);
+			if(it != transitionKeys.end()) {
 				states.change(it->second);
 			}
 		}
 	}
 
+	void registerTransition(StateType state, int key) {
+		transitionKeys[key] = state;
+	}
+
 private:
 	States& states;
+	std::unordered_map<int, StateType> transitionKeys;
 };
 
-class NoState: public State {
-public:
-	NoState(States &states) : State(states) {}
-
-};
 
 class Insert: public State {
 public:
 	Insert(States &states, ObjectFactory &factory) : State(states), factory(factory) {}
-
-	virtual void onKey(int key, int scancode, int action, int mods, NodeList &root) override {
-		State::onKey(key, scancode, action, mods, root);
-	}
 
 	void onClick(glm::vec3 pos, Object *object, NodeList &root) override {
 		Object *obj;
