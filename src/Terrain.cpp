@@ -40,7 +40,7 @@ Terrain::Terrain() {
 
 
 	grass = new Texture("resources/grass.jpg");
-	dirt = new Texture("resources/dirt.jpg");
+	dirt = new Texture("resources/rocks.jpg");
 	float fTextureU = float(x)*0.1f;
 	float fTextureV = float(y)*0.1f;
 
@@ -52,6 +52,9 @@ Terrain::Terrain() {
 		Data a;
 		a.points = map[i][j + 1];
 		a.uvcoord = glm::vec2(fTextureU*fScaleC, fTextureV*fScaleR);
+		//a.normal = glm::cross(map[i][j] - map[i][j + 1], map[i+1][j + 1] - map[i][j + 1]);
+		a.normal = glm::vec3(17, 45, 0);
+
 		points.push_back(a);
 
 
@@ -59,6 +62,7 @@ Terrain::Terrain() {
 		fScaleR = float(i)/float(y-1);
 		a.points = map[i][j];
 		a.uvcoord = glm::vec2(fTextureU*fScaleC, fTextureV*fScaleR);
+		a.normal = glm::vec3(45, 18, 0);
 		points.push_back(a);
 	}
 
@@ -84,7 +88,7 @@ void Terrain::draw(Camera &cam) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	prog.useTexture("grass", *grass, 0);
-	prog.useTexture("dirt", *dirt, 0);
+	prog.useTexture("dirt", *dirt, 1);
 
 	for(int i = 0; i < y; i++) {
 		glVertexAttribPointer(
