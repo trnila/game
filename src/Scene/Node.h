@@ -6,6 +6,7 @@
 
 class Logic;
 class Object;
+class NodeList;
 
 class Node : public Transformable {
 public:
@@ -19,15 +20,17 @@ public:
 		logic = new T(*this, args...);
 	}
 
+	NodeList *getParent() const;
+	void setParent(NodeList *parent);
+
 	void updateLogic(float diff);
-
 	virtual Object* find(int id) = 0;
-
 	const glm::vec3 getWorldPosition();
 
 private:
 	Logic *logic = nullptr;
 	glm::vec4 worldPosition;
+	NodeList *parent = nullptr;
 };
 
 

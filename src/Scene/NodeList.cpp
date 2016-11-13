@@ -16,8 +16,10 @@ void NodeList::update(float diff, const glm::mat4 &parent) {
 
 void NodeList::addNode(Node *node) {
 	nodes.push_back(node);
+	node->setParent(this);
 }
 
 void NodeList::removeNode(Node *node) {
 	nodes.erase(std::remove(nodes.begin(), nodes.end(), node), nodes.end());
+	node->setParent(nullptr);
 }

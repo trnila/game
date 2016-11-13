@@ -39,7 +39,7 @@ public:
 		obj = root.getObjectFactory().create("resources/tree.obj");
 		obj->setPosition(pos.x, pos.y, pos.z);
 		obj->rotate(0, 0, 0, 1);
-		obj->setScale(0.01);
+		obj->setScale(0.1);
 		obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
 		//obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
 		root.getRootNode().addNode(obj);
@@ -50,7 +50,8 @@ class Delete: public State {
 public:
 
 	void onClick(glm::vec3 pos, Object *object, Scene &root) override {
-		object->move(1000, 1000, 1000); // TODO: fix
+		object->getParent()->removeNode(object);
+		delete object;
 	}
 };
 

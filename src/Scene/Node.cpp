@@ -28,3 +28,11 @@ void Node::update(float diff, const glm::mat4 &parent) {
 
 	updateLogic(diff);
 }
+
+NodeList *Node::getParent() const {
+	return parent;
+}
+
+void Node::setParent(NodeList *parent) {
+	Node::parent = parent;
+}
