@@ -24,24 +24,16 @@ void Terrain::createTerrain() {
 	x = image.getWidth();
 	y = image.getHeight();
 
-
-	glm::vec3 map[x][y];
-	for(int i = 0; i < x; i++) {
-		for(int j = 0; j < y; j++) {
-			map[i][j] = glm::vec3(i , image[i * x + j], j);
-		}
-	}
-
 	float fTextureU = float(x) * 0.05f;
 	float fTextureV = float(y) * 0.05f;
 
 	Data grid[x][y];
-	for(int j = 0; j < y - 1; j++) {
+	for(int j = 0; j < y; j++) {
 		for(int i = 0; i < x; i++) {
 			float fScaleC = float(j)/float(x - 1);
 			float fScaleR = float(i)/float(y - 1);
 
-			grid[i][j].points = map[i][j];
+			grid[i][j].points = glm::vec3(i , image[i * x + j], j);
 			grid[i][j].uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
 		}
 	}
@@ -51,7 +43,7 @@ void Terrain::createTerrain() {
 	};
 
 	for(int j = 0; j < y - 1; j++) {
-		for(int i = 0; i < x; i++) {
+		for(int i = 0; i < x - 1; i++) {
 			int points[][2] = {
 					{-1, 0}, {0, -1}, {1, 0}, {0, 1}
 			};
