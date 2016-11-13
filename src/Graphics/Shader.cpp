@@ -22,7 +22,7 @@ Shader::Shader(const char *file, GLenum type) {
 	if (compile_ok == GL_FALSE) {
 		std::string error = getGLLog(id);
 		glDeleteShader(id);
-		throw GlslCompileError(file, error);
+		throw GlslCompileError(file, error, source);
 	}
 }
 

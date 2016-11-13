@@ -21,7 +21,7 @@ void Program::link() {
 	GL_CHECK(glGetProgramiv(id, GL_LINK_STATUS, &link_ok));
 	if(!link_ok) {
 		glDeleteShader(id);
-		throw GlslCompileError("linking", getGLLog(id));
+		throw GlslCompileError("linking", getGLLog(id), "");
 	}
 }
 
