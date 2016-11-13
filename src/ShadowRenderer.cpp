@@ -1,4 +1,3 @@
-
 #include "ShadowRenderer.h"
 #include "Scene/NodeList.h"
 

@@ -24,7 +24,7 @@ void Object::setColor(float r, float g, float b) {
 }
 
 void Object::update(float diff, const glm::mat4 &parent) {
-	updateLogic(diff);
+	Node::update(diff, parent);
 
 	this->modelMatrix = parent * getTransform();
 }

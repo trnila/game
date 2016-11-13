@@ -15,7 +15,6 @@ public:
 	~Light();
 
 	virtual void render(RenderContext &context) override;
-	virtual void update(float diff, const glm::mat4 &parent) override;
 
 	const Color &getDiffuseColor() const;
 	void setDiffuseColor(const Color &diffuseColor);
@@ -23,21 +22,15 @@ public:
 	void setSpecularColor(const Color &specularColor);
 	const glm::vec3 &getDirection() const;
 	void setDirection(const glm::vec3 &direction);
-	const glm::vec3 getWorldPosition();
 
 	int getId();
 	void setActive(bool active);
 	bool isActive();
 
 	LightType getType() const;
-
-
-
 	void setType(LightType type);
 
-	virtual Object* find(int id) {
-		return nullptr;
-	}
+	virtual Object* find(int id);
 
 protected:
 public:
@@ -52,7 +45,6 @@ private:
 	Color diffuseColor = Color(0, 0, 0);
 	Color specularColor = Color(0, 0, 0);
 	glm::vec3 direction;
-	glm::vec4 worldPosition;
 	int id;
 	bool active = true;
 	LightType type;

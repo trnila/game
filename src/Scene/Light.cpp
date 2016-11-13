@@ -6,14 +6,6 @@ Light::Light(Program &shader, int id, LightType type) : id(id), type(type) {
 
 void Light::render(RenderContext &context) {}
 
-void Light::update(float diff, const glm::mat4 &parent) {
-	updateLogic(diff);
-
-	glm::vec4 pos = parent * glm::vec4(getPosition(), 1);
-	worldPosition = pos;
-	transformed(); //TODO: dont do this!
-}
-
 const Color &Light::getDiffuseColor() const {
 	return diffuseColor;
 }
@@ -38,10 +30,6 @@ const glm::vec3 &Light::getDirection() const {
 
 void Light::setDirection(const glm::vec3 &direction) {
 	this->direction = direction;
-}
-
-const glm::vec3 Light::getWorldPosition() {
-	return glm::vec3(worldPosition);
 }
 
 void Light::transformed() {
@@ -80,4 +68,8 @@ float Light::getConeAngle() const {
 
 void Light::setConeAngle(float coneAngle) {
 	Light::coneAngle = coneAngle;
+}
+
+Object *Light::find(int id) {
+	return nullptr;
 }
