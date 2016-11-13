@@ -30,31 +30,27 @@ void Terrain::createTerrain() {
 		}
 	}
 
+	float fTextureU = float(x) * 0.05f;
+	float fTextureV = float(y) * 0.05f;
 
-	float fTextureU = float(x) * 0.1f;
-	float fTextureV = float(y) * 0.1f;
+	Data grid[x][y];
+	for(int j = 0; j < y - 1; j++) {
+		for(int i = 0; i < x; i++) {
+			float fScaleC = float(j)/float(x - 1);
+			float fScaleR = float(i)/float(y - 1);
+
+			grid[i][j].points = map[i][j];
+			grid[i][j].uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
+			grid[i][j].normal = glm::cross(map[i][j] - map[i][j + 1], map[i+1][j + 1] - map[i][j + 1]);
+		}
+	}
 
 	std::vector<Data> points;
-	for(int j = 0; j < y - 1; j++)
-	for(int i = 0; i < x; i++) {
-
-		float fScaleC = float(j)/float(x - 1);
-		float fScaleR = float(i)/float(y - 1);
-		Data a;
-		a.points = map[i][j + 1];
-		a.uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
-		//a.normal = glm::cross(map[i][j] - map[i][j + 1], map[i+1][j + 1] - map[i][j + 1]);
-		a.normal = glm::vec3(17, 45, 0);
-
-		points.push_back(a);
-
-
-		fScaleC = float(j+1)/float(x - 1);
-		fScaleR = float(i)/float(y - 1);
-		a.points = map[i][j];
-		a.uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
-		a.normal = glm::vec3(45, 18, 0);
-		points.push_back(a);
+	for(int j = 0; j < y - 1; j++) {
+		for(int i = 0; i < x; i++) {
+			points.push_back(grid[i][j + 1]);
+			points.push_back(grid[i][j]);
+		}
 	}
 
 	auto obj = vbo.activate();
