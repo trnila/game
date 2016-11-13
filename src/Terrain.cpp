@@ -27,7 +27,12 @@ void Terrain::createTerrain() {
 	float fTextureU = float(x) * 0.05f;
 	float fTextureV = float(y) * 0.05f;
 
-	Data grid[x][y];
+	//TODO: fix
+	Data **grid = new Data*[x];
+	for (int i = 0; i < x; i++) {
+		grid[i] = new Data[y];
+	}
+
 	for(int j = 0; j < y; j++) {
 		for(int i = 0; i < x; i++) {
 			float fScaleC = float(j)/float(x - 1);
@@ -42,6 +47,10 @@ void Terrain::createTerrain() {
 		return cross(a.points - b.points, c.points - b.points);
 	};
 
+	auto inRange = [](int x, int max) -> bool {
+		return x >= 0 && x < max;
+	};
+
 	for(int j = 0; j < y - 1; j++) {
 		for(int i = 0; i < x - 1; i++) {
 			int points[][2] = {
@@ -54,7 +63,9 @@ void Terrain::createTerrain() {
 				int *a = points[k];
 				int *b = points[(k + 1) % 4];
 
-				grid[i][j].normal -= norm(grid[i + a[0]][j + a[1]], grid[i][j], grid[i + b[0]][j + b[0]]);
+				if (inRange(i+a[0], x) && inRange(i+b[0], x) && inRange(j+a[0], y) && inRange(j + b[0], y)) {
+					grid[i][j].normal -= norm(grid[i + a[0]][j + a[1]], grid[i][j], grid[i + b[0]][j + b[0]]);
+				}
 			}
 		}
 	}
@@ -69,6 +80,12 @@ void Terrain::createTerrain() {
 
 	auto obj = vbo.activate();
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Data) * points.size(), points.data(), GL_STATIC_DRAW);
+
+	for (int i = 0; i < x; i++) {
+		delete[] grid[i];
+	}
+	delete[] grid;
+
 }
 
 void Terrain::loadTextures() {
@@ -101,8 +118,8 @@ void Terrain::draw(Scene &scene) {
 
 	for(int i = 0; i < y; i++) {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) (sizeof(Data) * 2 * x * i));
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) (sizeof(Data) * 2 * x * i) + (sizeof(float) * 3));
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) (sizeof(Data) * 2 * x * i) + (sizeof(float) * 6));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) ((sizeof(Data) * 2 * x * i) + (sizeof(float) * 3)));
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) ((sizeof(Data) * 2 * x * i) + (sizeof(float) * 6)));
 
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * x);
 	}

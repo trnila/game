@@ -29,7 +29,7 @@ public:
 
 private:
 	Logic *logic = nullptr;
-	glm::vec4 worldPosition;
+	glm::vec3 worldPosition;
 	NodeList *parent = nullptr;
 };
 

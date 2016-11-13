@@ -2,6 +2,7 @@
 #include "Shader.h"
 #include "../Utils/utils.h"
 #include "../Utils/Formatter.h"
+#include <stddef.h>
 
 Shader::Shader(const char *file, GLenum type) {
 	id = glCreateShader(type);
@@ -43,7 +44,7 @@ std::string Shader::preprocessShader(const char *path) {
 		if(word == "#include") {
 			std::string dir = "";
 
-			ssize_t index = std::string(path).rfind('/');
+			size_t index = std::string(path).rfind('/');
 			if(index >= 0) {
 				dir = std::string(path).substr(0, index + 1);
 			}

@@ -19,7 +19,7 @@ const glm::vec3 Node::getWorldPosition() {
 }
 
 void Node::update(float diff, const glm::mat4 &parent) {
-	glm::vec4 pos = parent * glm::vec4(getPosition(), 1);
+	glm::vec3 pos = glm::vec3(parent * glm::vec4(getPosition(), 1));
 
 	if(worldPosition != pos) {
 		worldPosition = pos;
