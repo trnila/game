@@ -20,7 +20,7 @@ Terrain::Terrain() {
 	createTerrain(); }
 
 void Terrain::createTerrain() {
-	Image image("resources/5.png", 1);
+	Image image("resources/heightmaps/5.png", 1);
 	x = image.getWidth();
 	y = image.getHeight();
 
@@ -72,8 +72,8 @@ void Terrain::createTerrain() {
 }
 
 void Terrain::loadTextures() {
-	grass = new Texture("resources/grass.jpg");
-	dirt = new Texture("resources/rocks.jpg");
+	grass = new Texture("resources/heightmaps/grass.jpg");
+	dirt = new Texture("resources/heightmaps/rocks.jpg");
 }
 
 void Terrain::createShader() {
