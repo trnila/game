@@ -51,7 +51,7 @@ public:
 private:
 	NodeList root;
 
-	Program prog, constantProg, shadow;
+	Program prog;
 	Camera camera;
 	CameraHandler camHandler;
 
@@ -64,4 +64,6 @@ private:
 	States states;
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
+
+	Color ambientColor = Color(0.1, 0.1, 0.1);
 };

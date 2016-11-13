@@ -250,8 +250,7 @@ void Scene::createScene() {
 	camera.setRotation(-0.582351f, -0.1290f);
 	camera.setZFar(20000);
 
-	prog.setAmbientColor(Color(0.1, 0.1, 0.1));
-	//prog.setAmbientColor(Color(0, 0, 0));
+	prog.setAmbientColor(ambientColor);
 
 	skybox = new Skybox();
 
@@ -370,6 +369,5 @@ void Scene::onClick(int button, int action, double x, double y) {
 	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
 	states.current().onClick(pos, o, *this);
-	std::cout << glm::to_string(camera.getDirection()) << "\n";
 }
 
