@@ -5,6 +5,8 @@
 #include "Graphics/Texture.h"
 #include "Transformable.h"
 #include "Utils/Image.h"
+#include "Graphics/Material.h"
+#include "Scene.h"
 
 struct Data {
 	glm::vec3 points;
@@ -89,18 +91,21 @@ void Terrain::createShader() {
 	prog.use();
 }
 
-void Terrain::draw(Camera &cam) {
+void Terrain::draw(Scene &scene) {
 	prog.use();
-	prog.updated(cam);
+	prog.updated(scene.getActiveCamera());
+	prog.useTexture("grass", *grass, 0);
+	prog.useTexture("dirt", *dirt, 1);
+	prog.send("modelMatrix", t.getTransform());
+	Material material;
+	material.specularColor = Color(0);
+	material.apply(prog);
+	prog.updated(*scene.getRootNode().getLight(0));
 
 	auto obj = vbo.activate();
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
-
-	prog.useTexture("grass", *grass, 0);
-	prog.useTexture("dirt", *dirt, 1);
-	prog.send("modelMatrix", t.getTransform());
 
 	for(int i = 0; i < y; i++) {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) (sizeof(Data) * 2 * x * i));

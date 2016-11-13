@@ -323,7 +323,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	skybox->render(context);
-	terrain->draw(camera);
+	terrain->draw(*this);
 
 	glm::mat4 biasMatrix(
 			0.5, 0.0, 0.0, 0.0,

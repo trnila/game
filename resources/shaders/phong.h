@@ -41,9 +41,9 @@ vec3 applyLight(Light light, vec3 color) {
 	vec3 specular = material.shininessStrength * material.specularColor * light.specularColor * spec;
 
 	float visibility = 1.0;
-	if ( texture( shadowTexture, shadCoord.xy ).z  <  shadCoord.z - 0.005){
+	/*if ( texture( shadowTexture, shadCoord.xy ).z  <  shadCoord.z - 0.005){
 		visibility = 0.5;
-	}
+	}*/
 
 	return visibility * attenuation * (diffuse + specular);
 }

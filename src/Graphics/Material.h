@@ -9,10 +9,9 @@ public:
 	void apply(Program &program) const;
 	void createMaterial(const aiMaterial *material, const std::string &path);
 
-private:
-	Color ambientColor;
-	Color diffuseColor;
-	Color specularColor;
+	Color ambientColor = Color(1);
+	Color diffuseColor = Color(1);
+	Color specularColor = Color(1);
 	float shininess = 32;
 	float shininessStrength = 0.8;
 	Texture* texture = nullptr;

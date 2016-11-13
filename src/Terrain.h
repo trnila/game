@@ -6,11 +6,12 @@
 #include "Graphics/VBO.h"
 #include "Graphics/VAO.h"
 #include "Transformable.h"
+class Scene;
 
 class Terrain {
 public:
 	Terrain();
-	void draw(Camera &cam);
+	void draw(Scene &scene);
 
 	Transformable& getTransform() {
 		return t;
