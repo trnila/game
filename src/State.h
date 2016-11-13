@@ -50,8 +50,10 @@ class Delete: public State {
 public:
 
 	void onClick(glm::vec3 pos, Object *object, Scene &root) override {
-		object->getParent()->removeNode(object);
-		delete object;
+		if(object) {
+			object->getParent()->removeNode(object);
+			delete object;
+		}
 	}
 };
 
