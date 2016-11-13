@@ -28,6 +28,15 @@ void main() {
 
           frag_colour += texture2D(grass, UV)*fScale;
           frag_colour += texture2D(dirt, UV)*fScale2;
-
 	}
+
+//	frag_colour = vec4(normal_out, 1);
+
+
+	vec3 lightPos = vec3(-20, 64, 10);
+	vec3 lightVector = normalize(lightPos - worldPos);
+	float dot_product = max(dot(normalize(lightVector), normalize(normal_out)), 0);
+    frag_colour *= dot_product;
+
+
 }

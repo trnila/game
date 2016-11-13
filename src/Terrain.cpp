@@ -41,7 +41,27 @@ void Terrain::createTerrain() {
 
 			grid[i][j].points = map[i][j];
 			grid[i][j].uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
-			grid[i][j].normal = glm::cross(map[i][j] - map[i][j + 1], map[i+1][j + 1] - map[i][j + 1]);
+		}
+	}
+
+	auto norm = [](Data &a, Data &b, Data &c) -> glm::vec3 {
+		return cross(a.points - b.points, c.points - b.points);
+	};
+
+	for(int j = 0; j < y - 1; j++) {
+		for(int i = 0; i < x; i++) {
+			int points[][2] = {
+					{-1, 0}, {0, -1}, {1, 0}, {0, 1}
+			};
+
+
+			grid[i][j].normal = glm::vec3(0);
+			for(int k = 0; k < 4; k++) {
+				int *a = points[k];
+				int *b = points[(k + 1) % 4];
+
+				grid[i][j].normal -= norm(grid[i + a[0]][j + a[1]], grid[i][j], grid[i + b[0]][j + b[0]]);
+			}
 		}
 	}
 
