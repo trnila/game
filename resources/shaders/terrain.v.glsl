@@ -9,13 +9,13 @@ uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
 out vec3 color;
-out vec3 normal_out;
+out vec3 normal_world;
 out vec2 UV;
-out vec3 worldPos;
+out vec3 position_world;
 
 void main() {
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vp, 1.0);
-	worldPos = vp;
+	position_world = vp;
 	UV = uv;
-	normal_out = normalize(normal);
+	normal_world = normalize(normal);
 }

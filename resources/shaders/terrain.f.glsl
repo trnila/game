@@ -3,8 +3,8 @@
 out vec4 frag_colour;
 
 in vec2 UV;
-in vec3 normal_out;
-in vec3 worldPos;
+in vec3 normal_world;
+in vec3 position_world;
 
 layout(binding=0) uniform sampler2D grass;
 layout(binding=1) uniform sampler2D dirt;
@@ -13,7 +13,7 @@ layout(binding=1) uniform sampler2D dirt;
 void main() {
 	vec3 ok = vec3(0, 0, 1);
 
-	float fScale = worldPos.y/255;
+	float fScale = position_world.y/255;
 
 	if(fScale < 0.2) {
 		frag_colour = texture2D(grass, UV);
@@ -34,8 +34,8 @@ void main() {
 
 
 	vec3 lightPos = vec3(-20, 64, 10);
-	vec3 lightVector = normalize(lightPos - worldPos);
-	float dot_product = max(dot(normalize(lightVector), normalize(normal_out)), 0);
+	vec3 lightVector = normalize(lightPos - position_world);
+	float dot_product = max(dot(normalize(lightVector), normalize(normal_world)), 0);
     frag_colour *= dot_product;
 
 
