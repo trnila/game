@@ -9,14 +9,14 @@ uniform mat4 projectionMatrix;
 uniform mat4 depthBias;
 
 out vec3 normal_world;
-out vec4 position_world;
+out vec3 position_world;
 out vec2 UV;
 out vec4 shadCoord;
 
 void main(void) {
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vp, 1.0);
 
-	position_world = modelMatrix * vec4(vp, 1.0);
+	position_world = vec3(modelMatrix * vec4(vp, 1.0));
 	normal_world = normalize(mat3(transpose(inverse(modelMatrix))) * normal);
 
 	UV = uv;

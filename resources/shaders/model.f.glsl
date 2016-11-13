@@ -6,7 +6,7 @@ layout(binding=1) uniform sampler2D shadowTexture;
 out vec4 frag_colour;
 
 in vec3 normal_world;
-in vec4 position_world;
+in vec3 position_world;
 in vec2 UV;
 
 uniform vec3 simpleColor;

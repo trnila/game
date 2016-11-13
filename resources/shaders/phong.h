@@ -16,12 +16,12 @@ struct Light {
 };
 
 vec3 applyLight(Light light, vec3 color) {
-	vec4 lightVector;
+	vec3 lightVector;
 	float attenuation = 1.0;
 	if(light.position.w == 0.0) {
-		lightVector = vec4(normalize(-light.position.xyz), 1);
+		lightVector = normalize(-light.position.xyz);
 	} else {
-		lightVector = normalize(vec4(light.position.xyz, 1.0) - position_world);
+		lightVector = normalize(light.position.xyz - position_world);
 		float distanceToLight = length(light.position.xyz - position_world.xyz);
 		//attenuation = 1.0 / (1.0 + light.attenuation * pow(distanceToLight, 2));
 
@@ -32,10 +32,10 @@ vec3 applyLight(Light light, vec3 color) {
 		}
 	}
 
-	float dot_product = max(dot(normalize(lightVector), normalize(vec4(normal_world, 1))), 0);
+	float dot_product = max(dot(normalize(lightVector), normalize(normal_world)), 0);
 	vec3 diffuse = material.diffuseColor * light.diffuseColor * color * dot_product;
 
-	vec3 lightDir = vec3(normalize(light.position - position_world));
+	vec3 lightDir = vec3(normalize(light.position.xyz - position_world));
 	vec3 camDir = normalize(cameraPos - position_world.xyz);
 	float spec = pow(max(0.0, dot(camDir, reflect(-lightDir, normal_world))), material.shininess);
 	vec3 specular = material.shininessStrength * material.specularColor * light.specularColor * spec;
