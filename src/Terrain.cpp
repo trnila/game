@@ -24,8 +24,8 @@ void Terrain::createTerrain() {
 	x = image.getWidth();
 	y = image.getHeight();
 
-	float fTextureU = float(x) * 0.05f;
-	float fTextureV = float(y) * 0.05f;
+	float fTextureU = float(x) * 0.1f;
+	float fTextureV = float(y) * 0.1f;
 
 	//TODO: fix
 	Data **grid = new Data*[x];
@@ -39,6 +39,7 @@ void Terrain::createTerrain() {
 			float fScaleR = float(i)/float(y - 1);
 
 			grid[i][j].points = glm::vec3(i , image[i * x + j], j);
+			//grid[i][j].points = glm::vec3(i * 2.0/x - 1, image[i * x + j] * 2.0/255 - 1, j * 2.0/y - 1);
 			grid[i][j].uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
 		}
 	}
