@@ -109,7 +109,13 @@ void Terrain::draw(Scene &scene) {
 	Material material;
 	material.specularColor = Color(0);
 	material.apply(prog);
-	prog.updated(*scene.getRootNode().getLight(0));
+
+	for(int i = 0; i < 8; i++) {
+		Light *light = scene.getRootNode().getLight(i);
+		if(light) {
+			prog.updated(*light);
+		}
+	}
 
 	auto obj = vbo.activate();
 	glEnableVertexAttribArray(0);
