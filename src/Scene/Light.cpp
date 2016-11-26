@@ -30,6 +30,7 @@ const glm::vec3 &Light::getDirection() const {
 
 void Light::setDirection(const glm::vec3 &direction) {
 	this->direction = direction;
+	notify();
 }
 
 void Light::transformed() {
@@ -60,6 +61,7 @@ LightType Light::getType() const {
 
 void Light::setType(LightType type) {
 	Light::type = type;
+	notify();
 }
 
 float Light::getConeAngle() const {
@@ -68,6 +70,7 @@ float Light::getConeAngle() const {
 
 void Light::setConeAngle(float coneAngle) {
 	Light::coneAngle = coneAngle;
+	notify();
 }
 
 Object *Light::find(int id) {
