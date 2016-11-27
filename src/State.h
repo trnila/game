@@ -81,7 +81,7 @@ public:
 
 	virtual void onKey(int key, int scancode, int action, int mods, Scene &root) override {
 		if(action == GLFW_PRESS) {
-			Light* l = root.getRootNode().getLight(this->light);
+			BaseLight* l = root.getRootNode().getLight(this->light);
 			if(l) {
 				switch(key) {
 					case GLFW_KEY_T:
@@ -91,17 +91,17 @@ public:
 						l->setPosition(root.getActiveCamera().getPosition());
 						return;
 					case GLFW_KEY_D:
-						l->setDirection(root.getActiveCamera().getDirection());
+						//l->setDirection(root.getActiveCamera().getDirection());
 						return;
 					case GLFW_KEY_A:
-						l->setType(LightType::Directional);
+						//l->setType(LightType::Directional);
 						return;
 					case GLFW_KEY_B:
-						l->setType(LightType::Point);
+						//l->setType(LightType::Point);
 						return;
 					case GLFW_KEY_C:
-						l->setType(LightType::SpotLight);
-						l->setConeAngle(30);
+						//l->setType(LightType::SpotLight);
+						//l->setConeAngle(30);
 						return;
 				}
 			}

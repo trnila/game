@@ -1,10 +1,12 @@
 #include <glm/ext.hpp>
 #include "Scene.h"
 #include "data.h"
-#include "Scene/Light.h"
+#include "Scene/Lights/BaseLight.h"
 #include "States.h"
 #include "State.h"
-
+#include "Scene/Lights/DirectionalLight.h"
+#include "Scene/Lights/PointLight.h"
+#include "Scene/Lights/SpotLight.h"
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
 	initResources();
@@ -183,7 +185,7 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	Light *light = new Light(prog, 0, LightType::Directional);
+	DirectionalLight *light = new DirectionalLight(prog, 0);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setDirection(glm::vec3(-0.550664, -0.395870, 0.734885));
@@ -216,7 +218,7 @@ void Scene::createBalls() {
 		balls->addNode(obj);
 	}
 
-	Light *light = new Light(prog, 1, LightType::Point);
+	BaseLight *light = new PointLight(prog, 1);
 	light->setDiffuseColor(Color(1, 0, 0));
 	light->setSpecularColor(Color(1, 0, 0));
 	light->setPosition(glm::vec3(0, 1, 0));
@@ -318,7 +320,7 @@ void Scene::createRotatingSpotLight() {
 	obj->setPosition(5, 0, 0);
 	rot->addNode(obj);*/
 
-	Light *light = new Light(prog, 2, LightType::SpotLight);
+	SpotLight *light = new SpotLight(prog, 2);
 	light->setDiffuseColor(Color(0, 1, 0));
 	light->setSpecularColor(Color(0, 1, 0));
 	light->setPosition(5, 0, 0);
@@ -336,7 +338,7 @@ void Scene::createScanner() {
 	obj->setScale(0.01f);
 	center->addNode(obj);
 
-	Light *light = new Light(prog, 6, LightType::SpotLight);
+	SpotLight *light = new SpotLight(prog, 6);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setConeAngle(15);

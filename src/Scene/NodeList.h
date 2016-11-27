@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Node.h"
-#include "Light.h"
+#include "Lights/BaseLight.h"
 
 class NodeList : public Node {
 public:
@@ -21,9 +21,9 @@ public:
 		return nullptr;
 	}
 
-	virtual Light* getLight(int id) {
+	virtual BaseLight* getLight(int id) {
 		for (auto o : nodes) {
-			Light* l = dynamic_cast<Light*>(o);
+			BaseLight* l = dynamic_cast<BaseLight*>(o);
 			if (l && l->getId() == id) {
 				return l;
 			}

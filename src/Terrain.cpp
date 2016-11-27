@@ -112,7 +112,7 @@ void Terrain::draw(Scene &scene) {
 	material.apply(prog);
 
 	for(int i = 0; i < 8; i++) {
-		Light *light = scene.getRootNode().getLight(i);
+		BaseLight *light = scene.getRootNode().getLight(i);
 		if(light) {
 			prog.updated(*light);
 		}

@@ -1,6 +1,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include "Program.h"
-#include "../Scene/Light.h"
+#include "../Scene/Lights/BaseLight.h"
 #include "Texture.h"
 
 Program::Program() {
@@ -39,23 +39,10 @@ void Program::setColor(float r, float g, float b) {
 	send("simpleColor", glm::vec3(r, g, b));
 }
 
-void Program::updated(Light &obj) {
-	std::string prefix = "lights[" + std::to_string(obj.getId()) + "].";
-
+void Program::updated(BaseLight &obj) {
 	if(obj.isActive()) {
 		activeLights |= 1 << obj.getId();
-
-		if(obj.getType() == LightType::Directional) {
-			send((prefix + "position").c_str(), glm::vec4(obj.getDirection(), 0));
-		} else {
-			send((prefix + "position").c_str(), glm::vec4(obj.getWorldPosition(), 1));
-		}
-		send((prefix + "diffuseColor").c_str(), obj.getDiffuseColor());
-		send((prefix + "specularColor").c_str(), obj.getSpecularColor());
-		send((prefix + "attenuation").c_str(), 0.3f);
-
-		send((prefix + "coneDirection").c_str(), obj.getDirection());
-		send((prefix + "coneAngle").c_str(), obj.getType() == LightType::SpotLight ? obj.getConeAngle() : 360);
+		obj.apply(*this);
 	} else {
 		activeLights &= ~(1 << obj.getId());
 	}
@@ -103,7 +90,7 @@ int Program::getUniformLocation(const char * name) {
 	use();
 	GLint uniformId = glGetUniformLocation(id, name);
 	if (!uniformId) {
-		printf("failed sending %s\n", name);
+		//printf("failed sending %s\n", name);
 	}
 	return uniformId;
 }

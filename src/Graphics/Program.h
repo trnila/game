@@ -4,10 +4,10 @@
 #include "../Scene/Camera.h"
 #include "../Utils/Color.h"
 
-class Light;
+class BaseLight;
 class Texture;
 
-class Program : public Observer<Camera>, public Observer<Light> {
+class Program : public Observer<Camera>, public Observer<BaseLight> {
 public:
 	Program();
 	void attach(Shader &shader);
@@ -23,7 +23,7 @@ public:
 	void useTexture(const char *name, Texture &texture, int pos);
 
 	virtual void updated(Camera &camera) override;
-	virtual void updated(Light &obj) override;
+	virtual void updated(BaseLight &obj) override;
 
 	void send(const char *name, const glm::vec3& vec);
 	void send(const char *name, const glm::vec4& vec);

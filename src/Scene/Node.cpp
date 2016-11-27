@@ -1,4 +1,4 @@
-#include "Light.h"
+#include "Lights/BaseLight.h"
 #include "Node.h"
 #include "../Logic.h"
 

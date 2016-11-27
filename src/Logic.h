@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Scene/Object.h"
+#include "Scene/Lights/SpotLight.h"
 
 class Object;
 
@@ -52,7 +53,7 @@ private:
 
 class FollowLogic: public Logic, Observer<Camera> {
 public:
-	FollowLogic(Node &obj, Camera *cam, Light *light);
+	FollowLogic(Node &obj, Camera *cam, SpotLight *light);
 
 	virtual void update(float diff) override;
 
@@ -68,5 +69,5 @@ private:
 	glm::vec3 axis;
 
 	bool wandering = false;
-	Light* light;
+	SpotLight* light;
 };

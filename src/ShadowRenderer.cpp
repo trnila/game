@@ -4,7 +4,7 @@
 Texture & ShadowRenderer::render(RenderContext &context, NodeList &root, glm::mat4 &depthMVP) {
 	context.setStage(RenderStage::Shadow);
 
-	Light* light = root.getLight(0);
+	BaseLight* light = root.getLight(0);
 	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-10, 10, -10, 10, -20, 60);
 	glm::mat4 depthViewMatrix = glm::lookAt(light->getWorldPosition(), light->getDirection(), glm::vec3(0,1,0));
 	depthMVP = depthProjectionMatrix * depthViewMatrix;

@@ -1,6 +1,6 @@
 #include <glm/ext.hpp>
 #include "Logic.h"
-#include "Scene/Light.h"
+#include "Scene/Lights/BaseLight.h"
 
 void RotateLogic::update(float diff) {
 	obj.addAngle(anglePerSec * diff);
@@ -27,7 +27,7 @@ void MoveLogic::update(float diff) {
 	obj.move(dir * diff);
 }
 
-FollowLogic::FollowLogic(Node &obj, Camera *cam, Light *light) : Logic(obj), cam(cam), light(light) {
+FollowLogic::FollowLogic(Node &obj, Camera *cam, SpotLight *light) : Logic(obj), cam(cam), light(light) {
 	cam->addListener(this);
 }
 
