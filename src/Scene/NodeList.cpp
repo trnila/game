@@ -9,8 +9,8 @@ void NodeList::render(RenderContext &context) {
 void NodeList::update(float diff, const glm::mat4 &parent) {
 	updateLogic(diff);
 
-	for (Node *node: nodes) {
-		node->update(diff, parent * getTransform());
+	for(int i = 0; i < nodes.size(); i++) { //TODO: add removed/added objects to queue and add/remove at end of frame
+		nodes[i]->update(diff, parent * getTransform());
 	}
 }
 
