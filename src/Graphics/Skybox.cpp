@@ -1,26 +1,16 @@
 #include "Skybox.h"
 #include "../Utils/ResourceManager.h"
 
-Skybox::Skybox(): cubemap() {
+Skybox::Skybox(const std::vector<std::string> &faces): cubemap() {
+	load(faces);
+}
+
+void Skybox::load(const std::vector<std::string> &faces) {
 	program.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/skybox.v.glsl", GL_VERTEX_SHADER));
 	program.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/skybox.f.glsl", GL_FRAGMENT_SHADER));
 	program.link();
 
 	program.use();
-
-	std::vector<const char*> faces;
-	/*faces.push_back("resources/skyboxes/ely_hills/hills_rt.tga");
-	faces.push_back("resources/skyboxes/ely_hills/hills_lf.tga");
-	faces.push_back("resources/skyboxes/ely_hills/hills_up.tga");
-	faces.push_back("resources/skyboxes/ely_hills/hills_dn.tga");
-	faces.push_back("resources/skyboxes/ely_hills/hills_bk.tga");
-	faces.push_back("resources/skyboxes/ely_hills/hills_ft.tga");*/
-	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_rt.tga");
-	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_lf.tga");
-	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_up.tga");
-	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_dn.tga");
-	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_bk.tga");
-	faces.push_back("resources/skyboxes/ame_nebula/purplenebula_ft.tga");
 
 	cubemap = new CubeMap(faces);
 	model = new Model("resources/cube.obj");
@@ -39,4 +29,15 @@ void Skybox::render(RenderContext &c) {
 Skybox::~Skybox() {
 	delete model;
 	delete cubemap;
+}
+
+Skybox::Skybox(const char *prefix) {
+	const char suffixes[][3] = {"rt", "lf", "up", "dn", "bk", "ft"};
+
+	std::vector<std::string> faces;
+	for(int i = 0; i < sizeof(suffixes) / sizeof(*suffixes); i++) {
+		faces.push_back((std::string(prefix) + "_" + suffixes[i] + ".tga").c_str());
+	}
+
+	load(faces);
 }

@@ -2,7 +2,7 @@
 #include "../Utils/Formatter.h"
 #include "../Utils/Image.h"
 
-CubeMap::CubeMap(std::vector<const char *> images): Texture(GL_TEXTURE_CUBE_MAP) {
+CubeMap::CubeMap(std::vector<std::string> images): Texture(GL_TEXTURE_CUBE_MAP) {
 	set(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	set(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	set(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -12,9 +12,9 @@ CubeMap::CubeMap(std::vector<const char *> images): Texture(GL_TEXTURE_CUBE_MAP)
 	setFaces(images);
 }
 
-void CubeMap::setFaces(const std::vector<const char *> &images) {
+void CubeMap::setFaces(const std::vector<std::string> &images) {
 	for(GLuint i = 0; i < images.size(); i++) {
-		setFace(i, images[i]);
+		setFace(i, images[i].c_str());
 	}
 }
 

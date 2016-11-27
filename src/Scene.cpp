@@ -180,7 +180,8 @@ void Scene::createScene() {
 
 	prog.setAmbientColor(ambientColor);
 
-	skybox = new Skybox();
+	//skybox = new Skybox("resources/skyboxes/ame_nebula/purplenebula");
+	skybox = new Skybox("resources/skyboxes/ely_hills/hills");
 
 
 	camera.addListener(&skybox->program);

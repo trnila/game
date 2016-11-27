@@ -9,7 +9,8 @@
 
 class Skybox {
 public:
-	Skybox();
+	Skybox(const std::vector<std::string> &faces);
+	Skybox(const char *prefix);
 	~Skybox();
 
 	void render(RenderContext &c);
@@ -18,6 +19,8 @@ public:
 private:
 	CubeMap* cubemap;
 	Model *model;
+
+	void load(const std::vector<std::string> &faces);
 };
 
 
