@@ -8,10 +8,10 @@ const glm::vec3 &DirectionalLight::getDirection() const {
 
 void DirectionalLight::setDirection(const glm::vec3 &direction) {
 	this->direction = direction;
-	Subject::notify();
+	transformed();
 }
 
-DirectionalLight::DirectionalLight(Program &shader, int id) : BaseLight(shader, id) {}
+DirectionalLight::DirectionalLight(Mediator &shader, int id) : BaseLight(shader, id) {}
 
 void DirectionalLight::apply(Program &program) {
 	BaseLight::apply(program);

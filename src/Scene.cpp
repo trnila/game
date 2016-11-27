@@ -187,14 +187,13 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	DirectionalLight *light = new DirectionalLight(prog, 0);
+	DirectionalLight *light = new DirectionalLight(mediator, 0);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setDirection(glm::vec3(-0.550664, -0.395870, 0.734885));
 	root.addNode(light);
 
-
-	terrain = new Terrain();
+	terrain = new Terrain(mediator);
 	//terrain = new GeneratedTerrain();
 	terrain->init();
 	terrain->getTransform().setPosition(0, -5, -30);
@@ -219,7 +218,7 @@ void Scene::createBalls() {
 		balls->addNode(obj);
 	}
 
-	BaseLight *light = new PointLight(prog, 1);
+	BaseLight *light = new PointLight(mediator, 1);
 	light->setDiffuseColor(Color(1, 0, 0));
 	light->setSpecularColor(Color(1, 0, 0));
 	light->setPosition(glm::vec3(0, 1, 0));
@@ -230,6 +229,7 @@ void Scene::initResources() {
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
 	prog.link();
+	mediator.registerProgram(&prog);
 
 	camera.addListener(&prog);
 
@@ -327,7 +327,7 @@ void Scene::createRotatingSpotLight() {
 	obj->setPosition(5, 0, 0);
 	rot->addNode(obj);*/
 
-	SpotLight *light = new SpotLight(prog, 2);
+	SpotLight *light = new SpotLight(mediator, 2);
 	light->setDiffuseColor(Color(0, 1, 0));
 	light->setSpecularColor(Color(0, 1, 0));
 	light->setPosition(5, 0, 0);
@@ -345,7 +345,7 @@ void Scene::createScanner() {
 	obj->setScale(0.01f);
 	center->addNode(obj);
 
-	SpotLight *light = new SpotLight(prog, 6);
+	SpotLight *light = new SpotLight(mediator, 6);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setConeAngle(15);

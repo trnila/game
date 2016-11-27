@@ -1,3 +1,3 @@
 #include "PointLight.h"
 
-PointLight::PointLight(Program &shader, int id) : BaseLight(shader, id) {}
+PointLight::PointLight(Mediator &shader, int id) : BaseLight(shader, id) {}

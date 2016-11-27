@@ -5,7 +5,7 @@
 
 class DirectionalLight: public BaseLight {
 public:
-	DirectionalLight(Program &shader, int id);
+	DirectionalLight(Mediator &shader, int id);
 
 	const glm::vec3 &getDirection() const;
 	void setDirection(const glm::vec3 &direction);

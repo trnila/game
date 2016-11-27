@@ -2,10 +2,11 @@
 
 #include "../Node.h"
 #include "../../Utils/Color.h"
+#include "../../Mediator.h"
 
-class BaseLight: public Node, public Subject<BaseLight> {
+class BaseLight: public Node {
 public:
-	BaseLight(Program &shader, int id);
+	BaseLight(Mediator &mediator, int id);
 	~BaseLight();
 
 	virtual void render(RenderContext &context) override;
@@ -46,6 +47,7 @@ private:
 	int id;
 	bool active = true;
 	float attenuation = 0.01f;
+	Mediator &mediator;
 };
 
 

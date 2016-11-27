@@ -1,7 +1,7 @@
 #include "BaseLight.h"
+#include "../../Mediator.h"
 
-BaseLight::BaseLight(Program &shader, int id) : id(id) {
-	addListener(&shader);
+BaseLight::BaseLight(Mediator &mediator, int id) : mediator(mediator), id(id) {
 }
 
 void BaseLight::render(RenderContext &context) {}
@@ -12,7 +12,7 @@ const Color &BaseLight::getDiffuseColor() const {
 
 void BaseLight::setDiffuseColor(const Color &diffuseColor) {
 	this->diffuseColor = diffuseColor;
-	notify();
+	transformed();
 }
 
 const Color &BaseLight::getSpecularColor() const {
@@ -21,12 +21,12 @@ const Color &BaseLight::getSpecularColor() const {
 
 void BaseLight::setSpecularColor(const Color &specularColor) {
 	this->specularColor = specularColor;
-	notify();
+	transformed();
 }
 
 void BaseLight::transformed() {
 	Transformable::transformed();
-	notify();
+	mediator.lightChanged(this);
 }
 
 int BaseLight::getId() {
@@ -35,7 +35,7 @@ int BaseLight::getId() {
 
 void BaseLight::setActive(bool active) {
 	this->active = active;
-	notify();
+	transformed();
 }
 
 bool BaseLight::isActive() {

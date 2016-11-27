@@ -24,3 +24,5 @@ void GeneratedTerrain::createTerrain() {
 		}
 	}
 }
+
+GeneratedTerrain::GeneratedTerrain(Mediator &mediator) : Terrain(mediator) {}

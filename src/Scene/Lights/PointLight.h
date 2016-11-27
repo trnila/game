@@ -5,7 +5,7 @@
 
 class PointLight: public BaseLight {
 public:
-	PointLight(Program &shader, int id);
+	PointLight(Mediator &shader, int id);
 };
 
 

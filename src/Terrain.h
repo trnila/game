@@ -3,6 +3,8 @@
 #include "Graphics/VBO.h"
 #include "Graphics/VAO.h"
 #include "Transformable.h"
+#include "Mediator.h"
+
 class Scene;
 
 struct Data {
@@ -13,7 +15,7 @@ struct Data {
 
 class Terrain {
 public:
-	Terrain();
+	Terrain(Mediator &mediator);
 	~Terrain();
 
 	void init();

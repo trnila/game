@@ -8,8 +8,9 @@
 #include "Graphics/Material.h"
 #include "Scene.h"
 
-Terrain::Terrain() {
+Terrain::Terrain(Mediator &mediator) {
 	createShader();
+	mediator.registerProgram(&prog);
 	loadTextures();
 	init();
 }
@@ -117,13 +118,6 @@ void Terrain::draw(Scene &scene) {
 	Material material;
 	material.specularColor = Color(0);
 	material.apply(prog);
-
-	for(int i = 0; i < 8; i++) {
-		BaseLight *light = scene.getRootNode().getLight(i);
-		if(light) {
-			prog.updated(*light);
-		}
-	}
 
 	auto obj = vbo.activate();
 	glEnableVertexAttribArray(0);

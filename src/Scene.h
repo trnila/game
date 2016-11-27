@@ -55,6 +55,8 @@ private:
 	Camera camera;
 	CameraHandler camHandler;
 
+	Mediator mediator;
+
 	void createScene();
 	void initResources();
 
