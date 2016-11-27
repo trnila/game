@@ -49,3 +49,11 @@ BaseLight::~BaseLight() {
 Object *BaseLight::find(int id) {
 	return nullptr;
 }
+
+float BaseLight::getAttenuation() const {
+	return attenuation;
+}
+
+void BaseLight::setAttenuation(float attenuation) {
+	BaseLight::attenuation = attenuation;
+}

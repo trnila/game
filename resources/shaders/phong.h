@@ -25,9 +25,11 @@ vec3 applyLight(Light light, vec3 color) {
 		float distanceToLight = length(light.position.xyz - position_world.xyz);
 		attenuation = 1.0 / (1.0 + light.attenuation * distanceToLight*distanceToLight);
 
-		// cone
-		//float lightToSurfaceAngle = degrees(acos(dot(vec3(-lightVector), normalize(light.coneDirection))));
-		attenuation = dot(vec3(-lightVector), normalize(light.coneDirection));
+		// spotlight
+		if(light.coneAngle > 0.0) {
+			float lightToSurfaceAngle = degrees(acos(dot(vec3(-lightVector), normalize(light.coneDirection))));
+			attenuation = dot(vec3(-lightVector), normalize(light.coneDirection));
+		}
 	}
 
 	float dot_product = max(dot(normalize(lightVector), normalize(normal_world)), 0);

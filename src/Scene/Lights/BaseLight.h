@@ -13,13 +13,18 @@ public:
 		send(program, "position", glm::vec4(getWorldPosition(), 1));
 		send(program, "diffuseColor", getDiffuseColor());
 		send(program, "specularColor", getSpecularColor());
-		send(program, "attenuation", 0.3f);
+		send(program, "attenuation", attenuation);
+		send(program, "coneAngle", 0.0f);
 	}
 
 	const Color &getDiffuseColor() const;
 	void setDiffuseColor(const Color &diffuseColor);
 	const Color &getSpecularColor() const;
 	void setSpecularColor(const Color &specularColor);
+
+	float getAttenuation() const;
+
+	void setAttenuation(float attenuation);
 
 	int getId();
 	void setActive(bool active);
@@ -40,6 +45,7 @@ private:
 	Color specularColor = Color(0, 0, 0);
 	int id;
 	bool active = true;
+	float attenuation = 0.01f;
 };
 
 
