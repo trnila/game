@@ -308,3 +308,7 @@ void Scene::createScanner() {
 	center->attachLogic(FollowLogic(&camera, light));
 }
 
+Terrain *Scene::getTerrain() const {
+	return terrain;
+}
+

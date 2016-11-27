@@ -136,6 +136,7 @@ public:
 private:
 	float time = 0;
 	float time2 = 0;
+	float time3 = 0;
 	glm::vec3 pos;
 
 };

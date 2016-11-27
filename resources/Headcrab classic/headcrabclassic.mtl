@@ -1,17 +1,26 @@
-# Max2Mtl Version 4.0 Mar 10th, 2001
-#
-# Multi/Sub SMDImport (1) to come 
-#
+# Blender MTL File: 'headcrabclassic.obj'
+# Material Count: 2
+
 newmtl Material__10
-Ka  0.6 0.6 0.6
-Kd  0.6 0.6 0.6
-Ks  0.9 0.9 0.9
-d  1.0
-Ns  0.0
+Ns 0.000000
+Ka 0.600000 0.600000 0.600000
+Kd 0.600000 0.600000 0.600000
+Ks 0.900000 0.900000 0.900000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
 illum 2
 map_Kd Texture/headcrabsheet.tga
-bump headcrabsheet_normal.tga
-#
-# Multi/Sub SMDImport done 
-#
-# EOF
+map_Bump Texture/headcrabsheet_normal.tga
+
+newmtl Material__10_NONE
+Ns 0.000000
+Ka 0.600000 0.600000 0.600000
+Kd 0.600000 0.600000 0.600000
+Ks 0.900000 0.900000 0.900000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Bump Texture/headcrabsheet_normal.tga
+map_Kd Texture/headcrabsheet.tga

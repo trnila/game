@@ -21,6 +21,10 @@ public:
 		logic.push_back(functor);
 	}
 
+	void removeAllLogic() {
+		logic.clear();
+	}
+
 	NodeList *getParent() const;
 	void setParent(NodeList *parent);
 

@@ -8,6 +8,7 @@ void Walker::operator()(Node &node, float dt, Scene &scene) {
 
 	time += dt;
 	time2 += dt;
+	time3 += dt;
 
 	auto toCamDir = normalize(cam.getPosition() - pos);
 	if(time2 > 1) {
@@ -26,11 +27,28 @@ void Walker::operator()(Node &node, float dt, Scene &scene) {
 
 	if(time > 3) {
 		Object *bullet = scene.getRootNode().createEntity("resources/ball.obj");
-		bullet->setScale(0.1);
+		bullet->setScale(0.5);
 		bullet->setColor(rand() % 255 / 255.0, rand() % 255 / 255.0, rand() % 255 / 255.0);
 		bullet->setPosition(node.getPosition() + glm::vec3(1.5, 1.5, 0));
 		bullet->attachLogic(MoveLogic(toCamDir * 5.0f));
 		bullet->attachLogic(DestroyLogic(5));
 		time = 0;
+	}
+
+	if(time3 > 5) {
+		time3 = 0;
+
+		Object* obj = scene.getRootNode().createEntity("resources/Headcrab classic/headcrabclassic.obj");
+		obj->setColor(1, 1, 1);
+		obj->setPosition(node.getPosition());
+		obj->attachLogic(MoveLogic(glm::vec3(0, -1, 0)));
+		obj->attachLogic([](Node &node, float dt, Scene &scene) -> void {
+			//float height = scene.getTerrain()->getHeightAt(node.getPosition().x, node.getPosition().z) - 3;
+			float height = -1;
+			if(node.getPosition().y <= height) {
+				node.removeAllLogic();
+				node.attachLogic(MoveLogic(glm::vec3(0.1, 0, 0)));
+			}
+		});
 	}
 }

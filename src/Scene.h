@@ -44,6 +44,8 @@ public:
 		return states;
 	}
 
+	Terrain *getTerrain() const;
+
 private:
 	NodeList *root;
 
