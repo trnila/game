@@ -13,53 +13,6 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(windo
 
 void Scene::createScene() {
 	Object *obj;
-	//Object *terrain = factory->create("resources/terrain_smooth.obj");
-//	terrain = factory->create("resources/plane.obj");
-
-	/*terrain->setPosition(-7, -3, -2);
-	terrain->rotate(0, 0, 0, 1);
-	terrain->setScale(10, 10, 10);
-	terrain->setColor(0, 123 / 255.0f, 10 / 255.0f);
-
-	root.addNode(terrain);*/
-
-	/*NodeList *windMill = new NodeList();
-	windMill->move(0, 0.5, 0);
-
-	NodeList *propeller = new NodeList();
-	propeller->move(0, 1, -0.05f);
-	propeller->rotate(0, 0.6, 0, 1);
-	propeller->attachLogic<RotateLogic>(45);
-	// propellers
-	glm::vec3 colors[] = {
-			{1, 0, 0},
-			{0, 1, 0},
-			{0, 0, 1},
-			{1, 1, 0}
-	};
-
-	obj = factory->create("resources/ball.obj");
-	obj->setScale(0.02, 0.02, 0.02);
-	obj->setColor(1, 1, 1);
-	propeller->addNode(obj);
-
-	for (int i = 0; i < 4; i++) {
-		obj = new Object(-1, new Model("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
-		obj->rotate(90 * i, 0.6, 0, 1);
-		obj->setScale(1, 1, 1);
-		obj->setColor(colors[i]);
-		propeller->addNode(obj);
-	}
-	// tube
-	obj = factory->create("resources/tube.obj");
-	obj->rotate(0, 0, 0, 1);
-	obj->setScale(0.05, 1, 0.05);
-	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	windMill->addNode(obj);
-	windMill->addNode(propeller);
-
-	root.addNode(windMill);*/
-
 
 	NodeList *forest = new NodeList();
 	forest->move(17.65, -3.0, 26.88);
@@ -211,39 +164,12 @@ void Scene::createScene() {
 	//obj = factory->create("resources/Strider/Strider.obj");
 	//obj = factory->create("resources/Gman/gman.obj");
 	//obj = factory->create("resources/AntLion/AntLion.obj");
-	NodeList *center = new NodeList();
-	center->setPosition(18, 0, 5);
-	root.addNode(center);
-
-	obj = factory->create("resources/Combine Scanner/Combine_Scanner.obj");
-	obj->setColor(1, 1, 1);
-	obj->setScale(0.01f);
-	center->addNode(obj);
-
-	Light *light = new Light(prog, 6, LightType::SpotLight);
-	light->setDiffuseColor(Color(1, 1, 1));
-	light->setSpecularColor(Color(1, 1, 1));
-	light->setConeAngle(15);
-	center->addNode(light);
-	center->attachLogic<FollowLogic>(&camera, light);
 
 
-	NodeList *balls = new NodeList();
-	balls->move(15, 0, 0);
-	root.addNode(balls);
 
-	float coords[][3] = {
-			{0, 0, -1},
-			{1, 0, 0},
-			{0, 0, 1},
-			{-1, 0, 0}
-	};
-	int modif = 2;
-	for(int i = 0; i < 4; i++) {
-		obj = factory->create("resources/ball.obj");
-		obj->setPosition(modif * coords[i][0], modif * coords[i][1], modif * coords[i][2]);
-		balls->addNode(obj);
-	}
+	createBalls();
+	createRotatingSpotLight();
+	createScanner();
 
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
@@ -257,37 +183,44 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	light = new Light(prog, 0, LightType::Directional);
+	Light *light = new Light(prog, 0, LightType::Directional);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setDirection(glm::vec3(-0.550664, -0.395870, 0.734885));
 	root.addNode(light);
-	
-/*	light = new Light(prog, 1, LightType::Point);
-	light->setDiffuseColor(Color(1, 0, 0));
-	light->setSpecularColor(Color(1, 0, 0));
-	light->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
-	root.addNode(light);
 
 
-	NodeList *node = new NodeList();
-	node->rotate(0, 0, 1, 0);
-	node->attachLogic<RotateLogic>(45);
 
-/*	obj = factory->create("resources/ball.obj");
-	obj->setPosition(15, 15, 0);
-	node->addNode(obj);*/
 
-	/*light = new Light(prog, 2, LightType::Point);
-	light->setDiffuseColor(Color(1, 1, 1));
-	light->setSpecularColor(Color(1, 1, 1));
-	light->setDirection(glm::vec3(0, 1, 1));
-	light->setPosition(15, 15, 0);
-	node->addNode(light);
-	root.addNode(node);*/
+
 	terrain = new Terrain();
 	terrain->getTransform().setPosition(0, -5, -30);
 	terrain->getTransform().setScale(5, 1, 5);
+}
+
+void Scene::createBalls() {
+	NodeList *balls = new NodeList();
+	balls->move(15, 0, 0);
+	root.addNode(balls);
+
+	float coords[][3] = {
+			{0, 0, -1},
+			{1, 0, 0},
+			{0, 0, 1},
+			{-1, 0, 0}
+	};
+	int modif = 2;
+	for(int i = 0; i < 4; i++) {
+		Object *obj = factory->create("resources/ball.obj");
+		obj->setPosition(modif * coords[i][0], modif * coords[i][1], modif * coords[i][2]);
+		balls->addNode(obj);
+	}
+
+	Light *light = new Light(prog, 1, LightType::Point);
+	light->setDiffuseColor(Color(1, 0, 0));
+	light->setSpecularColor(Color(1, 0, 0));
+	light->setPosition(glm::vec3(0, 1, 0));
+	balls->addNode(light);
 }
 
 void Scene::initResources() {
@@ -369,5 +302,45 @@ void Scene::onClick(int button, int action, double x, double y) {
 	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
 	states.current().onClick(pos, o, *this);
+}
+
+void Scene::createRotatingSpotLight() {
+	NodeList *node = new NodeList();
+	node->setPosition(18.837509, 5.312332, 0.827486);
+	root.addNode(node);
+
+	NodeList *rot = new NodeList();
+	rot->attachLogic<RotateLogic>(45);
+	rot->rotate(0, 0, 1, 0);
+	node->addNode(rot);
+
+	/*obj = factory->create("resources/ball.obj");
+	obj->setPosition(5, 0, 0);
+	rot->addNode(obj);*/
+
+	Light *light = new Light(prog, 2, LightType::SpotLight);
+	light->setDiffuseColor(Color(0, 1, 0));
+	light->setSpecularColor(Color(0, 1, 0));
+	light->setPosition(5, 0, 0);
+	light->setDirection(glm::vec3(0, -1, 0));
+	rot->addNode(light);
+}
+
+void Scene::createScanner() {
+	NodeList *center = new NodeList();
+	center->setPosition(18, 0, 5);
+	root.addNode(center);
+
+	Object *obj = factory->create("resources/Combine Scanner/Combine_Scanner.obj");
+	obj->setColor(1, 1, 1);
+	obj->setScale(0.01f);
+	center->addNode(obj);
+
+	Light *light = new Light(prog, 6, LightType::SpotLight);
+	light->setDiffuseColor(Color(1, 1, 1));
+	light->setSpecularColor(Color(1, 1, 1));
+	light->setConeAngle(15);
+	center->addNode(light);
+	center->attachLogic<FollowLogic>(&camera, light);
 }
 
