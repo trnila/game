@@ -60,8 +60,6 @@ private:
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
 
-	Color ambientColor = Color(0.1, 0.1, 0.1);
-
 	void createBalls();
 	void createRotatingSpotLight();
 	void createScanner();

@@ -29,7 +29,7 @@ void Scene::createScene() {
 	camera.setRotation(-0.582351f, -0.1290f);
 	camera.setZFar(20000);
 
-	prog.setAmbientColor(ambientColor);
+	getRootNode().getMediator().setAmbientLight(Color(0.1, 0.1, 0.1));
 
 	//skybox = new Skybox("resources/skyboxes/ame_nebula/purplenebula");
 	skybox = new Skybox("resources/skyboxes/ely_hills/hills");

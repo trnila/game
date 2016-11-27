@@ -17,6 +17,12 @@ public:
 		}
 	}
 
+	void setAmbientLight(Color color) {
+		for(Program* program: programs) {
+			program->setAmbientColor(color);
+		}
+	}
+
 	ObjectFactory* getObjectFactory() {
 		return factory;
 	}
