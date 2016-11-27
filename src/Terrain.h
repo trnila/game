@@ -41,8 +41,6 @@ public:
 			}
 		}
 
-		printf("%d %d = %f\n", (int)x, (int) z, val);
-		fflush(stdout);
 		return val * t.getScale().y;
 	}
 

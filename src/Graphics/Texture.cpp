@@ -13,6 +13,7 @@ Texture::Texture(const char *file): type(GL_TEXTURE_2D) {
 
 	set(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	set(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	GL_CHECK(glGenerateTextureMipmap(id));
 }
 
 void Texture::bind() {
