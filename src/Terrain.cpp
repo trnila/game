@@ -1,23 +1,18 @@
 #include "Utils/ResourceManager.h"
 #include "Terrain.h"
 #include <GL/glew.h>
-#include <stdlib.h>
+#include <glm/ext.hpp>
 #include "Graphics/Texture.h"
 #include "Transformable.h"
 #include "Utils/Image.h"
 #include "Graphics/Material.h"
 #include "Scene.h"
 
-struct Data {
-	glm::vec3 points;
-	glm::vec3 normal;
-	glm::vec2 uvcoord;
-};
-
 Terrain::Terrain() {
 	createShader();
 	loadTextures();
-	createTerrain(); }
+	createTerrain();
+}
 
 void Terrain::createTerrain() {
 	Image image("resources/heightmaps/5.png", 1);
@@ -28,7 +23,7 @@ void Terrain::createTerrain() {
 	float fTextureV = float(y) * 0.1f;
 
 	//TODO: fix
-	Data **grid = new Data*[x];
+	grid = new Data*[x];
 	for (int i = 0; i < x; i++) {
 		grid[i] = new Data[y];
 	}
@@ -38,8 +33,13 @@ void Terrain::createTerrain() {
 			float fScaleC = float(j)/float(x - 1);
 			float fScaleR = float(i)/float(y - 1);
 
+			glm::vec2 c = 4.0f * glm::vec2(fScaleC, fScaleR);
+			const float d = 0.5f + 0.5f*glm::perlin(c);
+
 			grid[i][j].points = glm::vec3(i , image[i * x + j], j);
-			//grid[i][j].points = glm::vec3(i * 2.0/x - 1, image[i * x + j] * 2.0/255 - 1, j * 2.0/y - 1);
+			//grid[i][j].points = glm::vec3(i , 80*d, j);
+
+
 			grid[i][j].uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
 		}
 	}
@@ -82,10 +82,10 @@ void Terrain::createTerrain() {
 	auto obj = vbo.activate();
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Data) * points.size(), points.data(), GL_STATIC_DRAW);
 
-	for (int i = 0; i < x; i++) {
+	/*for (int i = 0; i < x; i++) {
 		delete[] grid[i];
 	}
-	delete[] grid;
+	delete[] grid;*/
 
 }
 

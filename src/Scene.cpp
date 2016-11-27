@@ -246,6 +246,12 @@ void Scene::update(float time) {
 	glm::mat4 parent(1.0f);
 	root.update(time, parent);
 	camHandler.update(time);
+
+	auto pos = camera.getPosition();
+
+
+
+	camera.setPosition(pos.x, terrain->getHeightAt(pos.x, pos.z), pos.z);
 }
 
 void Scene::renderOneFrame(RenderContext &context) {
