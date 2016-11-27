@@ -28,7 +28,7 @@ vec3 applyLight(Light light, vec3 color) {
 		// spotlight
 		if(light.coneAngle > 0.0) {
 			float lightToSurfaceAngle = degrees(acos(dot(vec3(-lightVector), normalize(light.coneDirection))));
-			attenuation = dot(vec3(-lightVector), normalize(light.coneDirection));
+			attenuation = max(0, dot(vec3(-lightVector), normalize(light.coneDirection)));
 		}
 	}
 
