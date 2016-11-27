@@ -55,9 +55,7 @@ private:
 
 class FollowLogic: public Observer<Camera> {
 public:
-	FollowLogic(Camera *cam, SpotLight *light): cam(cam), light(light) {
-		id = rand();
-	}
+	FollowLogic(Camera *cam, SpotLight *light): cam(cam), light(light) {}
 
 	~FollowLogic() {
 		cam->removeListener(this);
@@ -70,6 +68,9 @@ public:
 	}
 
 	void operator()(Node& node, float dt) {
+		time += dt;
+		updated(*cam);
+
 		auto direction = pos - node.getPosition();
 		node.move(direction * dt);
 
@@ -83,10 +84,14 @@ public:
 	}
 
 	virtual void updated(Camera &node) override {
-		float m = 1.0f;
-		auto r = glm::vec3(m * rand() / RAND_MAX, m * rand() / RAND_MAX, 0.5 * rand() / RAND_MAX);
-		float n = rand() % 1 ? 1 : -1;
-		pos = (cam->getPosition() + cam->getDirection() * 2.0f + r * n);
+		if(time >= 2) {
+			float m = 1.0f;
+			auto r = glm::vec3(m * rand() / RAND_MAX, m * rand() / RAND_MAX, 0.5 * rand() / RAND_MAX);
+			float n = rand() % 1 ? 1 : -1;
+			pos = (cam->getPosition() + cam->getDirection() * 2.0f + r * n);
+
+			time = 0;
+		}
 	}
 
 	float r() {
@@ -101,5 +106,5 @@ private:
 	glm::vec3 axis;
 
 	SpotLight* light;
-	int id;
+	float time = 0;
 };
