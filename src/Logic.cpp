@@ -1,7 +1,7 @@
 #include <glm/ext.hpp>
 #include "Logic.h"
 #include "Scene/Lights/BaseLight.h"
-
+/*
 void RotateLogic::update(float diff) {
 	obj.addAngle(anglePerSec * diff);
 }
@@ -85,4 +85,4 @@ void FollowLogic::updated(Camera &obj) {
 		time = 0;
 	}
 
-}
+}*/

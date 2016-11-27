@@ -55,7 +55,7 @@ void Scene::createTerrain() {
 void Scene::createEarth() {
 	NodeList *ro = root->createGroup();
 	ro->rotate(0, 0, 1, 0);
-	ro->attachLogic<RotateLogic>(20);
+	ro->attachLogic(RotateLogic(20));
 
 	NodeList *e1 = ro->createGroup();
 	e1->rotate(0, 0, 1, 0);
@@ -70,7 +70,7 @@ void Scene::createEarth() {
 
 	NodeList *m = e2->createGroup();
 	m->rotate(0, 0, 1, 0);
-	m->attachLogic<RotateLogic>(-90);
+	m->attachLogic(RotateLogic(-90));
 
 	obj = m->createEntity("resources/moon/moon.obj");
 	obj->setColor(1, 1, 1);
@@ -83,13 +83,13 @@ void Scene::createVariousObjects() {
 	obj->setPosition(13, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, 0, -1, 0);
-	obj->attachLogic<RotateLogic>(40);
+	obj->attachLogic(RotateLogic(40));
 
 	obj = root->createEntity("resources/monkey_smooth.obj");
 	obj->setPosition(10, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, 0, 1, 0);
-	obj->attachLogic<RotateLogic>(40);
+	obj->attachLogic(RotateLogic(40));
 
 	obj = root->createEntity("resources/Vortigaunt/vortigaunt.obj");
 	obj->setColor(1, 1, 1);
@@ -125,13 +125,13 @@ void Scene::create2Cubes() {
 	Object *obj = cubes->createEntity("resources/cube.obj");
 	obj->setPosition(0, 0, 0);
 	obj->setColor(1, 0, 0);
-	obj->attachLogic<RotateLogic>(40);
+	obj->attachLogic(RotateLogic(40));
 
 	obj = cubes->createEntity("resources/cube.obj");
 	obj->setPosition(-2, 0, 3);
 	obj->setColor(1, 0, 0);
 	obj->rotate(0, -1, 0, 0);
-	obj->attachLogic<RotateLogic>(40);
+	obj->attachLogic(RotateLogic(40));
 }
 
 void Scene::createForest() {
@@ -143,14 +143,14 @@ void Scene::createForest() {
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
+	obj->attachLogic(TreeLogic(1.01, 0.1, 5));
 
 	obj = forest->createEntity("resources/tree.obj");
 	obj->setPosition(0, 0.0f, 0);
 	obj->rotate(0, 0, 0, 1);
 	obj->setScale(0.001, 0.001, 0.001);
 	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	obj->attachLogic<TreeLogic>(1.04, 0.2, 9);
+	obj->attachLogic(TreeLogic(1.04, 0.2, 9));
 }
 
 void Scene::createBalls() {
@@ -270,7 +270,7 @@ void Scene::createRotatingSpotLight() {
 	node->setPosition(18.837509, 5.312332, 0.827486);
 
 	NodeList *rot = node->createGroup();
-	rot->attachLogic<RotateLogic>(45);
+	rot->attachLogic(RotateLogic(45));
 	rot->rotate(0, 0, 1, 0);
 
 	/*obj = factory->create("resources/ball.obj");
@@ -296,6 +296,6 @@ void Scene::createScanner() {
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setConeAngle(15);
-	center->attachLogic<FollowLogic>(&camera, light);
+	center->attachLogic(FollowLogic(&camera, light));
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <functional>
 #include "../Transformable.h"
 #include "../Graphics/RenderContext.h"
 
@@ -10,14 +11,13 @@ class NodeList;
 
 class Node : public Transformable {
 public:
-	virtual ~Node();
+	typedef std::function<void(Node&, float)> LogicFunctor;
 
 	virtual void render(RenderContext &context) = 0;
 	virtual void update(float diff, const glm::mat4 &parent);
 
-	template<typename T, typename... Args>
-	void attachLogic(Args... args) {
-		logic = new T(*this, args...);
+	void attachLogic(const LogicFunctor &functor) {
+		logic = functor;
 	}
 
 	NodeList *getParent() const;
@@ -28,7 +28,7 @@ public:
 	const glm::vec3 getWorldPosition();
 
 private:
-	Logic *logic = nullptr;
+	LogicFunctor logic;
 	glm::vec3 worldPosition;
 	NodeList *parent = nullptr;
 };
