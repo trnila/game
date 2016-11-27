@@ -26,9 +26,19 @@ public:
 	ObjectFactory* getObjectFactory() {
 		return factory;
 	}
+
+	Scene *getScene() const {
+		return scene;
+	}
+
+	void setScene(Scene *scene) {
+		Mediator::scene = scene;
+	}
+
 private:
 	std::vector<Program*> programs;
 	ObjectFactory* factory;
+	Scene *scene;
 };
 
 

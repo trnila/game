@@ -1,12 +1,15 @@
 #pragma once
 
 #include "Scene/Lights/SpotLight.h"
+#include "Terrain.h"
+#include "Scene/NodeList.h"
+#include "Scene.h"
 
 class RotateLogic {
 public:
 	RotateLogic(float anglePerSec): anglePerSec(anglePerSec) {}
 
-	void operator()(Node& node, float dt) {
+	void operator()(Node& node, float dt, Scene& scene) {
 		node.addAngle(anglePerSec * dt);
 	}
 
@@ -18,7 +21,7 @@ class TreeLogic {
 public:
 	TreeLogic(float growSpeed, float maxScale, float deadTime) : growSpeed(growSpeed), maxScale(maxScale), deadTime(deadTime) {}
 
-	void operator()(Node& node, float dt) {
+	void operator()(Node& node, float dt, Scene& scene) {
 		if (node.getScale().x > maxScale) {
 			node.rotate(90, 0, 0, 1);
 			currentDeadTime += dt;
@@ -41,10 +44,27 @@ private:
 };
 
 
+class DestroyLogic {
+public:
+	DestroyLogic(float time): time(time) {}
+
+	void operator()(Node& node, float dt, Scene& scene) {
+		curTime += dt;
+
+		if(time < curTime) {
+			node.getParent()->removeNode(&node);
+		}
+	}
+
+private:
+	float time;
+	float curTime = 0;
+};
+
 struct MoveLogic {
 	MoveLogic(glm::vec3 dir): dir(dir) {}
 
-	void operator()(Node& node, float dt) {
+	void operator()(Node& node, float dt, Scene& scene) {
 		node.move(dir * dt);
 	}
 
@@ -67,7 +87,7 @@ public:
 		cam->addListener(this);
 	}
 
-	void operator()(Node& node, float dt) {
+	void operator()(Node& node, float dt, Scene& scene) {
 		time += dt;
 		updated(*cam);
 
@@ -107,4 +127,15 @@ private:
 
 	SpotLight* light;
 	float time = 0;
+};
+
+class Walker {
+public:
+	void operator()(Node& node, float dt, Scene& scene);
+
+private:
+	float time = 0;
+	float time2 = 0;
+	glm::vec3 pos;
+
 };

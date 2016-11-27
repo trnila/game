@@ -107,10 +107,18 @@ void Scene::createVariousObjects() {
 	obj->setPosition(18, 0, 5);
 	obj->setScale(0.05f);
 
-	obj = root->createEntity("resources/Strider/Strider.obj");
+
+	/*obj = root->createEntity("resources/Strider/Strider.obj");
 	obj->setColor(1, 1, 1);
 	obj->setPosition(18, -5, 30);
 	obj->setScale(0.02f);
+	obj->attachLogic(Walker(terrain));*/
+
+	obj = root->createEntity("resources/Combine Dropship/Combine_dropship.obj");
+	obj->setColor(1, 1, 1);
+	obj->setPosition(18, -5, 30);
+	obj->setScale(0.02f);
+	obj->attachLogic(Walker());
 
 
 	//obj = factory->create("resources/Strider/Strider.obj");
@@ -184,6 +192,7 @@ void Scene::initResources() {
 	Mediator* mediator = new Mediator(new ObjectFactory(prog, shadowRenderer.program));
 	root = new NodeList(*mediator);
 	mediator->registerProgram(&prog);
+	mediator->setScene(this);
 
 	camera.addListener(&prog);
 	states.add(StateType::Insert, new Insert(), GLFW_KEY_I);

@@ -1,88 +1,36 @@
 #include <glm/ext.hpp>
 #include "Logic.h"
 #include "Scene/Lights/BaseLight.h"
-/*
-void RotateLogic::update(float diff) {
-	obj.addAngle(anglePerSec * diff);
-}
+#include "Scene.h"
 
-void TreeLogic::update(float diff) {
-	if (obj.getScale().x > maxScale) {
-		obj.rotate(90, 0, 0, 1);
-		currentDeadTime += diff;
+void Walker::operator()(Node &node, float dt, Scene &scene) {
+	Camera &cam = scene.getActiveCamera();
 
-		if (currentDeadTime > deadTime) {
-			obj.rotate(0, 0, 0, 1);
-			obj.setScale(0.001, 0.001, 0.001);
-			currentDeadTime = 0;
-		}
-	} else {
-		obj.multiplyScale(growSpeed, growSpeed, growSpeed);
+	time += dt;
+	time2 += dt;
+
+	auto toCamDir = normalize(cam.getPosition() - pos);
+	if(time2 > 1) {
+		pos = (cam.getPosition() + cam.getDirection() * glm::vec3(1, 0.1, 1) * 20.0f);
+		time2 = 0;
 	}
-}
 
-MoveLogic::MoveLogic(Node &obj, glm::vec3 dir) : Logic(obj), dir(dir) {}
+	auto direction = pos - node.getPosition();
+	node.move(direction * dt);
 
-void MoveLogic::update(float diff) {
-	obj.move(dir * diff);
-}
+	auto objDir = normalize(glm::vec3(0, 0, 1));
 
-FollowLogic::FollowLogic(Node &obj, Camera *cam, SpotLight *light) : Logic(obj), cam(cam), light(light) {
-	cam->addListener(this);
-}
+	float angle = glm::degrees(acos(glm::dot(objDir, toCamDir)));
+	glm::vec3 axis = glm::cross(objDir, toCamDir);
+	node.rotate(angle, axis);
 
-float r() {
-	return (float) rand() / RAND_MAX * 2 - 1;
-}
-
-void FollowLogic::update(float diff) {
-	time += diff;
-
-	if(wandering) {
-		if(time > 3) {
-			if(rand() % 2) {
-				pos = obj.getPosition() + glm::vec3(r(), r(), r());
-			} else {
-				axis = glm::vec3(0, r(), 0);
-				angle = rand() % 180;
-			}
-			time = 0;
-
-			if(rand() % 5 == 1) {
-				wandering  = 0;
-			}
-		}
-
-		auto direction = pos - obj.getPosition();
-		obj.move(direction * diff);
-		obj.rotate(obj.getAngle() + (angle - obj.getAngle()) * diff, axis);
-		light->setDirection(glm::vec3(0, -1, 0));
-	} else {
-		if(time > 3) {
-			wandering = true;
-		} else {
-			auto direction = pos - obj.getPosition();
-			obj.move(direction * diff);
-
-			auto objDir = normalize(glm::vec3(0, 0, 1));
-			auto toCamDir = normalize(cam->getPosition() - obj.getPosition());
-
-			angle = glm::degrees(acos(glm::dot(objDir, toCamDir)));
-			axis = glm::cross(objDir, toCamDir);
-			obj.rotate(angle, axis);
-			light->setDirection(glm::vec3(0, -1, 0));
-		}
-	}
-}
-
-void FollowLogic::updated(Camera &obj) {
-	if(!wandering) {
-		float m = 1.0f;
-		auto r = glm::vec3(m * rand() / RAND_MAX, m * rand() / RAND_MAX, 0.5 * rand() / RAND_MAX);
-		int n = rand() % 1 ? 1 : -1;
-		pos = (cam->getPosition() + cam->getDirection() * 2 + r * n);
-
+	if(time > 3) {
+		Object *bullet = scene.getRootNode().createEntity("resources/ball.obj");
+		bullet->setScale(0.1);
+		bullet->setColor(rand() % 255 / 255.0, rand() % 255 / 255.0, rand() % 255 / 255.0);
+		bullet->setPosition(node.getPosition() + glm::vec3(1.5, 1.5, 0));
+		bullet->attachLogic(MoveLogic(toCamDir * 5.0f));
+		bullet->attachLogic(DestroyLogic(5));
 		time = 0;
 	}
-
-}*/
+}

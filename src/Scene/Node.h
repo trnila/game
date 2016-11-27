@@ -8,16 +8,17 @@
 class Logic;
 class Object;
 class NodeList;
+class Scene;
 
 class Node : public Transformable {
 public:
-	typedef std::function<void(Node&, float)> LogicFunctor;
+	typedef std::function<void(Node&, float, Scene&)> LogicFunctor;
 
 	virtual void render(RenderContext &context) = 0;
 	virtual void update(float diff, const glm::mat4 &parent);
 
 	void attachLogic(const LogicFunctor &functor) {
-		logic = functor;
+		logic.push_back(functor);
 	}
 
 	NodeList *getParent() const;
@@ -28,7 +29,7 @@ public:
 	const glm::vec3 getWorldPosition();
 
 private:
-	LogicFunctor logic;
+	std::vector<LogicFunctor> logic;
 	glm::vec3 worldPosition;
 	NodeList *parent = nullptr;
 };

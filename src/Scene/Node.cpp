@@ -1,10 +1,11 @@
 #include "Lights/BaseLight.h"
 #include "Node.h"
 #include "../Logic.h"
+#include "NodeList.h"
 
 void Node::updateLogic(float diff) {
-	if(logic) {
-		logic(*this, diff);
+	for(LogicFunctor &logic: this->logic) {
+		logic(*this, diff, *this->getParent()->getMediator().getScene());
 	}
 }
 

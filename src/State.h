@@ -133,6 +133,7 @@ public:
 			obj->setScale(0.05);
 			obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
 			obj->attachLogic(MoveLogic(root.getActiveCamera().getDirection()));
+			obj->attachLogic(DestroyLogic(5));
 			root.getRootNode().addNode(obj);
 		}
 	}
