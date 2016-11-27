@@ -7,6 +7,7 @@
 #include "Scene/Lights/DirectionalLight.h"
 #include "Scene/Lights/PointLight.h"
 #include "Scene/Lights/SpotLight.h"
+#include "GeneratedTerrain.h"
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
 	initResources();
@@ -193,10 +194,9 @@ void Scene::createScene() {
 	root.addNode(light);
 
 
-
-
-
 	terrain = new Terrain();
+	//terrain = new GeneratedTerrain();
+	terrain->init();
 	terrain->getTransform().setPosition(0, -5, -30);
 	terrain->getTransform().setScale(5, 1, 5);
 }

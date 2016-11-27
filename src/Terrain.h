@@ -14,6 +14,9 @@ struct Data {
 class Terrain {
 public:
 	Terrain();
+	~Terrain();
+
+	void init();
 	void draw(Scene &scene);
 	float getHeightAt(float x, float z) {
 		glm::vec4 pos = glm::vec4(x, 0, z, 1) * glm::inverse(t.getTransform());
@@ -30,7 +33,7 @@ public:
 			for(int j = -n; j < n; j++) {
 				x = X + i;
 				z = Y + j;
-				if(x >= 0 && x < this->x && z >=0 && z< this->y) {
+				if(x >= 0 && x < this->width && z >=0 && z< this->height) {
 					val = std::max(val, grid[(int) x][(int) z].points.y);
 				}
 			}
@@ -45,18 +48,27 @@ public:
 		return t;
 	}
 
+	int getWidth() const;
+
+	int getHeight() const;
+
+protected:
+	virtual void createTerrain();
+	void createGrid(int width, int height);
+
+	Data **grid;
 private:
 	Program prog;
 	Texture *grass;
 	Texture *dirt;
 	Transformable t;
-	int x, y;
+	int width, height;
 	VBO vbo;
-	Data **grid;
 
 	void createShader();
 	void loadTextures();
-	void createTerrain();
+	void prepareForGpu();
+	void calculateNormals();
 };
 
 
