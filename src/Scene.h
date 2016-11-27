@@ -33,15 +33,11 @@ public:
 	virtual void onClick(int button, int action, double x, double y);
 
 	NodeList &getRootNode() {
-		return root;
+		return *root;
 	}
 
 	Camera& getActiveCamera() {
 		return camera;
-	}
-
-	ObjectFactory& getObjectFactory() {
-		return *factory;
 	}
 
 	States& getStates() {
@@ -49,20 +45,17 @@ public:
 	}
 
 private:
-	NodeList root;
+	NodeList *root;
 
 	Program prog;
 	Camera camera;
 	CameraHandler camHandler;
-
-	Mediator mediator;
 
 	void createScene();
 	void initResources();
 
 	Window &window;
 	Skybox *skybox;
-	ObjectFactory* factory;
 	States states;
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
@@ -71,6 +64,11 @@ private:
 
 	void createBalls();
 	void createRotatingSpotLight();
-
 	void createScanner();
+	void createForest();
+	void create2Cubes();
+	void createVariousObjects();
+	void createEarth();
+
+	void createTerrain();
 };

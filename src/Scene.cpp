@@ -15,161 +15,11 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(windo
 }
 
 void Scene::createScene() {
-	Object *obj;
-
-	NodeList *forest = new NodeList();
-	forest->move(17.65, -3.0, 26.88);
-	root.addNode(forest);
-
-	obj = factory->create("resources/tree.obj");
-	obj->setPosition(4, 0.0f, 0);
-	obj->rotate(0, 0, 0, 1);
-	obj->setScale(0.001, 0.001, 0.001);
-	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
-	forest->addNode(obj);
-
-	obj = factory->create("resources/tree.obj");
-	obj->setPosition(0, 0.0f, 0);
-	obj->rotate(0, 0, 0, 1);
-	obj->setScale(0.001, 0.001, 0.001);
-	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	obj->attachLogic<TreeLogic>(1.04, 0.2, 9);
-	forest->addNode(obj);
-
-
-	NodeList *origin = new NodeList;
-	root.addNode(origin);
-	origin->setPosition(1, 2, 1);
-	origin->rotate(90, 0, 0, 1);
-	origin->attachLogic<RotateLogic>(45);
-
-	/*obj = new Object(-1, new Model("redTriangle", triangleVertices, 3), prog, shadow, nullptr);
-	obj->move(-0.1, -1, 0);
-	obj->setColor(1, 0, 0);
-	origin->addNode(obj);*/
-
-
-	/*lightContainer = new NodeList();
-	lightContainer->setPosition(15.514797f, 2.126692f, 0.289154f);
-	lightContainer->rotate(0, 0, 1, 0);
-	lightContainer->attachLogic<RotateLogic>(45);
-	root.addNode(lightContainer);
-
-	lightNode = new Light(prog);
-	lightNode->setPosition(10, 10, 10);
-	lightNode->setDiffuseColor(Color(1, 1, 1));
-	lightNode->setSpecularColor(Color(0, 0, 1));
-	lightNode->setDirection(glm::vec3(15.514797f, 2.126692f, 0.289154f));
-	lightContainer->addNode(lightNode);
-	//root.addNode(lightNode);*/
-
-	/*obj = factory->create("resources/ball.obj");
-	obj->move(12, 10, 10);
-	obj->setColor(1, 0, 0);
-	lightContainer->addNode(obj);*/
-
-
-	NodeList* cubes = new NodeList();
-	cubes->move(10.7, 0.78, 8.81);
-	root.addNode(cubes);
-	obj = factory->create("resources/cube.obj");
-	obj->setPosition(0, 0, 0);
-	obj->setColor(1, 0, 0);
-	obj->attachLogic<RotateLogic>(40);
-	cubes->addNode(obj);
-
-	obj = factory->create("resources/cube.obj");
-	obj->setPosition(-2, 0, 3);
-	obj->setColor(1, 0, 0);
-	obj->rotate(0, -1, 0, 0);
-	obj->attachLogic<RotateLogic>(40);
-	cubes->addNode(obj);
-
-	obj = factory->create("resources/monkey.obj");
-	obj->setPosition(13, 0, 3);
-	obj->setColor(1, 0, 0);
-	obj->rotate(0, 0, -1, 0);
-	obj->attachLogic<RotateLogic>(40);
-	root.addNode(obj);
-
-	obj = factory->create("resources/monkey_smooth.obj");
-	obj->setPosition(10, 0, 3);
-	obj->setColor(1, 0, 0);
-	obj->rotate(0, 0, 1, 0);
-	obj->attachLogic<RotateLogic>(40);
-	root.addNode(obj);
-
-	obj = factory->create("resources/Vortigaunt/vortigaunt.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(15, 0, 5);
-	obj->setScale(1.f);
-	obj->setScale(0.01);
-	root.addNode(obj);
-
-	obj = factory->create("resources/D0G/a.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(16, 0, 5);
-	obj->setScale(1.f);
-	root.addNode(obj);
-
-	obj = factory->create("resources/Headcrab classic/headcrabclassic.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(18, 0, 5);
-	obj->setScale(0.05f);
-	root.addNode(obj);
-
-	NodeList *ro = new NodeList();
-	ro->rotate(0, 0, 1, 0);
-	ro->attachLogic<RotateLogic>(20);
-	root.addNode(ro);
-
-	NodeList *e1 = new NodeList();
-	e1->rotate(0, 0, 1, 0);
-	ro->addNode(e1);
-
-	NodeList *e2 = new NodeList();
-	e2->rotate(0, 0, 1, 0);
-	e2->setPosition(100, 0, 0);
-	e1->addNode(e2);
-
-	obj = factory->create("resources/earth/earth.obj");
-	obj->setColor(1, 1, 1);
-	obj->setScale(0.05f);
-	e2->addNode(obj);
-
-	NodeList *m = new NodeList();
-	m->rotate(0, 0, 1, 0);
-	m->attachLogic<RotateLogic>(-90);
-	e2->addNode(m);
-
-	obj = factory->create("resources/moon/moon.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(20, 0, 0);
-	obj->setScale(0.05f);
-	m->addNode(obj);
-
-	/*obj = factory->create("resources/earth/earth.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(100, 0, 0);
-	obj->setScale(0.05f);
-	obj->attachLogic<RotateLogic>(15);
-	ro->addNode(obj);*/
-
-
-
-	obj = factory->create("resources/Strider/Strider.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(18, -5, 30);
-	obj->setScale(0.02f);
-	root.addNode(obj);
-
-	//obj = factory->create("resources/Strider/Strider.obj");
-	//obj = factory->create("resources/Gman/gman.obj");
-	//obj = factory->create("resources/AntLion/AntLion.obj");
-
-
-
+	createTerrain();
+	createForest();
+	create2Cubes();
+	createVariousObjects();
+	createEarth();
 	createBalls();
 	createRotatingSpotLight();
 	createScanner();
@@ -187,23 +37,125 @@ void Scene::createScene() {
 
 	camera.addListener(&skybox->program);
 
-	DirectionalLight *light = new DirectionalLight(mediator, 0);
+	DirectionalLight *light = root->createLight<DirectionalLight>(0);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setDirection(glm::vec3(-0.550664, -0.395870, 0.734885));
-	root.addNode(light);
+	root->addNode(light);
+}
 
-	terrain = new Terrain(mediator);
+void Scene::createTerrain() {
+	terrain = new Terrain(root->getMediator());
 	//terrain = new GeneratedTerrain();
 	terrain->init();
 	terrain->getTransform().setPosition(0, -5, -30);
 	terrain->getTransform().setScale(5, 1, 5);
 }
 
+void Scene::createEarth() {
+	NodeList *ro = root->createGroup();
+	ro->rotate(0, 0, 1, 0);
+	ro->attachLogic<RotateLogic>(20);
+
+	NodeList *e1 = ro->createGroup();
+	e1->rotate(0, 0, 1, 0);
+
+	NodeList *e2 = e1->createGroup();
+	e2->rotate(0, 0, 1, 0);
+	e2->setPosition(100, 0, 0);
+
+	Object *obj = e2->createEntity("resources/earth/earth.obj");
+	obj->setColor(1, 1, 1);
+	obj->setScale(0.05f);
+
+	NodeList *m = e2->createGroup();
+	m->rotate(0, 0, 1, 0);
+	m->attachLogic<RotateLogic>(-90);
+
+	obj = m->createEntity("resources/moon/moon.obj");
+	obj->setColor(1, 1, 1);
+	obj->setPosition(20, 0, 0);
+	obj->setScale(0.05f);
+}
+
+void Scene::createVariousObjects() {
+	Object *obj = root->createEntity("resources/monkey.obj");
+	obj->setPosition(13, 0, 3);
+	obj->setColor(1, 0, 0);
+	obj->rotate(0, 0, -1, 0);
+	obj->attachLogic<RotateLogic>(40);
+
+	obj = root->createEntity("resources/monkey_smooth.obj");
+	obj->setPosition(10, 0, 3);
+	obj->setColor(1, 0, 0);
+	obj->rotate(0, 0, 1, 0);
+	obj->attachLogic<RotateLogic>(40);
+
+	obj = root->createEntity("resources/Vortigaunt/vortigaunt.obj");
+	obj->setColor(1, 1, 1);
+	obj->setPosition(15, 0, 5);
+	obj->setScale(1.f);
+	obj->setScale(0.01);
+
+	obj = root->createEntity("resources/D0G/a.obj");
+	obj->setColor(1, 1, 1);
+	obj->setPosition(16, 0, 5);
+	obj->setScale(1.f);
+
+	obj = root->createEntity("resources/Headcrab classic/headcrabclassic.obj");
+	obj->setColor(1, 1, 1);
+	obj->setPosition(18, 0, 5);
+	obj->setScale(0.05f);
+
+	obj = root->createEntity("resources/Strider/Strider.obj");
+	obj->setColor(1, 1, 1);
+	obj->setPosition(18, -5, 30);
+	obj->setScale(0.02f);
+
+
+	//obj = factory->create("resources/Strider/Strider.obj");
+	//obj = factory->create("resources/Gman/gman.obj");
+	//obj = factory->create("resources/AntLion/AntLion.obj");
+}
+
+void Scene::create2Cubes() {
+	NodeList* cubes = root->createGroup();
+	cubes->move(10.7, 0.78, 8.81);
+
+	Object *obj = cubes->createEntity("resources/cube.obj");
+	obj->setPosition(0, 0, 0);
+	obj->setColor(1, 0, 0);
+	obj->attachLogic<RotateLogic>(40);
+
+	obj = cubes->createEntity("resources/cube.obj");
+	obj->setPosition(-2, 0, 3);
+	obj->setColor(1, 0, 0);
+	obj->rotate(0, -1, 0, 0);
+	obj->attachLogic<RotateLogic>(40);
+}
+
+void Scene::createForest() {
+	NodeList *forest = root->createGroup();
+	forest->move(17.65, -3.0, 26.88);
+
+	Object *obj = forest->createEntity("resources/tree.obj");
+	obj->setPosition(4, 0.0f, 0);
+	obj->rotate(0, 0, 0, 1);
+	obj->setScale(0.001, 0.001, 0.001);
+	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
+	obj->attachLogic<TreeLogic>(1.01, 0.1, 5);
+
+	obj = forest->createEntity("resources/tree.obj");
+	obj->setPosition(0, 0.0f, 0);
+	obj->rotate(0, 0, 0, 1);
+	obj->setScale(0.001, 0.001, 0.001);
+	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
+	obj->attachLogic<TreeLogic>(1.04, 0.2, 9);
+}
+
 void Scene::createBalls() {
-	NodeList *balls = new NodeList();
+	NodeList *balls = root->createGroup();
 	balls->move(15, 0, 0);
-	root.addNode(balls);
 
 	float coords[][3] = {
 			{0, 0, -1},
@@ -213,12 +165,11 @@ void Scene::createBalls() {
 	};
 	int modif = 2;
 	for(int i = 0; i < 4; i++) {
-		Object *obj = factory->create("resources/ball.obj");
+		Object *obj = balls->createEntity("resources/ball.obj");
 		obj->setPosition(modif * coords[i][0], modif * coords[i][1], modif * coords[i][2]);
-		balls->addNode(obj);
 	}
 
-	BaseLight *light = new PointLight(mediator, 1);
+	BaseLight *light = balls->createLight<PointLight>(1);
 	light->setDiffuseColor(Color(1, 0, 0));
 	light->setSpecularColor(Color(1, 0, 0));
 	light->setPosition(glm::vec3(0, 1, 0));
@@ -229,11 +180,12 @@ void Scene::initResources() {
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
 	prog.link();
-	mediator.registerProgram(&prog);
+
+	Mediator* mediator = new Mediator(new ObjectFactory(prog, shadowRenderer.program));
+	root = new NodeList(*mediator);
+	mediator->registerProgram(&prog);
 
 	camera.addListener(&prog);
-
-	factory = new ObjectFactory(prog, shadowRenderer.program);
 	states.add(StateType::Insert, new Insert(), GLFW_KEY_I);
 	states.add(StateType::Delete, new Delete(), GLFW_KEY_X);
 	states.add(StateType::Scale, new Scale(), GLFW_KEY_S);
@@ -244,7 +196,7 @@ void Scene::initResources() {
 
 void Scene::update(float time) {
 	glm::mat4 parent(1.0f);
-	root.update(time, parent);
+	root->update(time, parent);
 	camHandler.update(time);
 
 	auto pos = camera.getPosition();
@@ -256,7 +208,7 @@ void Scene::update(float time) {
 
 void Scene::renderOneFrame(RenderContext &context) {
 	glm::mat4 depthMVP;
-	Texture& shadowTexture = shadowRenderer.render(context, root, depthMVP);
+	Texture& shadowTexture = shadowRenderer.render(context, *root, depthMVP);
 
 	context.setStage(RenderStage::Normal);
 	window.setViewport();
@@ -276,7 +228,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	prog.send("depthBias", depthBiasMVP);
 
 	prog.useTexture("shadowTexture", shadowTexture, 1);
-	root.render(context);
+	root->render(context);
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
@@ -301,7 +253,7 @@ void Scene::onClick(int button, int action, double x, double y) {
 	int index;
 	glReadPixels(x, newY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
 
-	Object* o = root.find(index);
+	Object* o = root->find(index);
 
 	glm::vec3 screenX = glm::vec3(x, newY, depth);
 	glm::mat4 view = camera.getTransform();
@@ -314,42 +266,36 @@ void Scene::onClick(int button, int action, double x, double y) {
 }
 
 void Scene::createRotatingSpotLight() {
-	NodeList *node = new NodeList();
+	NodeList *node = root->createGroup();
 	node->setPosition(18.837509, 5.312332, 0.827486);
-	root.addNode(node);
 
-	NodeList *rot = new NodeList();
+	NodeList *rot = node->createGroup();
 	rot->attachLogic<RotateLogic>(45);
 	rot->rotate(0, 0, 1, 0);
-	node->addNode(rot);
 
 	/*obj = factory->create("resources/ball.obj");
 	obj->setPosition(5, 0, 0);
 	rot->addNode(obj);*/
 
-	SpotLight *light = new SpotLight(mediator, 2);
+	SpotLight *light = rot->createLight<SpotLight>(2);
 	light->setDiffuseColor(Color(0, 1, 0));
 	light->setSpecularColor(Color(0, 1, 0));
 	light->setPosition(5, 0, 0);
 	light->setDirection(glm::vec3(0, -1, 0));
-	rot->addNode(light);
 }
 
 void Scene::createScanner() {
-	NodeList *center = new NodeList();
+	NodeList *center = root->createGroup();
 	center->setPosition(18, 0, 5);
-	root.addNode(center);
 
-	Object *obj = factory->create("resources/Combine Scanner/Combine_Scanner.obj");
+	Object *obj = center->createEntity("resources/Combine Scanner/Combine_Scanner.obj");
 	obj->setColor(1, 1, 1);
 	obj->setScale(0.01f);
-	center->addNode(obj);
 
-	SpotLight *light = new SpotLight(mediator, 6);
+	SpotLight *light = center->createLight<SpotLight>(6);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setConeAngle(15);
-	center->addNode(light);
 	center->attachLogic<FollowLogic>(&camera, light);
 }
 

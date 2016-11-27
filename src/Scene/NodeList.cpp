@@ -23,3 +23,7 @@ void NodeList::removeNode(Node *node) {
 	nodes.erase(std::remove(nodes.begin(), nodes.end(), node), nodes.end());
 	node->setParent(nullptr);
 }
+
+Mediator &NodeList::getMediator() {
+	return mediator;
+}

@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Graphics/Program.h"
+#include "ObjectFactory.h"
 
 class Mediator {
 public:
+	Mediator(ObjectFactory *factory) : factory(factory) {}
+
 	void registerProgram(Program *program) {
 		programs.push_back(program);
 	}
@@ -14,8 +17,12 @@ public:
 		}
 	}
 
+	ObjectFactory* getObjectFactory() {
+		return factory;
+	}
 private:
 	std::vector<Program*> programs;
+	ObjectFactory* factory;
 };
 
 

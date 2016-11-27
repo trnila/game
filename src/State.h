@@ -36,7 +36,7 @@ class Insert: public State {
 public:
 	void onClick(glm::vec3 pos, Object *object, Scene &root) override {
 		Object *obj;
-		obj = root.getObjectFactory().create("resources/tree.obj");
+		obj = object->getParent()->createEntity("resources/tree.obj");
 		obj->setPosition(pos.x, pos.y, pos.z);
 		obj->rotate(0, 0, 0, 1);
 		obj->setScale(0.1);
@@ -127,7 +127,7 @@ public:
 			glm::vec3 pos = root.getActiveCamera().getPosition();
 
 			Object *obj;
-			obj = root.getObjectFactory().create("resources/ball.obj");
+			obj = root.getRootNode().createEntity("resources/ball.obj");
 			obj->setPosition(pos.x, pos.y, pos.z);
 			obj->rotate(0, 0, 0, 1);
 			obj->setScale(0.05);
