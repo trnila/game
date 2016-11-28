@@ -35,8 +35,8 @@ void Terrain::createTerrain() {
 			float fScaleC = float(j)/float(width - 1);
 			float fScaleR = float(i)/float(height - 1);
 
-			glm::vec2 c = 4.0f * glm::vec2(fScaleC, fScaleR);
-			const float d = 0.5f + 0.5f*glm::perlin(c);
+			//glm::vec2 c = 4.0f * glm::vec2(fScaleC, fScaleR);
+			//const float d = 0.5f + 0.5f*glm::perlin(c);
 
 			point.points = glm::vec3(i , image[i * width + j], j);
 			//grid[i][j].points = glm::vec3(i , 80*d, j);

@@ -45,11 +45,11 @@ void Scene::createScene() {
 }
 
 void Scene::createTerrain() {
-	terrain = new Terrain(root->getMediator());
-	//terrain = new GeneratedTerrain();
+//	terrain = new Terrain(root->getMediator());
+	terrain = new GeneratedTerrain(root->getMediator());
 	terrain->init();
-	terrain->getTransform().setPosition(0, -5, -30);
-	terrain->getTransform().setScale(5, 1, 5);
+	terrain->getTransform().setPosition(10, 25, 45);
+	terrain->getTransform().setScale(5, 10, 5);
 }
 
 void Scene::createEarth() {
@@ -209,8 +209,6 @@ void Scene::update(float time) {
 	camHandler.update(time);
 
 	auto pos = camera.getPosition();
-
-
 
 	camera.setPosition(pos.x, terrain->getHeightAt(pos.x, pos.z), pos.z);
 }

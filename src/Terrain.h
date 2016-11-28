@@ -20,7 +20,7 @@ public:
 
 	void init();
 	void draw(Scene &scene);
-	float getHeightAt(float x, float z) {
+	virtual float getHeightAt(float x, float z) {
 		glm::vec4 pos = glm::vec4(x, 0, z, 1) * glm::inverse(t.getTransform());
 
 		x = pos.x;
@@ -28,7 +28,7 @@ public:
 
 		float val = 0;
 
-		int n = 5;
+		int n = 7;
 		int X = (int) x;
 		int Y = (int) z;
 		for(int i = -n; i < n; i++) {
