@@ -2,6 +2,8 @@
 
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
+#include <glm/ext.hpp>
+#include <iostream>
 
 class Transformable {
 public:
@@ -25,8 +27,10 @@ public:
 	void multiplyScale(glm::vec3 scale);
 	glm::vec3 getScale();
 	glm::vec3 getDirection() {
-		return glm::vec3(0) - glm::vec3(getTransform() * glm::vec4(0, 1, 0, 1));
+		return normalize(glm::vec3(getTransform() * glm::vec4(0, 0, 1, 1))); // TODO: fixme
 	}
+
+	void setDirection(glm::vec3 dir);
 
 	glm::mat4 getTransform();
 

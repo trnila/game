@@ -70,8 +70,18 @@ struct MoveLogic {
 
 private:
 	glm::vec3 dir;
-
 };
+
+class TerrainMove {
+public:
+	TerrainMove(glm::vec3 dir): dir(dir) {}
+
+	void operator()(Node& node, float dt, Scene& scene);
+
+private:
+	glm::vec3 dir;
+};
+
 
 class FollowLogic: public Observer<Camera> {
 public:

@@ -35,3 +35,7 @@ std::string getGLLog(GLuint id) {
 	delete[] log;
 	return result;
 }
+
+float rand_float(float a, float b) {
+	return a + ((float) rand() / RAND_MAX * (b - a));
+}

@@ -20,7 +20,7 @@ public:
 		glm::vec2 c = glm::vec2(3, 2) * glm::vec2(fScaleC, fScaleR);
 		float d =50* (0.5f + 0.5f*glm::perlin(c));
 
-		return (getTransform().getTransform() * glm::vec4(0.0f, d+1, 0.0f, 1.0f)).y;
+		return (getTransform().getTransform() * glm::vec4(0.0f, d, 0.0f, 1.0f)).y;
 	}
 
 

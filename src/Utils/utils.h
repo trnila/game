@@ -2,9 +2,11 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <stdlib.h>
 
-std::string preprocessShader(const char *path);
 void checkOpenglError(const char *cmd, const char *file, int line);
+
+float rand_float(float a, float b);
 
 #define GL_CHECK(cmd) do { \
 		cmd; \

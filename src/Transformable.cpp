@@ -81,3 +81,12 @@ glm::vec3 Transformable::getPosition() {
 void Transformable::transformed() {}
 
 float Transformable::getAngle() {return angle;}
+
+void Transformable::setDirection(glm::vec3 dir) {
+	auto objDir = normalize(getDirection());
+	auto toCamDir = normalize(dir);
+
+	float angle = glm::degrees(acos(glm::dot(objDir, toCamDir)));
+	glm::vec3 axis = glm::cross(objDir, toCamDir);
+	rotate(angle, axis);
+}

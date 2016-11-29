@@ -1,4 +1,5 @@
 #include <glm/ext.hpp>
+#include <random>
 #include "Logic.h"
 #include "Scene/Lights/BaseLight.h"
 #include "Scene.h"
@@ -14,6 +15,11 @@ void Walker::operator()(Node &node, float dt, Scene &scene) {
 	if(time2 > 1) {
 		pos = (cam.getPosition() + cam.getDirection() * glm::vec3(1, 0.1, 1) * 20.0f);
 		time2 = 0;
+	}
+
+	float terrainHeight = scene.getTerrain()->getHeightAt(node.getPosition().x, node.getPosition().z);
+	if(terrainHeight > node.getPosition().y) {
+		pos.y = terrainHeight + 2;
 	}
 
 	auto direction = pos - node.getPosition();
@@ -39,16 +45,24 @@ void Walker::operator()(Node &node, float dt, Scene &scene) {
 		time3 = 0;
 
 		Object* obj = scene.getRootNode().createEntity("resources/Headcrab classic/headcrabclassic.obj");
-		obj->setColor(1, 1, 1);
+		glm::vec3 dir = glm::vec3(rand_float(-1, 1), 0, rand_float(-1, 1));
+		obj->setDirection(dir);
 		obj->setPosition(node.getPosition());
+		//obj->attachLogic(TerrainMove(dir));
 		obj->attachLogic(MoveLogic(glm::vec3(0, -1, 0)));
-		obj->attachLogic([](Node &node, float dt, Scene &scene) -> void {
-			//float height = scene.getTerrain()->getHeightAt(node.getPosition().x, node.getPosition().z) - 3;
-			float height = -1;
+		obj->attachLogic([=](Node &node, float dt, Scene &scene) -> void {
+			float height = scene.getTerrain()->getHeightAt(node.getPosition().x, node.getPosition().z);
 			if(node.getPosition().y <= height) {
 				node.removeAllLogic();
-				node.attachLogic(MoveLogic(glm::vec3(0.1, 0, 0)));
+				node.attachLogic(TerrainMove(normalize(dir))); //TODO: use object.getDirection
 			}
 		});
 	}
+}
+
+void TerrainMove::operator()(Node &node, float dt, Scene &scene) {
+	node.move(dir * dt);
+
+	float terrainHeight = scene.getTerrain()->getHeightAt(node.getPosition().x, node.getPosition().z);
+	node.setPosition(node.getPosition().x, terrainHeight, node.getPosition().z);
 }
