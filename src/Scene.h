@@ -62,13 +62,7 @@ private:
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
 
-	void createBalls();
-	void createRotatingSpotLight();
-	void createScanner();
-	void createForest();
-	void create2Cubes();
-	void createVariousObjects();
-	void createEarth();
-
 	void createTerrain();
+	void createObjects();
+	void createSkybox();
 };

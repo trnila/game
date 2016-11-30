@@ -8,6 +8,7 @@
 #include "Scene/Lights/PointLight.h"
 #include "Scene/Lights/SpotLight.h"
 #include "GeneratedTerrain.h"
+#include "Groups.h"
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
 	initResources();
@@ -15,29 +16,16 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(windo
 }
 
 void Scene::createScene() {
-	createTerrain();
-	createForest();
-	create2Cubes();
-	createVariousObjects();
-	createEarth();
-	createBalls();
-	createRotatingSpotLight();
-	createScanner();
+	getRootNode().createEntity("resources/brickwall.obj");
 
+	createTerrain();
+	createObjects();
+	createSkybox();
 
 	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	camera.setRotation(-0.582351f, -0.1290f);
 	camera.setZFar(20000);
-
 	getRootNode().getMediator().setAmbientLight(Color(0.1, 0.1, 0.1));
-
-	//skybox = new Skybox("resources/skyboxes/ame_nebula/purplenebula");
-	skybox = new Skybox("resources/skyboxes/ely_hills/hills");
-
-
-	getRootNode().createEntity("resources/brickwall.obj");
-
-	camera.addListener(&skybox->program);
 
 	DirectionalLight *light = root->createLight<DirectionalLight>(0);
 	light->setDiffuseColor(Color(1, 1, 1));
@@ -51,144 +39,33 @@ void Scene::createScene() {
 	root->addNode(light);
 }
 
+void Scene::createSkybox() {//skybox = new Skybox("resources/skyboxes/ame_nebula/purplenebula");
+	skybox = new Skybox("resources/skyboxes/ely_hills/hills");
+	camera.addListener(&skybox->program);
+}
+
+void Scene::createObjects() {
+	std::vector<std::function<void(Scene*)>> groups {
+			Forest(),
+	        TwoCubes(),
+	        VariousObjects(),
+	        Earth(),
+	        Balls(),
+	        RotatingSpotLight(),
+	        CombineScanner()
+	};
+
+	for(auto group: groups) {
+		group(this);
+	}
+}
+
 void Scene::createTerrain() {
 	terrain = new Terrain(root->getMediator());
 	//terrain = new GeneratedTerrain(root->getMediator());
 	terrain->init();
 	terrain->getTransform().setPosition(10, 25, 45);
 	terrain->getTransform().setScale(1, 1.5, 1);
-}
-
-void Scene::createEarth() {
-	NodeList *ro = root->createGroup();
-	ro->rotate(0, 0, 1, 0);
-	ro->attachLogic(RotateLogic(20));
-
-	NodeList *e1 = ro->createGroup();
-	e1->rotate(0, 0, 1, 0);
-
-	NodeList *e2 = e1->createGroup();
-	e2->rotate(0, 0, 1, 0);
-	e2->setPosition(100, 0, 0);
-
-	Object *obj = e2->createEntity("resources/earth/earth.obj");
-	obj->setColor(1, 1, 1);
-	obj->setScale(0.05f);
-
-	NodeList *m = e2->createGroup();
-	m->rotate(0, 0, 1, 0);
-	m->attachLogic(RotateLogic(-90));
-
-	obj = m->createEntity("resources/moon/moon.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(20, 0, 0);
-	obj->setScale(0.05f);
-}
-
-void Scene::createVariousObjects() {
-	Object *obj = root->createEntity("resources/monkey.obj");
-	obj->setPosition(13, 0, 3);
-	obj->setColor(1, 0, 0);
-	obj->rotate(0, 0, -1, 0);
-	obj->attachLogic(RotateLogic(40));
-
-	obj = root->createEntity("resources/monkey_smooth.obj");
-	obj->setPosition(10, 0, 3);
-	obj->setColor(1, 0, 0);
-	obj->rotate(0, 0, 1, 0);
-	obj->attachLogic(RotateLogic(40));
-
-	obj = root->createEntity("resources/Vortigaunt/vortigaunt.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(15, 0, 5);
-	obj->setScale(1.f);
-	obj->setScale(0.01);
-
-	obj = root->createEntity("resources/D0G/a.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(16, 0, 5);
-	obj->setScale(1.f);
-
-	obj = root->createEntity("resources/Headcrab classic/headcrabclassic.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(18, 0, 5);
-	obj->setScale(0.05f);
-
-
-	/*obj = root->createEntity("resources/Strider/Strider.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(18, -5, 30);
-	obj->setScale(0.02f);
-	obj->attachLogic(Walker(terrain));*/
-
-	obj = root->createEntity("resources/Combine Dropship/Combine_dropship.obj");
-	obj->setColor(1, 1, 1);
-	obj->setPosition(18, -5, 30);
-	obj->setScale(0.02f);
-	obj->attachLogic(Walker());
-
-
-	//obj = factory->create("resources/Strider/Strider.obj");
-	//obj = factory->create("resources/Gman/gman.obj");
-	//obj = factory->create("resources/AntLion/AntLion.obj");
-}
-
-void Scene::create2Cubes() {
-	NodeList* cubes = root->createGroup();
-	cubes->move(10.7, 0.78, 8.81);
-
-	Object *obj = cubes->createEntity("resources/cube.obj");
-	obj->setPosition(0, 0, 0);
-	obj->setColor(1, 0, 0);
-	obj->attachLogic(RotateLogic(40));
-
-	obj = cubes->createEntity("resources/cube.obj");
-	obj->setPosition(-2, 0, 3);
-	obj->setColor(1, 0, 0);
-	obj->rotate(0, -1, 0, 0);
-	obj->attachLogic(RotateLogic(40));
-}
-
-void Scene::createForest() {
-	NodeList *forest = root->createGroup();
-	forest->move(17.65, -3.0, 26.88);
-
-	Object *obj = forest->createEntity("resources/tree.obj");
-	obj->setPosition(4, 0.0f, 0);
-	obj->rotate(0, 0, 0, 1);
-	obj->setScale(0.001, 0.001, 0.001);
-	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	obj->attachLogic(TreeLogic(1.01, 0.1, 5));
-
-	obj = forest->createEntity("resources/tree.obj");
-	obj->setPosition(0, 0.0f, 0);
-	obj->rotate(0, 0, 0, 1);
-	obj->setScale(0.001, 0.001, 0.001);
-	obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-	obj->attachLogic(TreeLogic(1.04, 0.2, 9));
-}
-
-void Scene::createBalls() {
-	NodeList *balls = root->createGroup();
-	balls->move(15, 0, 0);
-
-	float coords[][3] = {
-			{0, 0, -1},
-			{1, 0, 0},
-			{0, 0, 1},
-			{-1, 0, 0}
-	};
-	int modif = 2;
-	for(int i = 0; i < 4; i++) {
-		Object *obj = balls->createEntity("resources/ball.obj");
-		obj->setPosition(modif * coords[i][0], modif * coords[i][1], modif * coords[i][2]);
-	}
-
-	BaseLight *light = balls->createLight<PointLight>(1);
-	light->setDiffuseColor(Color(1, 0, 0));
-	light->setSpecularColor(Color(1, 0, 0));
-	light->setPosition(glm::vec3(0, 1, 0));
-	balls->addNode(light);
 }
 
 void Scene::initResources() {
@@ -277,40 +154,6 @@ void Scene::onClick(int button, int action, double x, double y) {
 	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
 	states.current().onClick(pos, o, *this);
-}
-
-void Scene::createRotatingSpotLight() {
-	NodeList *node = root->createGroup();
-	node->setPosition(18.837509, 5.312332, 0.827486);
-
-	NodeList *rot = node->createGroup();
-	rot->attachLogic(RotateLogic(45));
-	rot->rotate(0, 0, 1, 0);
-
-	/*obj = factory->create("resources/ball.obj");
-	obj->setPosition(5, 0, 0);
-	rot->addNode(obj);*/
-
-	SpotLight *light = rot->createLight<SpotLight>(2);
-	light->setDiffuseColor(Color(0, 1, 0));
-	light->setSpecularColor(Color(0, 1, 0));
-	light->setPosition(5, 0, 0);
-	light->setDirection(glm::vec3(0, -1, 0));
-}
-
-void Scene::createScanner() {
-	NodeList *center = root->createGroup();
-	center->setPosition(18, 0, 5);
-
-	Object *obj = center->createEntity("resources/Combine Scanner/Combine_Scanner.obj");
-	obj->setColor(1, 1, 1);
-	obj->setScale(0.01f);
-
-	SpotLight *light = center->createLight<SpotLight>(6);
-	light->setDiffuseColor(Color(1, 1, 1));
-	light->setSpecularColor(Color(1, 1, 1));
-	light->setConeAngle(15);
-	center->attachLogic(FollowLogic(&camera, light));
 }
 
 Terrain *Scene::getTerrain() const {
