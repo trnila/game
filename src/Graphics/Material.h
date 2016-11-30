@@ -15,6 +15,7 @@ public:
 	float shininess = 32;
 	float shininessStrength = 0.8;
 	Texture* texture = nullptr;
+	Texture* bumpTexture = nullptr;
 };
 
 

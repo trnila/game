@@ -6,6 +6,7 @@ struct Vertex {
 	glm::vec3 pos;
 	glm::vec3 normal;
 	glm::vec2 uv;
+	glm::vec3 tangent;
 };
 
 void Mesh::render(RenderContext &context, Program &program) {
@@ -20,6 +21,10 @@ Mesh::Mesh(aiMesh &mesh, aiMaterial *material, std::string path) {
 	for(int i = 0; i < mesh.mNumVertices; i++) {
 		Vertex vert;
 		vert.pos = glm::vec3(mesh.mVertices[i].x, mesh.mVertices[i].y, mesh.mVertices[i].z);
+
+		if(mesh.mTangents) {
+			vert.tangent = glm::vec3(mesh.mTangents[i].x, mesh.mTangents[i].y, mesh.mTangents[i].z);
+		}
 
 		if(mesh.mNormals) {
 			vert.normal = glm::vec3(mesh.mNormals[i].x, mesh.mNormals[i].y, mesh.mNormals[i].z);
@@ -42,10 +47,12 @@ Mesh::Mesh(aiMesh &mesh, aiMaterial *material, std::string path) {
 	vbo.setPointer<Vertex>(0, 0);
 	vbo.setPointer<Vertex>(1, sizeof(vertices[0].pos));
 	vbo.setPointer<Vertex>(2, sizeof(vertices[0].pos) + sizeof(vertices[0].normal));
+	vbo.setPointer<Vertex>(3, sizeof(vertices[0].pos) + sizeof(vertices[0].normal) + sizeof(vertices[0].uv));
 
 	vao.enableAttrib(0);
 	vao.enableAttrib(1);
 	vao.enableAttrib(2);
+	vao.enableAttrib(3);
 
 	std::vector<unsigned int> index;
 	for(unsigned int i = 0; i < mesh.mNumFaces; i++) {

@@ -10,7 +10,7 @@ d  1.0
 Ns  0.0
 illum 2
 map_Kd Texture/vortigaunt_sheet.tga
-bump vortigaunt_normal.tga
+bump Texture/vortigaunt_normal.tga
 #
 newmtl Material__11
 Ka  0.6 0.6 0.6

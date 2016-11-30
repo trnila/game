@@ -15,6 +15,10 @@ void Material::apply(Program &program) const {
 	} else {
 		program.send("hasTexture", false);
 	}
+
+	if(bumpTexture) {
+		program.useTexture("bumpTexture", *bumpTexture, 2);
+	}
 }
 
 void Material::createMaterial(const aiMaterial *material, const std::string &path) {
@@ -44,5 +48,11 @@ void Material::createMaterial(const aiMaterial *material, const std::string &pat
 	if(material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), str) == AI_SUCCESS) {
 		ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
 		texture = &textures.getResource((path + "/" + std::string(str.C_Str())).c_str());
+	}
+
+	str = "";
+	if(material->Get(AI_MATKEY_TEXTURE(aiTextureType_HEIGHT, 0), str) == AI_SUCCESS) {
+		ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
+		bumpTexture = &textures.getResource((path + "/" + std::string(str.C_Str())).c_str());
 	}
 }

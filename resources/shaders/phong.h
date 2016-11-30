@@ -15,7 +15,7 @@ struct Light {
 	float coneAngle;
 };
 
-vec3 applyLight(Light light, vec3 color) {
+vec3 applyLight(Light light, vec3 color, vec3 N) {
 	vec3 lightVector;
 	float attenuation = 1.0;
 	if(light.position.w == 0.0) {
@@ -32,13 +32,14 @@ vec3 applyLight(Light light, vec3 color) {
 		}
 	}
 
-	float dot_product = max(dot(normalize(lightVector), normalize(normal_world)), 0);
+	float dot_product = max(dot(normalize(lightVector), normalize(N)), 0);
 	vec3 diffuse = material.diffuseColor * light.diffuseColor * color * dot_product;
 
 	vec3 lightDir = vec3(normalize(light.position.xyz - position_world));
 	vec3 camDir = normalize(cameraPos - position_world.xyz);
-	float spec = pow(max(0.0, dot(camDir, reflect(-lightDir, normal_world))), material.shininess);
+	float spec = pow(max(0.0, dot(camDir, reflect(-lightDir, N))), material.shininess);
 	vec3 specular = material.shininessStrength * material.specularColor * light.specularColor * spec;
+	specular = vec3(0);
 
 	float visibility = 1.0;
 	/*if ( texture( shadowTexture, shadCoord.xy ).z  <  shadCoord.z - 0.005){

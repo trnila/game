@@ -35,6 +35,8 @@ void Scene::createScene() {
 	skybox = new Skybox("resources/skyboxes/ely_hills/hills");
 
 
+	getRootNode().createEntity("resources/brickwall.obj");
+
 	camera.addListener(&skybox->program);
 
 	DirectionalLight *light = root->createLight<DirectionalLight>(0);
@@ -42,11 +44,16 @@ void Scene::createScene() {
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setDirection(glm::vec3(-0.550664, -0.395870, 0.734885));
 	root->addNode(light);
+
+	PointLight *spot = root->createLight<PointLight>(5);
+	spot->setDiffuseColor(Color(1, 1, 1));
+	spot->setSpecularColor(Color(1, 1, 1));
+	root->addNode(light);
 }
 
 void Scene::createTerrain() {
-//	terrain = new Terrain(root->getMediator());
-	terrain = new GeneratedTerrain(root->getMediator());
+	terrain = new Terrain(root->getMediator());
+	//terrain = new GeneratedTerrain(root->getMediator());
 	terrain->init();
 	terrain->getTransform().setPosition(10, 25, 45);
 	terrain->getTransform().setScale(1, 1.5, 1);
@@ -210,7 +217,7 @@ void Scene::update(float time) {
 
 	auto pos = camera.getPosition();
 
-	camera.setPosition(pos.x, terrain->getHeightAt(pos.x, pos.z)+1, pos.z);
+//	camera.setPosition(pos.x, terrain->getHeightAt(pos.x, pos.z)+1, pos.z);
 }
 
 void Scene::renderOneFrame(RenderContext &context) {

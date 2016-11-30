@@ -39,7 +39,7 @@ void main() {
     vec3 total = vec3(0);
     for(int i = 0; i < MAX_LIGHTS; i++) {
         if((activeLights & (1 << i)) > 0) {
-            total += applyLight(lights[i], color.xyz);
+            total += applyLight(lights[i], color.xyz, normal_world);
         }
     }
 
