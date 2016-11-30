@@ -54,5 +54,9 @@ void Material::createMaterial(const aiMaterial *material, const std::string &pat
 	if(material->Get(AI_MATKEY_TEXTURE(aiTextureType_HEIGHT, 0), str) == AI_SUCCESS) {
 		ResourceManager<Texture> &textures = ResourceManager<Texture>::getInstance();
 		bumpTexture = &textures.getResource((path + "/" + std::string(str.C_Str())).c_str());
+	} else {
+		bumpTexture = new Texture(1, 1);
+		uint8_t data[] = {127, 127, 255};
+		bumpTexture->setData(data);
 	}
 }

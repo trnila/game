@@ -24,6 +24,8 @@ Mesh::Mesh(aiMesh &mesh, aiMaterial *material, std::string path) {
 
 		if(mesh.mTangents) {
 			vert.tangent = glm::vec3(mesh.mTangents[i].x, mesh.mTangents[i].y, mesh.mTangents[i].z);
+		} else {
+			vert.tangent = glm::vec3(0, 0, 1);
 		}
 
 		if(mesh.mNormals) {
