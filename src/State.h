@@ -7,6 +7,7 @@
 #include "ObjectFactory.h"
 #include "States.h"
 #include "Scene.h"
+#include "Scene/Lights/DirectionalLight.h"
 
 class State {
 public:
@@ -90,9 +91,13 @@ public:
 					case GLFW_KEY_P:
 						l->setPosition(root.getActiveCamera().getPosition());
 						return;
-					case GLFW_KEY_D:
-						//l->setDirection(root.getActiveCamera().getDirection());
+					case GLFW_KEY_D: {
+						DirectionalLight *light = dynamic_cast<DirectionalLight *>(l);
+						if(light) {
+							light->setDir(root.getActiveCamera().getDirection());
+						}
 						return;
+					}
 					case GLFW_KEY_A:
 						//l->setType(LightType::Directional);
 						return;

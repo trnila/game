@@ -6,12 +6,15 @@ FrameBuffer::FrameBuffer(int width, int height, int depth): width(width), height
 	GL_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, id));
 
 	texture.bind();
-	texture.set(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	texture.set(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	texture.set(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	texture.set(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	texture.set(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	texture.set(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	//texture.set(GL_TEXTURE_COMPARE_MODE,GL_COMPARE_REF_TO_TEXTURE);
+	//texture.set(GL_TEXTURE_COMPARE_FUNC,GL_LEQUAL);
 
 	GL_CHECK(glDrawBuffer(GL_NONE));
+	//GL_CHECK(glReadBuffer(GL_NONE));
 
 	texture.attachTo(*this);
 

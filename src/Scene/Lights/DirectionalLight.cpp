@@ -2,12 +2,12 @@
 #include "BaseLight.h"
 #include "DirectionalLight.h"
 
-const glm::vec3 &DirectionalLight::getDirection() const {
-	return direction;
+const glm::vec3 &DirectionalLight::getDir() const {
+	return dir;
 }
 
-void DirectionalLight::setDirection(const glm::vec3 &direction) {
-	this->direction = direction;
+void DirectionalLight::setDir(const glm::vec3 &direction) {
+	this->dir = direction;
 	transformed();
 }
 
@@ -15,5 +15,5 @@ DirectionalLight::DirectionalLight(Mediator &shader, int id) : BaseLight(shader,
 
 void DirectionalLight::apply(Program &program) {
 	BaseLight::apply(program);
-	send(program, "position", glm::vec4(getDirection(), 0));
+	send(program, "position", glm::vec4(getDir(), 0));
 }

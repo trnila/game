@@ -14,14 +14,14 @@ public:
 		program.link();
 
 		program.use();
-		depthBuffer = new FrameBuffer(1920, 1080, GL_DEPTH_COMPONENT16);
+		depthBuffer = new FrameBuffer(1024, 1024, GL_DEPTH_COMPONENT);
 	}
 
 	~ShadowRenderer() {
 		delete depthBuffer;
 	}
 
-	Texture & render(RenderContext &ctx, NodeList &root, glm::mat4 &depthMVP);
+	Texture & render(RenderContext &ctx, Scene *root, glm::mat4 &depthMVP);
 
 	Program program;
 private:

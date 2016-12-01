@@ -21,7 +21,7 @@ Texture::Texture(const char *file) {
 
 Texture::Texture(GLuint type, int width, int height, int depth, int component) {
 	create(type);
-	GL_CHECK(glTexImage2D(type, 0, depth, width, height, 0, component, GL_FLOAT, 0));
+	GL_CHECK(glTexImage2D(type, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0));
 }
 
 Texture::Texture(int width, int height) {

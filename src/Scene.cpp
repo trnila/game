@@ -20,7 +20,7 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(windo
 void Scene::createScene() {
 	Object *obj = getRootNode().createEntity("resources/brickwall.obj");
 	obj->setScale(100);
-	obj->setPosition(0, -30, 0);
+	obj->setPosition(0, -20, 0);
 
 
 	createTerrain();
@@ -35,7 +35,7 @@ void Scene::createScene() {
 	DirectionalLight *light = root->createLight<DirectionalLight>(0);
 	light->setDiffuseColor(Color(1, 1, 1));
 	light->setSpecularColor(Color(1, 1, 1));
-	light->setDirection(glm::vec3(-0.550664, -0.395870, 0.734885));
+	light->setDir(glm::vec3(-0.550664, -0.395870, 0.734885));
 	root->addNode(light);
 
 	for(int i = 0; i < 10; i++) {
@@ -45,7 +45,7 @@ void Scene::createScene() {
 		}
 	}
 
-	PointLight *spot = root->createLight<PointLight>(5);
+	DirectionalLight *spot = root->createLight<DirectionalLight>(5);
 	spot->setDiffuseColor(Color(1, 1, 1));
 	spot->setSpecularColor(Color(1, 1, 1));
 }
@@ -108,9 +108,10 @@ void Scene::update(float time) {
 //	camera.setPosition(pos.x, terrain->getHeightAt(pos.x, pos.z)+1, pos.z);
 }
 
+Texture *x = nullptr;
 void Scene::renderOneFrame(RenderContext &context) {
 	glm::mat4 depthMVP;
-	Texture& shadowTexture = shadowRenderer.render(context, *root, depthMVP);
+	Texture& shadowTexture = shadowRenderer.render(context, this, depthMVP);
 
 	context.setStage(RenderStage::Normal);
 	window.setViewport();
@@ -132,7 +133,11 @@ void Scene::renderOneFrame(RenderContext &context) {
 	prog.useTexture("shadowTexture", shadowTexture, 1);
 	root->render(context);
 
+	if(x == nullptr) {
+		x = new Texture("resources/cube.png");
+	}
 	panel->texture = &shadowTexture;
+	//panel->texture = x;
 	panel->render();
 }
 

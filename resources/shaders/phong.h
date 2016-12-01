@@ -23,7 +23,7 @@ vec3 applyLight(Light light, vec3 color, vec3 N) {
 	} else {
 		lightVector = normalize(light.position.xyz - position_world);
 		float distanceToLight = length(light.position.xyz - position_world.xyz);
-		attenuation = 1.0 / (1.0 + light.attenuation * distanceToLight*distanceToLight);
+		//attenuation = 1.0 / (1.0 + light.attenuation * distanceToLight*distanceToLight);
 
 		// spotlight
 		if(light.coneAngle > 0.0) {
@@ -41,10 +41,5 @@ vec3 applyLight(Light light, vec3 color, vec3 N) {
 	vec3 specular = material.shininessStrength * material.specularColor * light.specularColor * spec;
 	specular = vec3(0);
 
-	float visibility = 1.0;
-	/*if ( texture( shadowTexture, shadCoord.xy ).z  <  shadCoord.z - 0.005){
-		visibility = 0.5;
-	}*/
-
-	return visibility * attenuation * (diffuse + specular);
+	return attenuation * (diffuse + specular);
 }

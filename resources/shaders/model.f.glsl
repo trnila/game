@@ -52,5 +52,10 @@ void main(void) {
 	    }
 	}
 
-	frag_colour = vec4(ambient + total, 1);
+	float visibility = 1.0;
+	if ( texture( shadowTexture, shadCoord.xy ).z  <  shadCoord.z - 0.005){
+		visibility = 0.5;
+	}
+
+	frag_colour = vec4(ambient + visibility * total, 1);
 }
