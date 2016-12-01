@@ -18,6 +18,21 @@ uniform struct Material material;
 uniform struct Light lights[MAX_LIGHTS];
 uniform int activeLights = 0;
 
+<vec4 blend(sampler2D xTexture, sampler2D yTexture, sampler2D zTexture) {
+        vec3 blending = abs( normal_world );
+        blending = normalize(max(blending, 0.0001));
+        float b = (blending.x + blending.y + blending.z);
+        blending /= vec3(b, b, b);
+
+        float scale = 0.05;
+        vec4 xaxis = texture2D( xTexture, position_world.yz * scale);
+        vec4 yaxis = texture2D( yTexture, position_world.xz * scale);
+        vec4 zaxis = texture2D( zTexture, position_world.xy * scale);
+        // blend the results of the 3 planar projections.
+        return xaxis * blending.x + yaxis * blending.y + zaxis * blending.z;
+}
+
+
 void main() {
 	float fScale = position_world.y/40;
 	float mez = 0.07;
@@ -27,21 +42,21 @@ void main() {
 
 	vec4 color;
 	if(fScale < y1 - mez) {
-		color = texture2D(grass, UV);
+		color = blend(grass, grass, grass);
 	} else if (fScale < y1 + mez) {
 		  fScale = (fScale - (y1 - mez)) / (2 * mez);
 
-          color = texture2D(grass, UV)*(1.0 - fScale);
-          color += texture2D(dirt, UV)*fScale;
+          color = blend(grass, grass, grass)*(1.0 - fScale);
+          color += blend(grass, dirt, dirt)*fScale;
 	} else if(fScale < y2 - mez) {
-		color = texture2D(dirt, UV);
+		color = blend(grass, dirt, dirt);
 	} else if(fScale < y2 + mez) {
 			fScale = (fScale - (y2 - mez)) / (2 * mez);
 
-          color = texture2D(dirt, UV)*(1.0 - fScale);
-          color += texture2D(snow, UV)*fScale;
+          color = blend(grass, dirt, dirt)*(1.0 - fScale);
+          color += blend(snow, snow, snow)*fScale;
 	} else {
-		color = texture2D(snow, UV);
+		color = blend(snow, snow, snow);
 	}
 
     vec3 total = vec3(0);
