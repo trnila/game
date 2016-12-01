@@ -94,3 +94,7 @@ int Program::getUniformLocation(const char * name) {
 	}
 	return uniformId;
 }
+
+void Program::send(const char *name, const glm::vec2 vec) {
+	GL_CHECK(glUniform2fv(getUniformLocation(name), 1, glm::value_ptr(vec)));
+}

@@ -13,22 +13,20 @@ public:
 	void attach(Shader &shader);
 	void link();
 	void use();
-	void send(const char* var, const glm::mat4 &mat);
-
 	void setColor(float r, float g, float b);
-
-	void send(const char *var, bool val);
 	void setAmbientColor(const Color &color);
-
 	void useTexture(const char *name, Texture &texture, int pos);
 
 	virtual void updated(Camera &camera) override;
 	virtual void updated(BaseLight &obj) override;
 
+	void send(const char* var, const glm::mat4 &mat);
+	void send(const char *var, bool val);
 	void send(const char *name, const glm::vec3& vec);
 	void send(const char *name, const glm::vec4& vec);
 	void send(const char *name, float v);
 	void send(const char *name, int value);
+	void send(const char *name, const glm::vec2 vec);
 private:
 	GLuint id;
 	int activeLights = 0;

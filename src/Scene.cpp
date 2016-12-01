@@ -9,14 +9,19 @@
 #include "Scene/Lights/SpotLight.h"
 #include "GeneratedTerrain.h"
 #include "Groups.h"
+#include "Panel.h"
 
 Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
 	initResources();
 	createScene();
+	panel = new Panel();
 }
 
 void Scene::createScene() {
-	getRootNode().createEntity("resources/brickwall.obj");
+	Object *obj = getRootNode().createEntity("resources/brickwall.obj");
+	obj->setScale(100);
+	obj->setPosition(0, -30, 0);
+
 
 	createTerrain();
 	createObjects();
@@ -33,10 +38,16 @@ void Scene::createScene() {
 	light->setDirection(glm::vec3(-0.550664, -0.395870, 0.734885));
 	root->addNode(light);
 
+	for(int i = 0; i < 10; i++) {
+		BaseLight *l = root->getLight(i);
+		if(l) {
+			l->setActive(false);
+		}
+	}
+
 	PointLight *spot = root->createLight<PointLight>(5);
 	spot->setDiffuseColor(Color(1, 1, 1));
 	spot->setSpecularColor(Color(1, 1, 1));
-	root->addNode(light);
 }
 
 void Scene::createSkybox() {//skybox = new Skybox("resources/skyboxes/ame_nebula/purplenebula");
@@ -120,6 +131,9 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 	prog.useTexture("shadowTexture", shadowTexture, 1);
 	root->render(context);
+
+	panel->texture = &shadowTexture;
+	panel->render();
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {

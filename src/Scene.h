@@ -19,6 +19,7 @@
 #include "ShadowRenderer.h"
 #include "States.h"
 #include "Terrain.h"
+#include "Panel.h"
 
 
 class Scene : public KeyListener, public MouseListener {
@@ -61,6 +62,7 @@ private:
 	States states;
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
+	Panel *panel;
 
 	void createTerrain();
 	void createObjects();
