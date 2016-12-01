@@ -135,42 +135,46 @@ struct CombineScanner {
 
 struct VariousObjects {
 	void operator()(Scene* scene) {
-		Object *obj = scene->getRootNode().createEntity("resources/monkey.obj");
+		NodeList *root = scene->getRootNode().createGroup();
+		root->setPosition(188.013016, 33.348019, 208.685776);
+		scene->getActiveCamera().setPosition(188.013016, 33.348019, 208.685776);
+
+		Object *obj = root->createEntity("resources/monkey.obj");
 		obj->setPosition(13, 0, 3);
 		obj->setColor(1, 0, 0);
 		obj->rotate(0, 0, -1, 0);
 		obj->attachLogic(RotateLogic(40));
 
-		obj = scene->getRootNode().createEntity("resources/monkey_smooth.obj");
+		obj = root->createEntity("resources/monkey_smooth.obj");
 		obj->setPosition(10, 0, 3);
 		obj->setColor(1, 0, 0);
 		obj->rotate(0, 0, 1, 0);
 		obj->attachLogic(RotateLogic(40));
 
-		obj = scene->getRootNode().createEntity("resources/Vortigaunt/vortigaunt.obj");
+		obj = root->createEntity("resources/Vortigaunt/vortigaunt.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(15, 0, 5);
 		obj->setScale(1.f);
 		obj->setScale(0.01);
 
-		obj = scene->getRootNode().createEntity("resources/D0G/a.obj");
+		obj = root->createEntity("resources/D0G/a.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(16, 0, 5);
 		obj->setScale(1.f);
 
-		obj = scene->getRootNode().createEntity("resources/Headcrab classic/headcrabclassic.obj");
+		obj = root->createEntity("resources/Headcrab classic/headcrabclassic.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(18, 0, 5);
 		obj->setScale(0.05f);
 
 
-		/*obj = scene->getRootNode().createEntity("resources/Strider/Strider.obj");
+		/*obj = root->createEntity("resources/Strider/Strider.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(18, -5, 30);
 		obj->setScale(0.02f);
 		obj->attachLogic(Walker(terrain));*/
 
-		obj = scene->getRootNode().createEntity("resources/Combine Dropship/Combine_dropship.obj");
+		obj = root->createEntity("resources/Combine Dropship/Combine_dropship.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(18, -5, 30);
 		obj->setScale(0.02f);

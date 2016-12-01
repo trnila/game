@@ -22,8 +22,8 @@ void Scene::createScene() {
 	createObjects();
 	createSkybox();
 
-	camera.setPosition(4.119658f, 1.629825f, -4.623707f);
-	camera.setRotation(-0.582351f, -0.1290f);
+	//camera.setPosition(4.119658f, 1.629825f, -4.623707f);
+	//camera.setRotation(-0.582351f, -0.1290f);
 	camera.setZFar(20000);
 	getRootNode().getMediator().setAmbientLight(Color(0.1, 0.1, 0.1));
 
@@ -173,6 +173,7 @@ void Scene::onClick(int button, int action, double x, double y) {
 	glm::vec4 viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());
 	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
+	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 	states.current().onClick(pos, o, *this);
 }
 
