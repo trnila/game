@@ -150,3 +150,10 @@ private:
 	glm::vec3 pos;
 
 };
+
+struct CamInit {
+	void operator()(Node & node, float diff, Scene& scene);
+
+private:
+	float time = 0;
+};

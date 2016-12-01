@@ -3,6 +3,7 @@
 #include <assimp/material.h>
 #include "VBO.h"
 #include "RenderContext.h"
+#include "Program.h"
 
 class Material {
 public:

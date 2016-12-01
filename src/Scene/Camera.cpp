@@ -3,7 +3,6 @@
 
 Camera::Camera(Window &window) :
 		window(window),
-		position(0.0),
 		up(0.0, 1.0, 0.0),
 		target(0.0),
 		v(0),
@@ -20,8 +19,8 @@ Camera::~Camera() {
 	window.removeListener(this);
 }
 
-const glm::mat4 Camera::getTransform() {
-	return glm::lookAt(position, position + target, up);
+const glm::mat4 Camera::getLookAt() {
+	return glm::lookAt(getPosition(), getPosition() + target, up);
 }
 
 glm::mat4 Camera::getPerspective() const {
@@ -37,25 +36,6 @@ void Camera::rotateBy(double vert, double hor) {
 	h += hor;
 
 	setRotation(v + vert, h + hor);
-	notify();
-}
-
-void Camera::move(float x, float y, float z) {
-	if (x == 0 && y == 0 && z == 0) {
-		return;
-	}
-
-	position.x += x;
-	position.y += y;
-	position.z += z;
-	notify();
-}
-
-void Camera::setPosition(float x, float y, float z) {
-	position.x = x;
-	position.y = y;
-	position.z = z;
-
 	notify();
 }
 
@@ -87,28 +67,34 @@ void Camera::updated(Window &camera) {
 }
 
 void Camera::forward(float diff) {
-	position += glm::normalize(target) * diff * 10.0f;
-	//printf("%f, %f, %f\n", position.x, position.y, position.z);
-	notify();
+	move(glm::normalize(target) * diff * 10.0f);
 }
 
 void Camera::backward(float diff) {
-	position -= glm::normalize(target) * diff;
-	notify();
+	move(-glm::normalize(target) * diff);
 }
 
 void Camera::left(float diff) {
-	position -= glm::normalize(glm::cross(target, up)) * diff;
-	notify();
+	move(-glm::normalize(glm::cross(target, up)) * diff);
 }
 
 void Camera::right(float diff) {
-	position += glm::normalize(glm::cross(target, up)) * diff;
-	notify();
+	move(glm::normalize(glm::cross(target, up)) * diff);
 }
 
-const glm::vec3 &Camera::getDirection() {
+glm::vec3 Camera::getDirection() {
 	return target;
+}
+
+void Camera::render(RenderContext &context) {}
+
+Object *Camera::find(int id) {
+	return nullptr;
+}
+
+void Camera::transformed() {
+	Transformable::transformed();
+	notify();
 }
 
 

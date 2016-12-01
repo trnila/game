@@ -5,25 +5,24 @@
 #include <math.h>
 #include "../Utils/Observer.h"
 #include "../Window.h"
+#include "Node.h"
 
-class Camera : public Subject<Camera>, public Observer<Window> {
+class Camera : public Subject<Camera>, public Observer<Window>, public Node {
 public:
 	Camera(Window &window);
 	~Camera();
 
-	const glm::mat4 getTransform();
+	void render(RenderContext &context) override;
+	Object *find(int id) override;
+
+	const glm::mat4 getLookAt();
+	glm::mat4 getPerspective() const;
+
 	void rotateBy(double vert, double hor);
-	void move(float x, float y, float z);
-	void setPosition(float x, float y, float z);
 	void setRotation(float vert, float hor);
-	glm::vec3 getPosition() {
-		return position;
-	}
 
 	void setZFar(float zFar);
-
 	void setZNear(float zNear);
-	glm::mat4 getPerspective() const;
 
 	void forward(float diff);
 
@@ -35,12 +34,14 @@ public:
 
 	virtual void updated(Window &camera) override;
 
-	const glm::vec3 &getDirection();
+	glm::vec3 getDirection();
+
+protected:
+	void transformed() override;
 
 private:
 	Window &window;
 
-	glm::vec3 position;
 	glm::vec3 up;
 	glm::vec3 target;
 

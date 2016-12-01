@@ -25,6 +25,9 @@ void Scene::createScene() {
 	//camera.setPosition(4.119658f, 1.629825f, -4.623707f);
 	//camera.setRotation(-0.582351f, -0.1290f);
 	camera.setZFar(20000);
+	camera.setPosition(188.013016f, 100 + 33.348019f, 208.685776f);
+	camera.attachLogic(CamInit());
+	getRootNode().addNode(&camera);
 	getRootNode().getMediator().setAmbientLight(Color(0.1, 0.1, 0.1));
 
 	DirectionalLight *light = root->createLight<DirectionalLight>(0);
@@ -50,6 +53,7 @@ void Scene::createSkybox() {//skybox = new Skybox("resources/skyboxes/ame_nebula
 	camera.addListener(&skybox->program);
 }
 
+Camera *scan;
 void Scene::createObjects() {
 	std::vector<std::function<void(Scene*)>> groups {
 			Forest(),
@@ -58,8 +62,24 @@ void Scene::createObjects() {
 	        Earth(),
 	        Balls(),
 	        RotatingSpotLight(),
-	        CombineScanner()
+	        //CombineScanner()
 	};
+
+	NodeList *center = this->getRootNode().createGroup();
+	center->setPosition(18, 0, 5);
+
+	Object *obj = center->createEntity("resources/Combine Scanner/Combine_Scanner.obj");
+	obj->setColor(1, 1, 1);
+	obj->setScale(0.01f);
+
+	SpotLight *light = center->createLight<SpotLight>(6);
+	light->setDiffuseColor(Color(1, 1, 1));
+	light->setSpecularColor(Color(1, 1, 1));
+	light->setConeAngle(15);
+	center->attachLogic(FollowLogic(&this->getActiveCamera(), light));
+
+	scan = new Camera(window);
+	center->addNode(scan);
 
 	for(auto group: groups) {
 		group(this);
@@ -107,11 +127,8 @@ void Scene::initResources() {
 void Scene::update(float time) {
 	glm::mat4 parent(1.0f);
 	root->update(time, parent);
+
 	camHandler.update(time);
-
-	auto pos = camera.getPosition();
-
-	camera.setPosition(pos.x, terrain->getHeightAt(pos.x, pos.z)+1, pos.z);
 }
 
 void Scene::renderOneFrame(RenderContext &context) {
@@ -140,6 +157,9 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 	panel->texture = &shadowTexture;
 	panel->render();
+
+//	GL_CHECK(glViewport(0, 0, 800, 600));
+//	root->render(context);
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
@@ -167,7 +187,7 @@ void Scene::onClick(int button, int action, double x, double y) {
 	Object* o = root->find(index);
 
 	glm::vec3 screenX = glm::vec3(x, newY, depth);
-	glm::mat4 view = camera.getTransform();
+	glm::mat4 view = camera.getLookAt();
 	glm::mat4 projection = camera.getPerspective();
 
 	glm::vec4 viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());

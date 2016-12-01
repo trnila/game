@@ -174,7 +174,7 @@ struct VariousObjects {
 		obj->setScale(0.02f);
 		obj->attachLogic(Walker(terrain));*/
 
-		obj = root->createEntity("resources/Combine Dropship/Combine_dropship.obj");
+		obj = scene->getRootNode().createEntity("resources/Combine Dropship/Combine_dropship.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(18, -5, 30);
 		obj->setScale(0.02f);

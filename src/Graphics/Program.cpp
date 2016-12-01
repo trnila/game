@@ -30,7 +30,7 @@ void Program::use() {
 }
 
 void Program::updated(Camera &camera) {
-	send("viewMatrix", camera.getTransform());
+	send("viewMatrix", camera.getLookAt());
 	send("projectionMatrix", camera.getPerspective());
 	send("cameraPos", camera.getPosition());
 }
