@@ -25,8 +25,8 @@ Panel::Panel() {
 void Panel::render() {
 	prog.use();
 	prog.useTexture("myTexture", *texture, 0);
-	prog.send("scale", glm::vec2(0.5, 0.5));
-	auto data = glm::vec2(-0.5, -0.5);
+	prog.send("scale", glm::vec2(0.25, 0.25));
+	auto data = glm::vec2(-0.75, -0.75);
 	prog.send("translate", data);
 
 	auto lock = this->vbo.activate();
