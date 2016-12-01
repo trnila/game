@@ -54,6 +54,8 @@ private:
 	Camera camera;
 	CameraHandler camHandler;
 
+	Program water;
+
 	void createScene();
 	void initResources();
 

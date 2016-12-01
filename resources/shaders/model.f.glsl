@@ -42,7 +42,7 @@ vec3 CalcNormal() {
 }
 
 void main(void) {
-	vec3 color = hasTexture ? texture(modelTexture, vec2(UV.x, UV.y + sin(offset / 300))).rgb : simpleColor;
+	vec3 color = hasTexture ? texture(modelTexture, UV).rgb : simpleColor;
 
 	vec3 ambient = material.ambientColor * ambientColor * color;
 

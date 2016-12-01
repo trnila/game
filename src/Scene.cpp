@@ -72,9 +72,17 @@ void Scene::createTerrain() {
 	terrain->init();
 	terrain->getTransform().setScale(5, 90, 5);
 
-	Object *obj = getRootNode().createEntity("resources/brickwall.obj");
+
+	water.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
+	water.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/water.f.glsl", GL_FRAGMENT_SHADER));
+	water.link();
+	camera.addListener(&water);
+
+	ResourceManager<Model> &models = ResourceManager<Model>::getInstance();
+	Object *obj = new Object(0, &models.getResource("resources/brickwall.obj"), water, water, nullptr);
 	obj->setScale(1000);
 	obj->setPosition(100, -150, 0);
+	root->addNode(obj);
 }
 
 void Scene::initResources() {
