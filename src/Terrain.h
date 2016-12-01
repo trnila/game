@@ -61,6 +61,7 @@ private:
 	Program prog;
 	Texture *grass;
 	Texture *dirt;
+	Texture *snow;
 	Transformable t;
 	int width, height;
 	VBO vbo;

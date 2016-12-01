@@ -38,12 +38,12 @@ void Scene::createScene() {
 	light->setDir(glm::vec3(-0.550664, -0.395870, 0.734885));
 	root->addNode(light);
 
-	for(int i = 0; i < 10; i++) {
+	/*for(int i = 0; i < 10; i++) {
 		BaseLight *l = root->getLight(i);
 		if(l) {
 			l->setActive(false);
 		}
-	}
+	}*/
 
 	DirectionalLight *spot = root->createLight<DirectionalLight>(5);
 	spot->setDiffuseColor(Color(1, 1, 1));
@@ -73,10 +73,10 @@ void Scene::createObjects() {
 
 void Scene::createTerrain() {
 	terrain = new Terrain(root->getMediator());
-	//terrain = new GeneratedTerrain(root->getMediator());
+	terrain = new GeneratedTerrain(root->getMediator());
 	terrain->init();
-	terrain->getTransform().setPosition(10, 25, 45);
-	terrain->getTransform().setScale(1, 1.5, 1);
+	//terrain->getTransform().setPosition(10, 25, 45);
+	//terrain->getTransform().setScale(1, 1.5, 1);
 }
 
 void Scene::initResources() {

@@ -100,6 +100,7 @@ void Terrain::prepareForGpu() {
 void Terrain::loadTextures() {
 	grass = new Texture("resources/heightmaps/grass.jpg");
 	dirt = new Texture("resources/heightmaps/rocks.jpg");
+	snow = new Texture("resources/snow.jpg");
 }
 
 void Terrain::createShader() {
@@ -114,6 +115,7 @@ void Terrain::draw(Scene &scene) {
 	prog.updated(scene.getActiveCamera());
 	prog.useTexture("grass", *grass, 0);
 	prog.useTexture("dirt", *dirt, 1);
+	prog.useTexture("snow", *snow, 2);
 	prog.send("modelMatrix", t.getTransform());
 	Material material;
 	material.specularColor = Color(0);

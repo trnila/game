@@ -16,10 +16,13 @@ void GeneratedTerrain::createTerrain() {
 			float fScaleR = float(i)/float(getHeight() - 1);
 
 			glm::vec2 c = glm::vec2(3, 2) * glm::vec2(fScaleC, fScaleR);
-			const float d = 0.5f + 0.5f*glm::perlin(c);
+			float d =   0.5f + glm::perlin(c)
+			                + 0.5f * perlin(2*c)
+			                + 0.25f * perlin(4*c)
+							+ 0.13f * perlin(8*c);
 
-			point.points = glm::vec3(i , 50*d, j);
 
+			point.points = glm::vec3(i , 40*d, j);
 			point.uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
 		}
 	}

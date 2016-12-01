@@ -8,6 +8,7 @@ in vec3 position_world;
 
 layout(binding=0) uniform sampler2D grass;
 layout(binding=1) uniform sampler2D dirt;
+layout(binding=2) uniform sampler2D snow;
 
 uniform vec3 cameraPos;
 uniform struct Material material;
@@ -18,22 +19,29 @@ uniform struct Light lights[MAX_LIGHTS];
 uniform int activeLights = 0;
 
 void main() {
-	float fScale = position_world.y/255;
+	float fScale = position_world.y/40;
+	float mez = 0.07;
+	float y1 = 0.1;
+	float y2 = 0.5;
+	float y3 = 0.95;
 
 	vec4 color;
-	if(fScale < 0.2) {
+	if(fScale < y1 - mez) {
 		color = texture2D(grass, UV);
-	} else if (fScale > 0.4) {
+	} else if (fScale < y1 + mez) {
+		  fScale = (fScale - (y1 - mez)) / (2 * mez);
+
+          color = texture2D(grass, UV)*(1.0 - fScale);
+          color += texture2D(dirt, UV)*fScale;
+	} else if(fScale < y2 - mez) {
 		color = texture2D(dirt, UV);
+	} else if(fScale < y2 + mez) {
+			fScale = (fScale - (y2 - mez)) / (2 * mez);
+
+          color = texture2D(dirt, UV)*(1.0 - fScale);
+          color += texture2D(snow, UV)*fScale;
 	} else {
-		  fScale -= 0.2;
-          fScale /= (0.4-0.2);
-
-          float fScale2 = fScale;
-          fScale = 1.0-fScale;
-
-          color = texture2D(grass, UV)*fScale;
-          color += texture2D(dirt, UV)*fScale2;
+		color = texture2D(snow, UV);
 	}
 
     vec3 total = vec3(0);
