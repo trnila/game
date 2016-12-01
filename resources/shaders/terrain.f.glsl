@@ -34,11 +34,11 @@ vec4 blend(sampler2D xTexture, sampler2D yTexture, sampler2D zTexture) {
 
 
 void main() {
-	float fScale = position_world.y/40;
+	float fScale = position_world.y/90;
 	float mez = 0.07;
 	float y1 = 0.1;
 	float y2 = 0.5;
-	float y3 = 0.95;
+	float y3 = 0.98;
 
 	vec4 color;
 	if(fScale < y1 - mez) {

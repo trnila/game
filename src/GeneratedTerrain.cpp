@@ -1,4 +1,3 @@
-
 #include <glm/ext.hpp>
 #include "GeneratedTerrain.h"
 
@@ -22,7 +21,7 @@ void GeneratedTerrain::createTerrain() {
 							+ 0.13f * perlin(8*c);
 
 
-			point.points = glm::vec3(i , 40*d, j);
+			point.points = glm::vec3(i, d, j);
 			point.uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
 		}
 	}

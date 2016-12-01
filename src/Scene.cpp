@@ -70,11 +70,11 @@ void Scene::createTerrain() {
 	terrain = new Terrain(root->getMediator());
 	terrain = new GeneratedTerrain(root->getMediator());
 	terrain->init();
-	terrain->getTransform().setPosition(0, -10, 0);
+	terrain->getTransform().setScale(5, 90, 5);
 
 	Object *obj = getRootNode().createEntity("resources/brickwall.obj");
-	obj->setScale(100);
-	obj->setPosition(100, -18, 0);
+	obj->setScale(1000);
+	obj->setPosition(100, -150, 0);
 }
 
 void Scene::initResources() {
