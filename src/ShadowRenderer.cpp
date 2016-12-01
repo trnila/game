@@ -8,8 +8,8 @@ Texture & ShadowRenderer::render(RenderContext &context, Scene *root, glm::mat4 
 
 	DirectionalLight* light = (DirectionalLight *) root->getRootNode().getLight(5);
 	float m = 20;
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-1*m,1*m,-1*m,1*m,-1,100);
-	glm::mat4 depthViewMatrix = glm::lookAt(light->getWorldPosition(), light->getDir(), glm::vec3(0,1,0));
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-1*m,1*m,-1*m,1*m,-10,100);
+	glm::mat4 depthViewMatrix = glm::lookAt(light->getWorldPosition(), light->getWorldPosition() + light->getDir(), glm::vec3(0,1,0));
 	depthMVP = depthProjectionMatrix * depthViewMatrix;
 
 	{
