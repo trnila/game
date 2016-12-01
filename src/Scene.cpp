@@ -18,11 +18,6 @@ Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(windo
 }
 
 void Scene::createScene() {
-	Object *obj = getRootNode().createEntity("resources/brickwall.obj");
-	obj->setScale(100);
-	obj->setPosition(0, -20, 0);
-
-
 	createTerrain();
 	createObjects();
 	createSkybox();
@@ -75,8 +70,11 @@ void Scene::createTerrain() {
 	terrain = new Terrain(root->getMediator());
 	terrain = new GeneratedTerrain(root->getMediator());
 	terrain->init();
-	//terrain->getTransform().setPosition(10, 25, 45);
-	//terrain->getTransform().setScale(1, 1.5, 1);
+	terrain->getTransform().setPosition(0, -10, 0);
+
+	Object *obj = getRootNode().createEntity("resources/brickwall.obj");
+	obj->setScale(100);
+	obj->setPosition(100, -18, 0);
 }
 
 void Scene::initResources() {

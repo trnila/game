@@ -18,7 +18,7 @@ uniform struct Material material;
 uniform struct Light lights[MAX_LIGHTS];
 uniform int activeLights = 0;
 
-<vec4 blend(sampler2D xTexture, sampler2D yTexture, sampler2D zTexture) {
+vec4 blend(sampler2D xTexture, sampler2D yTexture, sampler2D zTexture) {
         vec3 blending = abs( normal_world );
         blending = normalize(max(blending, 0.0001));
         float b = (blending.x + blending.y + blending.z);

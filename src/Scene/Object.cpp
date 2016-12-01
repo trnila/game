@@ -13,6 +13,7 @@ void Object::render(RenderContext &context) {
 	Program &currentProgram = context.getStage() == RenderStage::Shadow ? shadow : program;
 
 	currentProgram.send("modelMatrix", modelMatrix);
+	currentProgram.send("offset", offset);
 	currentProgram.setColor(color.r, color.g, color.b);
 	GL_CHECK(glStencilFunc(GL_ALWAYS, id, 0xFF));
 
@@ -25,6 +26,7 @@ void Object::setColor(float r, float g, float b) {
 
 void Object::update(float diff, const glm::mat4 &parent) {
 	Node::update(diff, parent);
+	offset += diff;
 
 	this->modelMatrix = parent * getTransform();
 }

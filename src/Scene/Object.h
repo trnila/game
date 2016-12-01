@@ -37,4 +37,5 @@ private:
 	glm::vec3 color;
 	glm::mat4 modelMatrix;
 	Texture *texture;
+	float offset = 0;
 };
