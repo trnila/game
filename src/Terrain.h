@@ -55,6 +55,7 @@ public:
 protected:
 	virtual void createTerrain();
 	void createGrid(int width, int height);
+	void deleteGrid();
 
 	Data **grid;
 private:

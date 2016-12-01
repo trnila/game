@@ -111,10 +111,9 @@ void Scene::update(float time) {
 
 	auto pos = camera.getPosition();
 
-//	camera.setPosition(pos.x, terrain->getHeightAt(pos.x, pos.z)+1, pos.z);
+	camera.setPosition(pos.x, terrain->getHeightAt(pos.x, pos.z)+1, pos.z);
 }
 
-Texture *x = nullptr;
 void Scene::renderOneFrame(RenderContext &context) {
 	glm::mat4 depthMVP;
 	Texture& shadowTexture = shadowRenderer.render(context, this, depthMVP);
@@ -139,11 +138,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	prog.useTexture("shadowTexture", shadowTexture, 1);
 	root->render(context);
 
-	if(x == nullptr) {
-		x = new Texture("resources/cube.png");
-	}
 	panel->texture = &shadowTexture;
-	//panel->texture = x;
 	panel->render();
 }
 

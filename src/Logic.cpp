@@ -19,7 +19,7 @@ void Walker::operator()(Node &node, float dt, Scene &scene) {
 
 	float terrainHeight = scene.getTerrain()->getHeightAt(node.getPosition().x, node.getPosition().z);
 	if(terrainHeight > node.getPosition().y) {
-		pos.y = terrainHeight + 2;
+		pos.y = terrainHeight + 3;
 	}
 
 	auto direction = pos - node.getPosition();

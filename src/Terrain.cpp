@@ -136,10 +136,15 @@ void Terrain::draw(Scene &scene) {
 }
 
 Terrain::~Terrain() {
+	deleteGrid();
+}
+
+void Terrain::deleteGrid() {
 	for (int i = 0; i < width; i++) {
 		delete[] grid[i];
 	}
 	delete[] grid;
+	grid = nullptr;
 }
 
 int Terrain::getWidth() const {
