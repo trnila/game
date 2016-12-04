@@ -156,7 +156,7 @@ void Scene::renderOneFrame(RenderContext &context) {
 	root->render(context);
 
 	panel->texture = &shadowTexture;
-	panel->render();
+	//panel->render();
 
 //	GL_CHECK(glViewport(0, 0, 800, 600));
 //	root->render(context);
