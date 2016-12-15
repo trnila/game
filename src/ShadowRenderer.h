@@ -6,6 +6,24 @@
 #include "Graphics/FrameBuffer.h"
 #include "Utils/ResourceManager.h"
 
+class ShadowResult {
+public:
+	Texture *texture;
+	glm::mat4 depthMVP;
+
+	void apply(Program &program) {
+		glm::mat4 biasMatrix(
+				0.5, 0.0, 0.0, 0.0,
+				0.0, 0.5, 0.0, 0.0,
+				0.0, 0.0, 0.5, 0.0,
+				0.5, 0.5, 0.5, 1.0
+		);
+		glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
+		program.send("depthBias", depthBiasMVP);
+		program.useTexture("shadowTexture", *texture, 3);
+	}
+};
+
 class ShadowRenderer {
 public:
 	ShadowRenderer() {
@@ -21,7 +39,7 @@ public:
 		delete depthBuffer;
 	}
 
-	Texture & render(RenderContext &ctx, Scene *root, glm::mat4 &depthMVP);
+	ShadowResult render(RenderContext &ctx, Scene *root);
 
 	Program program;
 private:

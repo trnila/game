@@ -142,6 +142,9 @@ struct VariousObjects {
 		obj->rotate(0, 0, -1, 0);
 		obj->attachLogic(RotateLogic(40));
 
+		//obj = root->createEntity("resources/plane.obj");
+		//obj->setScale(10);
+
 		obj = root->createEntity("resources/monkey_smooth.obj");
 		obj->setPosition(10, 0, 3);
 		obj->setColor(1, 0, 0);

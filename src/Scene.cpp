@@ -26,7 +26,7 @@ void Scene::createScene() {
 	//camera.setRotation(-0.582351f, -0.1290f);
 	camera.setZFar(20000);
 	camera.setPosition(188.013016f, 100 + 33.348019f, 208.685776f);
-	camera.attachLogic(CamInit());
+	//camera.attachLogic(CamInit());
 	getRootNode().addNode(&camera);
 	getRootNode().getMediator().setAmbientLight(Color(0.1, 0.1, 0.1));
 
@@ -133,7 +133,7 @@ void Scene::update(float time) {
 
 void Scene::renderOneFrame(RenderContext &context) {
 	glm::mat4 depthMVP;
-	Texture& shadowTexture = shadowRenderer.render(context, this, depthMVP);
+	ShadowResult shadows = shadowRenderer.render(context, this);
 
 	context.setStage(RenderStage::Normal);
 	window.setViewport();
@@ -141,22 +141,13 @@ void Scene::renderOneFrame(RenderContext &context) {
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	skybox->render(context);
+	shadows.apply(terrain->prog);
 	terrain->draw(*this);
-
-	glm::mat4 biasMatrix(
-			0.5, 0.0, 0.0, 0.0,
-			0.0, 0.5, 0.0, 0.0,
-			0.0, 0.0, 0.5, 0.0,
-			0.5, 0.5, 0.5, 1.0
-	);
-	glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
-	prog.send("depthBias", depthBiasMVP);
-
-	prog.useTexture("shadowTexture", shadowTexture, 1);
+	shadows.apply(prog);
 	root->render(context);
 
-	panel->texture = &shadowTexture;
-	//panel->render();
+	panel->texture = shadows.texture;
+	panel->render();
 
 //	GL_CHECK(glViewport(0, 0, 800, 600));
 //	root->render(context);

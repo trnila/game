@@ -10,6 +10,9 @@ uniform sampler2D grass;
 uniform sampler2D dirt;
 uniform sampler2D snow;
 
+uniform sampler2D shadowTexture;
+in vec4 shadCoord;
+
 uniform vec3 cameraPos;
 uniform struct Material material;
 #include "phong.h"
@@ -66,5 +69,10 @@ void main() {
         }
     }
 
-    color_out = vec4(total, 1);
+	float visibility = 1.0;
+	if ( texture( shadowTexture, shadCoord.xy ).z  <  shadCoord.z - 0.005){
+		visibility = 0.5;
+	}
+
+    color_out = vec4(visibility * total, 1);
 }

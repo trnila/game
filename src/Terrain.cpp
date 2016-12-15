@@ -111,6 +111,10 @@ void Terrain::draw(Scene &scene) {
 	material.specularColor = Color(0);
 	material.apply(prog);
 
+	drawPrimitive();
+}
+
+void Terrain::drawPrimitive() {
 	auto obj = vbo.activate();
 	GL_CHECK(glEnableVertexAttribArray(0));
 	GL_CHECK(glEnableVertexAttribArray(1));
@@ -135,4 +139,8 @@ int Terrain::getWidth() const {
 
 int Terrain::getHeight() const {
 	return grid->getRows();
+}
+
+void Terrain::drawShadows(Scene &scene) {
+	drawPrimitive();
 }

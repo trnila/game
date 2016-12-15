@@ -54,6 +54,9 @@ public:
 	int getHeight() const;
 
 	Program prog;
+
+	void drawShadows(Scene &scene);
+
 protected:
 	virtual void createTerrain();
 	void createGrid(int width, int height);
@@ -70,6 +73,8 @@ private:
 	void loadTextures();
 	void prepareForGpu();
 	void calculateNormals();
+
+	void drawPrimitive();
 };
 
 
