@@ -81,3 +81,9 @@ void CamInit::operator()(Node &node, float diff, Scene &scene) {
 		node.move(0, -(time * time / 2.0f), 0);
 	}
 }
+
+void onGround(Node &node, float diff, Scene &scene) {
+	glm::vec3 pos = node.getPosition();
+	float height = scene.getTerrain()->getHeightAt(node.getWorldPosition().x, node.getWorldPosition().z);
+	node.setPosition(pos.x, height - node.getParent()->getPosition().y, pos.z);
+}

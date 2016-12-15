@@ -157,3 +157,5 @@ struct CamInit {
 private:
 	float time = 0;
 };
+
+void onGround(Node &node, float diff, Scene &scene);

@@ -152,15 +152,13 @@ struct VariousObjects {
 		obj->attachLogic(RotateLogic(40));
 
 		obj = root->createEntity("resources/Vortigaunt/vortigaunt.obj");
-		obj->setColor(1, 1, 1);
 		obj->setPosition(15, 0, 5);
-		obj->setScale(1.f);
-		obj->setScale(0.01);
+		obj->setScale(0.02);
+		obj->attachLogic(onGround);
 
 		obj = root->createEntity("resources/D0G/a.obj");
-		obj->setColor(1, 1, 1);
+		obj->attachLogic(onGround);
 		obj->setPosition(16, 0, 5);
-		obj->setScale(1.f);
 
 		obj = root->createEntity("resources/Headcrab classic/headcrabclassic.obj");
 		obj->setColor(1, 1, 1);
