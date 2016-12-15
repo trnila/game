@@ -6,6 +6,8 @@
 #include "Scene.h"
 #include "Utils/factorial.h"
 
+typedef std::function<void(Node&)> SuccessCallback;
+
 class RotateLogic {
 public:
 	RotateLogic(float anglePerSec): anglePerSec(anglePerSec) {}
@@ -171,7 +173,7 @@ private:
 
 class Bezier {
 public:
-	Bezier(const std::vector<glm::vec3> &points, int duration) : time(0), points(points), duration(duration) {}
+	Bezier(const std::vector<glm::vec3> &points, int duration, const SuccessCallback &success) : time(0), points(points), duration(duration), success(success) {}
 
 
 	void operator()(Node &node, float dt, Scene &scene);
@@ -186,4 +188,5 @@ private:
 	std::vector<glm::vec3> points;
 	float time = 0;
 	int duration;
+	SuccessCallback success;
 };

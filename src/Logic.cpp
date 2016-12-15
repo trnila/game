@@ -72,11 +72,7 @@ void CamInit::operator()(Node &node, float diff, Scene &scene) {
 
 	float height = scene.getTerrain()->getHeightAt(node.getPosition().x, node.getPosition().z);
 	if(node.getPosition().y + 2 <= height) {
-		node.removeAllLogic();
-		node.attachLogic([](Node &node, float diff, Scene &scene) -> void {
-			auto pos = node.getPosition();
-			node.setPosition(pos.x, scene.getTerrain()->getHeightAt(pos.x, pos.z) + 1, pos.z);
-		});
+		node.attachLogic(OnGround(glm::vec3(0, 1, 0)));
 	} else {
 		node.move(0, -(time * time / 2.0f), 0);
 	}
@@ -96,8 +92,7 @@ void Bezier::operator()(Node &node, float dt, Scene &scene) {
 	time += dt;
 	float t = time / duration;
 	if(t > 1.0f) {
-		node.removeLogic("showcase");
-		scene.getActiveCamera().attachLogic("down", OnGround(glm::vec3(0, 1, 0)));
+		success(node);
 		return;
 	}
 

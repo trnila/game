@@ -27,7 +27,11 @@ Scene::Scene(Camera* camera) : camera(*camera)  {
 		glm::vec3{840.971680, 74.526375, 377.371704},
 		glm::vec3{169.405823, 29.026913, 229.200348},
 	};
-	camera->attachLogic("showcase", Bezier(points, 15));
+	camera->attachLogic("showcase", Bezier(points, 1, [](Node& node) -> void {
+		node.removeLogic("showcase");
+		node.setPosition(188.013016f, 100 + 33.348019f, 208.685776f);
+		node.attachLogic(CamInit());
+	}));
 }
 
 void Scene::createScene() {
@@ -36,7 +40,7 @@ void Scene::createScene() {
 	createSkybox();
 
 	camera.setZFar(20000);
-	camera.setPosition(188.013016f, 100 + 33.348019f, 208.685776f);
+
 	//camera.attachLogic(CamInit());
 	getRootNode().addNode(&camera);
 	getRootNode().getMediator().setAmbientLight(Color(0.1, 0.1, 0.1));
