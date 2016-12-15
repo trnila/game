@@ -159,7 +159,15 @@ private:
 	float time = 0;
 };
 
-void onGround(Node &node, float diff, Scene &scene);
+class OnGround {
+public:
+	OnGround(glm::vec3 offset): offset(offset) {}
+
+	void operator()(Node &node, float diff, Scene &scene);
+
+private:
+	glm::vec3 offset;
+};
 
 class Bezier {
 public:

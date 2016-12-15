@@ -10,16 +10,61 @@ class Logic;
 class Object;
 class NodeList;
 class Scene;
+class Node;
+
+typedef std::function<void(Node&, float, Scene&)> LogicFunctor;
+
+class LogicComponent {
+public:
+	LogicComponent(std::string name, const LogicFunctor &callback) : name(name), callback(callback), active(true) {}
+
+	void update(Node& node, float dt, Scene& root) {
+		if(active) {
+			callback(node, dt, root);
+		}
+	}
+
+	const std::string &getName() const {
+		return name;
+	}
+
+	void setName(const std::string &name) {
+		LogicComponent::name = name;
+	}
+
+	bool isActive() const {
+		return active;
+	}
+
+	void setActive(bool active) {
+		this->active = active;
+	}
+
+private:
+	std::string name;
+	bool active;
+	LogicFunctor callback;
+};
 
 class Node : public Transformable {
 public:
-	typedef std::function<void(Node&, float, Scene&)> LogicFunctor;
+
 
 	virtual void render(RenderContext &context) = 0;
 	virtual void update(float diff, const glm::mat4 &parent);
 
 	void attachLogic(const LogicFunctor &functor) {
-		logic.push_back(functor);
+		attachLogic("_unnamed", functor);
+	}
+
+	void attachLogic(const std::string &name, const LogicFunctor &functor) {
+		logic.push_back(LogicComponent(name, functor));
+	}
+
+	void removeLogic(const std::string &name) {
+		logic.erase(std::remove_if(logic.begin(), logic.end(), [&](const LogicComponent& comp) -> bool {
+			return comp.getName() == name;
+		}));
 	}
 
 	void removeAllLogic() {
@@ -34,7 +79,7 @@ public:
 	const glm::vec3 getWorldPosition();
 
 private:
-	std::vector<LogicFunctor> logic;
+	std::vector<LogicComponent> logic;
 	glm::vec3 worldPosition;
 	NodeList *parent = nullptr;
 };

@@ -27,7 +27,7 @@ Scene::Scene(Camera* camera) : camera(*camera)  {
 		glm::vec3{840.971680, 74.526375, 377.371704},
 		glm::vec3{169.405823, 29.026913, 229.200348},
 	};
-	camera->attachLogic(Bezier(points, 10));
+	camera->attachLogic("showcase", Bezier(points, 15));
 }
 
 void Scene::createScene() {

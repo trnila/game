@@ -154,17 +154,17 @@ struct VariousObjects {
 		obj = root->createEntity("resources/Vortigaunt/vortigaunt.obj");
 		obj->setPosition(15, 0, 5);
 		obj->setScale(0.02);
-		obj->attachLogic(onGround);
+		obj->attachLogic(OnGround(glm::vec3(0)));
 
 		obj = root->createEntity("resources/D0G/a.obj");
-		obj->attachLogic(onGround);
+		obj->attachLogic(OnGround(glm::vec3(0)));
 		obj->setPosition(16, 0, 5);
 
 		obj = root->createEntity("resources/Strider/Strider.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(18, -5, 30);
 		obj->setScale(0.02f);
-		obj->attachLogic(onGround);
+		obj->attachLogic(OnGround(glm::vec3(0)));
 
 		obj = scene->getRootNode().createEntity("resources/Combine Dropship/Combine_dropship.obj");
 		obj->setColor(1, 1, 1);

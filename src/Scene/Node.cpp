@@ -4,8 +4,8 @@
 #include "NodeList.h"
 
 void Node::updateLogic(float diff) {
-	for(LogicFunctor &logic: this->logic) {
-		logic(*this, diff, *this->getParent()->getMediator().getScene());
+	for(auto& cb: this->logic) {
+		cb.update(*this, diff, *this->getParent()->getMediator().getScene());
 	}
 }
 
