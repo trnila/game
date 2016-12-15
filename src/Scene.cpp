@@ -40,7 +40,6 @@ void Scene::createScene() {
 }
 
 void Scene::createSkybox() {
-	//skybox = new Skybox("resources/skyboxes/ame_nebula/purplenebula");
 	skybox = new Skybox("resources/skyboxes/ely_hills/hills");
 	camera.addListener(&skybox->program);
 }
@@ -53,21 +52,9 @@ void Scene::createObjects() {
 	        Earth(),
 	        Balls(),
 	        RotatingSpotLight(),
-	        //CombineScanner()
+	        CombineScanner(),
+	        create_water
 	};
-
-	NodeList *center = this->getRootNode().createGroup();
-	center->setPosition(18, 0, 5);
-
-	Object *obj = center->createEntity("resources/Combine Scanner/Combine_Scanner.obj");
-	obj->setColor(1, 1, 1);
-	obj->setScale(0.01f);
-
-	SpotLight *light = center->createLight<SpotLight>(6);
-	light->setDiffuseColor(Color(1, 1, 1));
-	light->setSpecularColor(Color(1, 1, 1));
-	light->setConeAngle(15);
-	center->attachLogic(FollowLogic(&this->getActiveCamera(), light));
 
 	for(auto group: groups) {
 		group(this);
@@ -79,18 +66,6 @@ void Scene::createTerrain() {
 	terrain = new GeneratedTerrain(root->getMediator());
 	terrain->init();
 	terrain->getTransform().setScale(5, 90, 5);
-
-
-	water.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
-	water.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/water.f.glsl", GL_FRAGMENT_SHADER));
-	water.link();
-	camera.addListener(&water);
-
-	ResourceManager<Model> &models = ResourceManager<Model>::getInstance();
-	Object *obj = new Object(0, &models.getResource("resources/brickwall.obj"), water, water, nullptr);
-	obj->setScale(1000);
-	obj->setPosition(100, -150, 0);
-	root->addNode(obj);
 }
 
 void Scene::initResources() {
