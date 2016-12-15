@@ -1,6 +1,5 @@
 #include <glm/ext.hpp>
 #include "Scene.h"
-#include "data.h"
 #include "Scene/Lights/BaseLight.h"
 #include "States.h"
 #include "State.h"

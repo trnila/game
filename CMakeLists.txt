@@ -13,8 +13,7 @@ link_libraries(${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${ASSIMP_LIBRARIES} glfw)
 #  make clean && find src -type f | sort
 set(SOURCE_FILES
 
-src/data.h
-src/Game.cpp
+		src/Game.cpp
 src/Game.h
 src/Graphics/BindableResource.h
 src/Graphics/CubeMap.cpp
@@ -79,8 +78,7 @@ src/Terrain.cpp
 src/Terrain.h
 src/Transformable.cpp
 src/Transformable.h
-src/Type.cpp
-src/Type.h
+		src/Type.h
 src/Utils/Color.h
 src/Utils/Formatter.cpp
 src/Utils/Formatter.h
