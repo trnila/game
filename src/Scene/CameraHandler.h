@@ -10,10 +10,9 @@ public:
 	CameraHandler(Camera *camera);
 
 	virtual void onKey(int key, int scancode, int action, int mods) override;
-
 	virtual void onMove(double x, double y) override;
 
-	void update(float time);
+	void operator()(Node& node, float dt, Scene& scene);
 
 private:
 	Camera *camera;

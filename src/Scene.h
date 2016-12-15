@@ -22,16 +22,13 @@
 #include "Panel.h"
 
 
-class Scene : public KeyListener, MouseListener {
+class Scene {
 public:
-	Scene(Window &window);
+	Scene(Camera *camera);
 
 	void update(float time);
 	void renderOneFrame(RenderContext &context);
-
-	virtual void onKey(int key, int scancode, int action, int mods) override;
-	virtual void onMove(double x, double y) override;
-
+	
 
 	NodeList &getRootNode() {
 		return *root;
@@ -53,8 +50,7 @@ private:
 	NodeList *root;
 
 	Program prog;
-	Camera camera;
-	CameraHandler camHandler;
+	Camera &camera;
 
 	void createScene();
 	void initResources();

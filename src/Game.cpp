@@ -24,7 +24,15 @@ void Game::init() {
 	GL_CHECK(glEnable(GL_STENCIL_TEST));
 	GL_CHECK(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
 
-	scene = new Scene(*window);
+
+	Camera *camera = new Camera(*window);
+	CameraHandler* handler = new CameraHandler(camera);
+	camera->attachLogic([=](Node& node, float df, Scene& root) -> void {
+		handler->operator()(node, df, root);
+	});
+	keyboard.push_back(handler);
+	mouse.push_back(handler);
+	scene = new Scene(camera);
 }
 
 void Game::startRendering() {
@@ -45,9 +53,14 @@ void Game::startRendering() {
 }
 
 void Game::onKey(int key, int scancode, int action, int mods) {
-	scene->onKey(key, scancode, action, mods);
+	for(auto i: keyboard) {
+		i->onKey(key, scancode, action, mods);
+	}
+//	scene->getStates().current().onKey(key, scancode, action, mods, *this); //TODO: fix
 }
 
 void Game::onMove(double x, double y) {
-	scene->onMove(x, y);
+	for(auto i: mouse) {
+		i->onMove(x, y);
+	}
 }

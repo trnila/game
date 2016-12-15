@@ -10,7 +10,7 @@
 #include "Groups.h"
 #include "Panel.h"
 
-Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
+Scene::Scene(Camera* camera) : camera(*camera)  {
 	initResources();
 	createScene();
 	panel = new Panel();
@@ -89,8 +89,6 @@ void Scene::initResources() {
 void Scene::update(float time) {
 	glm::mat4 parent(1.0f);
 	root->update(time, parent);
-
-	camHandler.update(time);
 }
 
 void Scene::renderOneFrame(RenderContext &context) {
@@ -109,15 +107,6 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 	panel->texture = shadows.texture;
 	panel->render();
-}
-
-void Scene::onKey(int key, int scancode, int action, int mods) {
-	camHandler.onKey(key, scancode, action, mods);
-	states.current().onKey(key, scancode, action, mods, *this);
-}
-
-void Scene::onMove(double x, double y) {
-	camHandler.onMove(x, y);
 }
 
 Terrain *Scene::getTerrain() const {

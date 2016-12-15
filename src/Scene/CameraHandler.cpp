@@ -7,26 +7,6 @@ CameraHandler::CameraHandler(Camera *camera) :
 		lastX(0),
 		lastY(0) {}
 
-void CameraHandler::update(float time) {
-	double mouseSpeed = time;
-	camera->rotateBy(mouseSpeed * vertChange, mouseSpeed * horChange);
-	horChange = vertChange = 0;
-
-	float speed = 5 * time;
-	if (forward) {
-		camera->forward(speed);
-	}
-	if (backward) {
-		camera->backward(speed);
-	}
-	if (right) {
-		camera->right(speed);
-	}
-	if (left) {
-		camera->left(speed);
-	}
-}
-
 void CameraHandler::onKey(int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_UP) {
@@ -57,4 +37,24 @@ void CameraHandler::onMove(double x, double y) {
 
 	lastX = x;
 	lastY = y;
+}
+
+void CameraHandler::operator()(Node &node, float dt, Scene &scene) {
+	double mouseSpeed = dt;
+	camera->rotateBy(mouseSpeed * vertChange, mouseSpeed * horChange);
+	horChange = vertChange = 0;
+
+	float speed = 5 * dt;
+	if (forward) {
+		camera->forward(speed);
+	}
+	if (backward) {
+		camera->backward(speed);
+	}
+	if (right) {
+		camera->right(speed);
+	}
+	if (left) {
+		camera->left(speed);
+	}
 }

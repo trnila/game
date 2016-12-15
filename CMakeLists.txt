@@ -78,7 +78,6 @@ src/Terrain.cpp
 src/Terrain.h
 src/Transformable.cpp
 src/Transformable.h
-		src/Type.h
 src/Utils/Color.h
 src/Utils/Formatter.cpp
 src/Utils/Formatter.h

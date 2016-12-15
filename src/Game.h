@@ -44,4 +44,6 @@ protected:
 private:
 	Window *window;
 	Scene *scene;
+	std::vector<MouseListener*> mouse;
+	std::vector<KeyListener*> keyboard;
 };
