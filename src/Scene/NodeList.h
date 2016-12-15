@@ -2,10 +2,11 @@
 
 #include "Node.h"
 #include "Lights/BaseLight.h"
+#include "../Scene.h"
 
 class NodeList : public Node {
 public:
-	NodeList(Mediator &mediator): mediator(mediator) {
+	NodeList(Scene &scene): scene(scene) {
 	}
 
 	virtual void render(RenderContext &context) override;
@@ -13,58 +14,25 @@ public:
 	void addNode(Node *node);
 	void removeNode(Node *node);
 
-	NodeList* createGroup() {
-		NodeList *list = new NodeList(mediator);
-		addNode(list);
-		return list;
-	}
+	NodeList* createGroup();
 
-	Object* createEntity(const char *path) {
-		Object *o = mediator.getObjectFactory()->create(path);
-		addNode(o);
-		return o;
-	}
+	Object* createEntity(const char *path);
 
 	template<typename T>
 	T* createLight(int id) {
 		static_assert(std::is_base_of<BaseLight, T>::value, "Parameter is not light!");
-		T* light = new T(mediator, id);
+		T* light = new T(scene, id);
 		addNode(light);
 		return light;
 	}
 
-	virtual Object* find(int id) {
-		for (auto o : nodes) {
-			Object* f = o->find(id);
-			if (f) {
-				return f;
-			}
-		}
+	virtual Object* find(int id);
 
-		return nullptr;
-	}
+	virtual BaseLight* getLight(int id);
 
-	virtual BaseLight* getLight(int id) {
-		for (auto o : nodes) {
-			BaseLight* l = dynamic_cast<BaseLight*>(o);
-			if (l && l->getId() == id) {
-				return l;
-			}
-
-			if(NodeList* list = dynamic_cast<NodeList*>(o)) {
-				l = list->getLight(id);
-				if(l) {
-					return l;
-				}
-			}
-		}
-
-		return nullptr;
-	}
-
-	Mediator &getMediator();
+	Scene &getScene();
 
 private:
 	std::vector<Node *> nodes;
-	Mediator &mediator;
+	Scene &scene;
 };

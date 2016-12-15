@@ -8,10 +8,10 @@
 #include "Graphics/Material.h"
 #include "Scene.h"
 
-Terrain::Terrain(Mediator &mediator) {
+Terrain::Terrain(Scene &scene) {
 	createShader();
-	mediator.registerProgram(&prog);
-	mediator.getScene()->getActiveCamera().addListener(&prog);
+	scene.registerProgram(&prog);
+	scene.getActiveCamera().addListener(&prog);
 	loadTextures();
 	init();
 }

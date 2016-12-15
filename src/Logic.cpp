@@ -110,3 +110,11 @@ void Bezier::operator()(Node &node, float dt, Scene &scene) {
 	//printf("%f [%f, %f, %f]\n", t, result.x, result.y, result.z);
 	node.setPosition(result);
 }
+
+void DestroyLogic::operator()(Node &node, float dt, Scene &scene) {
+	curTime += dt;
+
+	if(time < curTime) {
+		node.getParent()->removeNode(&node);
+	}
+}

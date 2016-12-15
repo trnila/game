@@ -1,7 +1,7 @@
 #include <glm/ext.hpp>
 #include "GeneratedTerrain.h"
 
-GeneratedTerrain::GeneratedTerrain(Mediator &mediator) : Terrain(mediator) {}
+GeneratedTerrain::GeneratedTerrain(Scene &scene) : Terrain(scene) {}
 
 void GeneratedTerrain::createTerrain() {
 	createGrid(300, 300);

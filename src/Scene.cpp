@@ -41,7 +41,7 @@ void Scene::createScene() {
 
 	//camera.attachLogic(CamInit());
 	getRootNode().addNode(&camera);
-	getRootNode().getMediator().setAmbientLight(Color(0.1, 0.1, 0.1));
+	getRootNode().getScene().setAmbientLight(Color(0.1, 0.1, 0.1));
 
 	DirectionalLight *light = root->createLight<DirectionalLight>(0);
 	light->setDiffuseColor(Color(1, 1, 1));
@@ -54,16 +54,13 @@ void Scene::createScene() {
 	spot->setSpecularColor(Color(1, 1, 1));
 }
 
-void Scene::createSkybox() {
-}
-
 void Scene::createObjects() {
 	Skybox *skybox = new Skybox("resources/skyboxes/ely_hills/hills");
 	camera.addListener(&skybox->program);
 	getRootNode().addNode(skybox);
 
-	//terrain = new Terrain(root->getMediator());
-	terrain = new GeneratedTerrain(root->getMediator());
+	//terrain = new Terrain(root->getScene());
+	terrain = new GeneratedTerrain(root->getScene());
 	terrain->init();
 	terrain->setScale(5, 90, 5);
 	getRootNode().addNode(terrain);
@@ -84,19 +81,14 @@ void Scene::createObjects() {
 	}
 }
 
-void Scene::createTerrain() {
-
-}
-
 void Scene::initResources() {
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
 	prog.link();
 
-	Mediator* mediator = new Mediator(new ObjectFactory(prog, shadowRenderer.program));
-	root = new NodeList(*mediator);
-	mediator->registerProgram(&prog);
-	mediator->setScene(this);
+	factory = new ObjectFactory(prog, shadowRenderer.program);
+	root = new NodeList(*this);
+	registerProgram(&prog);
 
 	camera.addListener(&prog);
 	states.add(StateType::Insert, new Insert(), GLFW_KEY_I);

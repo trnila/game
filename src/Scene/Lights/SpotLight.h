@@ -4,7 +4,7 @@
 
 class SpotLight: public BaseLight {
 public:
-	SpotLight(Mediator &shader, int id);
+	SpotLight(Scene &shader, int id);
 
 	float getConeAngle() const;
 	void setConeAngle(float coneAngle);

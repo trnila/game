@@ -16,13 +16,13 @@
 #include "Graphics/Skybox.h"
 #include "ObjectFactory.h"
 #include "Logic.h"
-#include "ShadowRenderer.h"
 #include "States.h"
 #include "Terrain.h"
 #include "Panel.h"
-
+#include "ShadowRenderer.h"
 
 class Scene {
+	std::vector<Program*> programs;
 public:
 	Scene(Camera *camera);
 
@@ -46,6 +46,27 @@ public:
 
 	void onClick(glm::vec3 tvec3, Object *obj);
 
+	void registerProgram(Program *program) {
+		programs.push_back(program);
+	}
+
+	void lightChanged(BaseLight *light) {
+		for(Program* program: programs) {
+			program->updated(*light);
+		}
+	}
+
+	void setAmbientLight(Color color) {
+		for(Program* program: programs) {
+			program->setAmbientColor(color);
+		}
+	}
+
+	ObjectFactory* getObjectFactory() {
+		return factory;
+	}
+
+	ObjectFactory* factory;
 private:
 	NodeList *root;
 
@@ -55,12 +76,9 @@ private:
 	void createScene();
 	void initResources();
 
-	Skybox *skybox;
 	States states;
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
 
-	void createTerrain();
 	void createObjects();
-	void createSkybox();
 };

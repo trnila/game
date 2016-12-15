@@ -9,7 +9,7 @@ protected:
 
 
 public:
-	GeneratedTerrain(Mediator &mediator);
+	GeneratedTerrain(Scene &scene);
 	
 	float getHeightAt(float x, float z);
 

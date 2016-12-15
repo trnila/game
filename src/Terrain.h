@@ -3,7 +3,6 @@
 #include "Graphics/VBO.h"
 #include "Graphics/VAO.h"
 #include "Transformable.h"
-#include "Mediator.h"
 #include "Utils/Matrix.h"
 
 class Scene;
@@ -16,7 +15,7 @@ struct Data {
 
 class Terrain: public Node {
 public:
-	Terrain(Mediator &mediator);
+	Terrain(Scene &scene);
 	~Terrain();
 
 	void render(RenderContext &context) override;

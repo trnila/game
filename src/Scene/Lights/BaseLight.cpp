@@ -1,7 +1,7 @@
 #include "BaseLight.h"
-#include "../../Mediator.h"
+#include "../../Scene.h"
 
-BaseLight::BaseLight(Mediator &mediator, int id) : mediator(mediator), id(id) {
+BaseLight::BaseLight(Scene &scene, int id) : scene(scene), id(id) {
 }
 
 void BaseLight::render(RenderContext &context) {}
@@ -26,7 +26,7 @@ void BaseLight::setSpecularColor(const Color &specularColor) {
 
 void BaseLight::transformed() {
 	Transformable::transformed();
-	mediator.lightChanged(this);
+	scene.lightChanged(this);
 }
 
 int BaseLight::getId() {

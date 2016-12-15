@@ -11,7 +11,7 @@ void SpotLight::setConeAngle(float coneAngle) {
 	transformed();
 }
 
-SpotLight::SpotLight(Mediator &shader, int id) : BaseLight(shader, id) {}
+SpotLight::SpotLight(Scene &shader, int id) : BaseLight(shader, id) {}
 
 const glm::vec3 &SpotLight::getDirection() const {
 	return direction;

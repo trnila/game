@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(projekt)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11") # -Wall -Wextra -pedantic
 
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
@@ -78,7 +78,7 @@ src/Terrain.cpp
 src/Terrain.h
 src/Transformable.cpp
 src/Transformable.h
-src/Utils/Color.h
+		src/Utils/Color.h
 src/Utils/Formatter.cpp
 src/Utils/Formatter.h
 src/Utils/Image.cpp

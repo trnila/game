@@ -5,7 +5,7 @@
 
 void Node::updateLogic(float diff) {
 	for(auto& cb: this->logic) {
-		cb.update(*this, diff, *this->getParent()->getMediator().getScene());
+		cb.update(*this, diff, this->getParent()->getScene());
 	}
 }
 

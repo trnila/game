@@ -11,7 +11,7 @@ void DirectionalLight::setDir(const glm::vec3 &direction) {
 	transformed();
 }
 
-DirectionalLight::DirectionalLight(Mediator &shader, int id) : BaseLight(shader, id) {}
+DirectionalLight::DirectionalLight(Scene &shader, int id) : BaseLight(shader, id) {}
 
 void DirectionalLight::apply(Program &program) {
 	BaseLight::apply(program);

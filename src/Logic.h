@@ -51,13 +51,7 @@ class DestroyLogic {
 public:
 	DestroyLogic(float time): time(time) {}
 
-	void operator()(Node& node, float dt, Scene& scene) {
-		curTime += dt;
-
-		if(time < curTime) {
-			node.getParent()->removeNode(&node);
-		}
-	}
+	void operator()(Node& node, float dt, Scene& scene);
 
 private:
 	float time;

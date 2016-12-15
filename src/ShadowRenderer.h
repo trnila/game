@@ -2,7 +2,6 @@
 
 #include "Graphics/Program.h"
 #include "Graphics/RenderContext.h"
-#include "Scene/NodeList.h"
 #include "Graphics/FrameBuffer.h"
 #include "Utils/ResourceManager.h"
 
