@@ -10,7 +10,7 @@ d  1.0
 Ns  0.0
 illum 2
 map_Kd Texture/striderdecalsheet.tga
-bump striderdecalsheet_normal.tga
+bump Texture/striderdecalsheet_normal.tga
 #
 # Multi/Sub SMDImport done 
 #

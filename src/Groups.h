@@ -105,10 +105,6 @@ struct RotatingSpotLight {
 		rot->attachLogic(RotateLogic(45));
 		rot->rotate(0, 0, 1, 0);
 
-		/*obj = factory->create("resources/ball.obj");
-		obj->setPosition(5, 0, 0);
-		rot->addNode(obj);*/
-
 		SpotLight *light = rot->createLight<SpotLight>(2);
 		light->setDiffuseColor(Color(0, 1, 0));
 		light->setSpecularColor(Color(0, 1, 0));
@@ -161,27 +157,16 @@ struct VariousObjects {
 		obj->attachLogic(onGround);
 		obj->setPosition(16, 0, 5);
 
-		obj = root->createEntity("resources/Headcrab classic/headcrabclassic.obj");
-		obj->setColor(1, 1, 1);
-		obj->setPosition(18, 0, 5);
-		obj->setScale(0.05f);
-
-
-		/*obj = root->createEntity("resources/Strider/Strider.obj");
+		obj = root->createEntity("resources/Strider/Strider.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(18, -5, 30);
 		obj->setScale(0.02f);
-		obj->attachLogic(Walker(terrain));*/
+		obj->attachLogic(onGround);
 
 		obj = scene->getRootNode().createEntity("resources/Combine Dropship/Combine_dropship.obj");
 		obj->setColor(1, 1, 1);
 		obj->setPosition(18, -5, 30);
 		obj->setScale(0.02f);
 		obj->attachLogic(Walker());
-
-
-		//obj = factory->create("resources/Strider/Strider.obj");
-		//obj = factory->create("resources/Gman/gman.obj");
-		//obj = factory->create("resources/AntLion/AntLion.obj");
 	}
 };
