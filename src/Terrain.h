@@ -4,6 +4,7 @@
 #include "Graphics/VAO.h"
 #include "Transformable.h"
 #include "Mediator.h"
+#include "Utils/Matrix.h"
 
 class Scene;
 
@@ -35,8 +36,8 @@ public:
 			for(int j = -n; j < n; j++) {
 				x = X + i;
 				z = Y + j;
-				if(x >= 0 && x < this->width && z >=0 && z< this->height) {
-					val = std::max(val, grid[(int) x][(int) z].points.y);
+				if(x >= 0 && x < getWidth() && z >=0 && z< getHeight()) {
+					val = std::max(val, grid->at(x, z).points.y);
 				}
 			}
 		}
@@ -52,19 +53,17 @@ public:
 
 	int getHeight() const;
 
+	Program prog;
 protected:
 	virtual void createTerrain();
 	void createGrid(int width, int height);
-	void deleteGrid();
 
-	Data **grid;
+	Matrix<Data> *grid;
 private:
-	Program prog;
 	Texture *grass;
 	Texture *dirt;
 	Texture *snow;
 	Transformable t;
-	int width, height;
 	VBO vbo;
 
 	void createShader();

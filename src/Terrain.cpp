@@ -25,34 +25,24 @@ void Terrain::createTerrain() {
 	Image image("resources/heightmaps/5.png", 1);
 	createGrid(image.getWidth(), image.getHeight());
 
-	float fTextureU = float(width) * 0.1f;
-	float fTextureV = float(height) * 0.1f;
+	float fTextureU = float(getWidth()) * 0.1f;
+	float fTextureV = float(getHeight()) * 0.1f;
 
-	for(int j = 0; j < height; j++) {
-		for(int i = 0; i < width; i++) {
-			Data &point = grid[i][j];
+	for(int j = 0; j < getHeight(); j++) {
+		for(int i = 0; i < getWidth(); i++) {
+			Data &point = grid->at(i, j);
 
-			float fScaleC = float(j)/float(width - 1);
-			float fScaleR = float(i)/float(height - 1);
+			float fScaleC = float(j)/float(getWidth() - 1);
+			float fScaleR = float(i)/float(getHeight() - 1);
 
-			//glm::vec2 c = 4.0f * glm::vec2(fScaleC, fScaleR);
-			//const float d = 0.5f + 0.5f*glm::perlin(c);
-
-			point.points = glm::vec3(i , image[i * width + j], j);
-			//grid[i][j].points = glm::vec3(i , 80*d, j);
-
+			point.points = glm::vec3(i , image[i * getWidth() + j], j);
 			point.uvcoord = glm::vec2(fTextureU * fScaleC, fTextureV * fScaleR);
 		}
 	}
 }
 
 void Terrain::createGrid(int width, int height) {
-	this->width = width;
-	this->height = height;
-	grid = new Data*[width];
-	for (int i = 0; i < width; i++) {
-		grid[i] = new Data[height];
-	}
+	grid = new Matrix<Data>(width, height);
 }
 
 void Terrain::calculateNormals() {
@@ -64,20 +54,20 @@ void Terrain::calculateNormals() {
 		return x >= 0 && x < max;
 	};
 
-	for(int j = 0; j < height - 1; j++) {
-		for(int i = 0; i < width - 1; i++) {
+	for(int j = 0; j < getHeight()- 1; j++) {
+		for(int i = 0; i < getWidth() - 1; i++) {
 			int points[][2] = {
 					{-1, 0}, {0, -1}, {1, 0}, {0, 1}
 			};
 
 
-			grid[i][j].normal = glm::vec3(0);
+			grid->at(i, j).normal = glm::vec3(0);
 			for(int k = 0; k < 4; k++) {
 				int *a = points[k];
 				int *b = points[(k + 1) % 4];
 
-				if (inRange(i+a[0], width) && inRange(i + b[0], width) && inRange(j + a[0], height) && inRange(j + b[0], height)) {
-					grid[i][j].normal -= norm(grid[i + a[0]][j + a[1]], grid[i][j], grid[i + b[0]][j + b[0]]);
+				if (inRange(i+a[0], getWidth()) && inRange(i + b[0], getWidth()) && inRange(j + a[1], getHeight()) && inRange(j + b[0], getHeight())) {
+					grid->at(i, j).normal -= norm(grid->at(i + a[0], j + a[1]), grid->at(i, j), grid->at(i + b[0], j + b[0]));
 				}
 			}
 		}
@@ -86,10 +76,10 @@ void Terrain::calculateNormals() {
 
 void Terrain::prepareForGpu() {
 	std::vector<Data> points;
-	for(int j = 0; j < height - 1; j++) {
-		for(int i = 0; i < width; i++) {
-			points.push_back(grid[i][j + 1]);
-			points.push_back(grid[i][j]);
+	for(int j = 0; j < getHeight() - 1; j++) {
+		for(int i = 0; i < getWidth(); i++) {
+			points.push_back(grid->at(i, j + 1));
+			points.push_back(grid->at(i, j));
 		}
 	}
 
@@ -122,35 +112,27 @@ void Terrain::draw(Scene &scene) {
 	material.apply(prog);
 
 	auto obj = vbo.activate();
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
+	GL_CHECK(glEnableVertexAttribArray(0));
+	GL_CHECK(glEnableVertexAttribArray(1));
+	GL_CHECK(glEnableVertexAttribArray(2));
 
-	for(int i = 0; i < height; i++) {
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) (sizeof(Data) * 2 * width * i));
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) ((sizeof(Data) * 2 * width * i) + (sizeof(float) * 3)));
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) ((sizeof(Data) * 2 * width * i) + (sizeof(float) * 6)));
+	for(int i = 0; i < getHeight(); i++) {
+		GL_CHECK(glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) (sizeof(Data) * 2 * getWidth() * i)));
+		GL_CHECK(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) ((sizeof(Data) * 2 * getWidth() * i) + (sizeof(float) * 3))));
+		GL_CHECK(glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Data), (void *) ((sizeof(Data) * 2 * getWidth() * i) + (sizeof(float) * 6))));
 
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * width);
+		GL_CHECK(glDrawArrays(GL_TRIANGLE_STRIP, 0, 2 * getWidth()));
 	}
 }
 
 Terrain::~Terrain() {
-	deleteGrid();
-}
-
-void Terrain::deleteGrid() {
-	for (int i = 0; i < width; i++) {
-		delete[] grid[i];
-	}
-	delete[] grid;
-	grid = nullptr;
+	delete grid;
 }
 
 int Terrain::getWidth() const {
-	return width;
+	return grid->getCols();
 }
 
 int Terrain::getHeight() const {
-	return height;
+	return grid->getRows();
 }

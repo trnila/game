@@ -8,11 +8,9 @@ void GeneratedTerrain::createTerrain() {
 
 	for(int j = 0; j < getHeight(); j++) {
 		for(int i = 0; i < getWidth(); i++) {
-			grid[i][j].points = glm::vec3(i, generateHeight(i, j), j);
+			grid->at(i, j).points = glm::vec3(i, generateHeight(i, j), j);
 		}
 	}
-
-	//deleteGrid();
 }
 
 float GeneratedTerrain::generateHeight(float x, float z) const {
