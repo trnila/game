@@ -22,7 +22,7 @@
 #include "Panel.h"
 
 
-class Scene : public KeyListener, public MouseListener {
+class Scene : public KeyListener, MouseListener {
 public:
 	Scene(Window &window);
 
@@ -31,7 +31,7 @@ public:
 
 	virtual void onKey(int key, int scancode, int action, int mods) override;
 	virtual void onMove(double x, double y) override;
-	virtual void onClick(int button, int action, double x, double y);
+
 
 	NodeList &getRootNode() {
 		return *root;
@@ -47,6 +47,8 @@ public:
 
 	Terrain *getTerrain() const;
 
+	void onClick(glm::vec3 tvec3, Object *obj);
+
 private:
 	NodeList *root;
 
@@ -54,12 +56,9 @@ private:
 	Camera camera;
 	CameraHandler camHandler;
 
-	Program water;
-
 	void createScene();
 	void initResources();
 
-	Window &window;
 	Skybox *skybox;
 	States states;
 	ShadowRenderer shadowRenderer;

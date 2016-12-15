@@ -15,7 +15,25 @@ public:
 	virtual void onKey(int key, int scancode, int action, int mods) override;
 	virtual void onMove(double x, double y) override;
 	virtual void onClick(int button, int action, double x, double y) {
-		scene->onClick(button, action, x, y);
+		if (action != GLFW_PRESS) {
+			return;
+		}
+
+		int newY = window->getHeight() - y;
+		float depth;
+
+		glReadPixels(x, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+		int index;
+		glReadPixels(x, newY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+		glm::vec3 screenX = glm::vec3(x, newY, depth);
+		glm::mat4 view = scene->getActiveCamera().getLookAt();
+		glm::mat4 projection = scene->getActiveCamera().getPerspective();
+
+		glm::vec4 viewPort = glm::vec4(0, 0, window->getWidth(), window->getHeight());
+		glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
+
+		scene->onClick(pos, scene->getRootNode().find(index));
 	}
 
 	

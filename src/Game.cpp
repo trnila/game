@@ -28,7 +28,7 @@ void Game::init() {
 }
 
 void Game::startRendering() {
-	RenderContext context;
+	RenderContext context(*window);
 
 	double last = glfwGetTime();
 	while (!window->shouldClose()) {

@@ -10,7 +10,7 @@
 #include "Groups.h"
 #include "Panel.h"
 
-Scene::Scene(Window &window) : camera(window), camHandler(&camera), window(window) {
+Scene::Scene(Window &window) : camera(window), camHandler(&camera) {
 	initResources();
 	createScene();
 	panel = new Panel();
@@ -94,11 +94,10 @@ void Scene::update(float time) {
 }
 
 void Scene::renderOneFrame(RenderContext &context) {
-	glm::mat4 depthMVP;
 	ShadowResult shadows = shadowRenderer.render(context, this);
 
 	context.setStage(RenderStage::Normal);
-	window.setViewport();
+	context.activateViewport();
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -121,33 +120,11 @@ void Scene::onMove(double x, double y) {
 	camHandler.onMove(x, y);
 }
 
-void Scene::onClick(int button, int action, double x, double y) {
-	if (action != GLFW_PRESS) {
-		return;
-	}
-
-	int newY = window.getHeight() - y;
-	float depth;
-
-	//glReadPixels(x, newy, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, color);
-	glReadPixels(x, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-	int index;
-	glReadPixels(x, newY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
-
-	Object* o = root->find(index);
-
-	glm::vec3 screenX = glm::vec3(x, newY, depth);
-	glm::mat4 view = camera.getLookAt();
-	glm::mat4 projection = camera.getPerspective();
-
-	glm::vec4 viewPort = glm::vec4(0, 0, window.getWidth(), window.getHeight());
-	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
-
-	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
-	states.current().onClick(pos, o, *this);
-}
-
 Terrain *Scene::getTerrain() const {
 	return terrain;
+}
+
+void Scene::onClick(glm::vec3 pos, Object *obj) {
+	states.current().onClick(pos, obj, *this);
 }
 
