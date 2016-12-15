@@ -6,9 +6,9 @@ in vec2 UV;
 in vec3 normal_world;
 in vec3 position_world;
 
-layout(binding=0) uniform sampler2D grass;
-layout(binding=1) uniform sampler2D dirt;
-layout(binding=2) uniform sampler2D snow;
+uniform sampler2D grass;
+uniform sampler2D dirt;
+uniform sampler2D snow;
 
 uniform vec3 cameraPos;
 uniform struct Material material;

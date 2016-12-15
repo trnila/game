@@ -1,8 +1,8 @@
 #version 420
 
-layout(binding=0) uniform sampler2D modelTexture;
-layout(binding=1) uniform sampler2D shadowTexture;
-layout(binding=2) uniform sampler2D bumpTexture;
+uniform sampler2D modelTexture;
+uniform sampler2D bumpTexture;
+uniform sampler2D shadowTexture;
 
 out vec4 frag_colour;
 
