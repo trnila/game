@@ -59,7 +59,6 @@ private:
 	States states;
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
-	Panel *panel;
 
 	void createTerrain();
 	void createObjects();

@@ -13,7 +13,6 @@
 Scene::Scene(Camera* camera) : camera(*camera)  {
 	initResources();
 	createScene();
-	panel = new Panel();
 }
 
 void Scene::createScene() {
@@ -61,7 +60,7 @@ void Scene::createObjects() {
 }
 
 void Scene::createTerrain() {
-	terrain = new Terrain(root->getMediator());
+	//terrain = new Terrain(root->getMediator());
 	terrain = new GeneratedTerrain(root->getMediator());
 	terrain->init();
 	terrain->getTransform().setScale(5, 90, 5);
@@ -104,9 +103,6 @@ void Scene::renderOneFrame(RenderContext &context) {
 	terrain->draw(*this);
 	shadows.apply(prog);
 	root->render(context);
-
-	panel->texture = shadows.texture;
-	panel->render();
 }
 
 Terrain *Scene::getTerrain() const {
