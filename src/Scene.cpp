@@ -35,9 +35,7 @@ Scene::Scene(Camera* camera) : camera(*camera)  {
 }
 
 void Scene::createScene() {
-	createTerrain();
 	createObjects();
-	createSkybox();
 
 	camera.setZFar(20000);
 
@@ -57,11 +55,19 @@ void Scene::createScene() {
 }
 
 void Scene::createSkybox() {
-	skybox = new Skybox("resources/skyboxes/ely_hills/hills");
-	camera.addListener(&skybox->program);
 }
 
 void Scene::createObjects() {
+	Skybox *skybox = new Skybox("resources/skyboxes/ely_hills/hills");
+	camera.addListener(&skybox->program);
+	getRootNode().addNode(skybox);
+
+	//terrain = new Terrain(root->getMediator());
+	terrain = new GeneratedTerrain(root->getMediator());
+	terrain->init();
+	terrain->setScale(5, 90, 5);
+	getRootNode().addNode(terrain);
+
 	std::vector<std::function<void(Scene*)>> groups {
 			Forest(),
 	        TwoCubes(),
@@ -79,10 +85,7 @@ void Scene::createObjects() {
 }
 
 void Scene::createTerrain() {
-	//terrain = new Terrain(root->getMediator());
-	terrain = new GeneratedTerrain(root->getMediator());
-	terrain->init();
-	terrain->getTransform().setScale(5, 90, 5);
+
 }
 
 void Scene::initResources() {
@@ -117,9 +120,8 @@ void Scene::renderOneFrame(RenderContext &context) {
 	context.clearColor(0, 0, 0, 0);
 	context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	skybox->render(context);
-	shadows.apply(terrain->prog);
-	terrain->draw(*this);
+	//shadows.apply(terrain->prog); //TODO: shadows?
+	//terrain->draw(*this);
 	shadows.apply(prog);
 	root->render(context);
 }

@@ -25,7 +25,7 @@ ShadowResult ShadowRenderer::render(RenderContext &context, Scene *root) {
 		context.clearColor(0, 0, 0, 0);
 		context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		program.send("modelMatrix", root->getTerrain()->getTransform().getTransform());
+		program.send("modelMatrix", root->getTerrain()->getTransform()); //TODO: remove!
 		root->getTerrain()->drawShadows(*root);
 		root->getRootNode().render(context);
 	}

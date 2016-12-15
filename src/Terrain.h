@@ -14,15 +14,19 @@ struct Data {
 	glm::vec2 uvcoord;
 };
 
-class Terrain {
+class Terrain: public Node {
 public:
 	Terrain(Mediator &mediator);
 	~Terrain();
 
+	void render(RenderContext &context) override;
+
+	Object *find(int id) override;
+
 	void init();
-	void draw(Scene &scene);
+
 	virtual float getHeightAt(float x, float z) {
-		glm::vec4 pos = glm::vec4(x, 0, z, 1) * glm::inverse(t.getTransform());
+		glm::vec4 pos = glm::vec4(x, 0, z, 1) * glm::inverse(getTransform());
 
 		x = pos.x;
 		z = pos.z;
@@ -42,11 +46,7 @@ public:
 			}
 		}
 
-		return val * t.getScale().y;
-	}
-
-	Transformable& getTransform() {
-		return t;
+		return val * getScale().y;
 	}
 
 	int getWidth() const;

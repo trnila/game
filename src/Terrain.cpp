@@ -11,6 +11,7 @@
 Terrain::Terrain(Mediator &mediator) {
 	createShader();
 	mediator.registerProgram(&prog);
+	mediator.getScene()->getActiveCamera().addListener(&prog);
 	loadTextures();
 	init();
 }
@@ -100,20 +101,6 @@ void Terrain::createShader() {
 	prog.use();
 }
 
-void Terrain::draw(Scene &scene) {
-	prog.use();
-	prog.updated(scene.getActiveCamera());
-	prog.useTexture("grass", *grass, 0);
-	prog.useTexture("dirt", *dirt, 1);
-	prog.useTexture("snow", *snow, 2);
-	prog.send("modelMatrix", t.getTransform());
-	Material material;
-	material.specularColor = Color(0);
-	material.apply(prog);
-
-	drawPrimitive();
-}
-
 void Terrain::drawPrimitive() {
 	auto obj = vbo.activate();
 	GL_CHECK(glEnableVertexAttribArray(0));
@@ -143,4 +130,21 @@ int Terrain::getHeight() const {
 
 void Terrain::drawShadows(Scene &scene) {
 	drawPrimitive();
+}
+
+void Terrain::render(RenderContext &context) {
+	prog.use();
+	prog.useTexture("grass", *grass, 0);
+	prog.useTexture("dirt", *dirt, 1);
+	prog.useTexture("snow", *snow, 2);
+	prog.send("modelMatrix", getTransform());
+	Material material;
+	material.specularColor = Color(0);
+	material.apply(prog);
+
+	drawPrimitive();
+}
+
+Object *Terrain::find(int id) {
+	return nullptr;
 }

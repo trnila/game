@@ -41,3 +41,7 @@ Skybox::Skybox(const char *prefix) {
 
 	load(faces);
 }
+
+Object *Skybox::find(int id) {
+	return nullptr;
+}

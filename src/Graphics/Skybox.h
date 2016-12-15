@@ -7,13 +7,15 @@
 #include "VBO.h"
 #include "Model.h"
 
-class Skybox {
+class Skybox: public Node {
 public:
 	Skybox(const std::vector<std::string> &faces);
 	Skybox(const char *prefix);
 	~Skybox();
 
 	void render(RenderContext &c);
+
+	Object *find(int id) override;
 
 	Program program;
 private:

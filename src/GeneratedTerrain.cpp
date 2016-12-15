@@ -26,7 +26,7 @@ float GeneratedTerrain::generateHeight(float x, float z) const {
 }
 
 float GeneratedTerrain::getHeightAt(float x, float z) {
-	glm::vec4 pos = glm::inverse(getTransform().getTransform()) * glm::vec4(x, 0, z, 1);
+	glm::vec4 pos = glm::inverse(getTransform()) * glm::vec4(x, 0, z, 1);
 	float height = generateHeight(pos.x, pos.z);
-	return (getTransform().getTransform() * glm::vec4(0.0f, height, 0.0f, 1.0f)).y;
+	return (getTransform() * glm::vec4(0.0f, height, 0.0f, 1.0f)).y;
 }
