@@ -22,8 +22,6 @@ void Scene::createScene() {
 	createObjects();
 	createSkybox();
 
-	//camera.setPosition(4.119658f, 1.629825f, -4.623707f);
-	//camera.setRotation(-0.582351f, -0.1290f);
 	camera.setZFar(20000);
 	camera.setPosition(188.013016f, 100 + 33.348019f, 208.685776f);
 	//camera.attachLogic(CamInit());
@@ -36,24 +34,17 @@ void Scene::createScene() {
 	light->setDir(glm::vec3(-0.550664, -0.395870, 0.734885));
 	root->addNode(light);
 
-	/*for(int i = 0; i < 10; i++) {
-		BaseLight *l = root->getLight(i);
-		if(l) {
-			l->setActive(false);
-		}
-	}*/
-
 	DirectionalLight *spot = root->createLight<DirectionalLight>(5);
 	spot->setDiffuseColor(Color(1, 1, 1));
 	spot->setSpecularColor(Color(1, 1, 1));
 }
 
-void Scene::createSkybox() {//skybox = new Skybox("resources/skyboxes/ame_nebula/purplenebula");
+void Scene::createSkybox() {
+	//skybox = new Skybox("resources/skyboxes/ame_nebula/purplenebula");
 	skybox = new Skybox("resources/skyboxes/ely_hills/hills");
 	camera.addListener(&skybox->program);
 }
 
-Camera *scan;
 void Scene::createObjects() {
 	std::vector<std::function<void(Scene*)>> groups {
 			Forest(),
@@ -77,9 +68,6 @@ void Scene::createObjects() {
 	light->setSpecularColor(Color(1, 1, 1));
 	light->setConeAngle(15);
 	center->attachLogic(FollowLogic(&this->getActiveCamera(), light));
-
-	scan = new Camera(window);
-	center->addNode(scan);
 
 	for(auto group: groups) {
 		group(this);
@@ -148,9 +136,6 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 	panel->texture = shadows.texture;
 	panel->render();
-
-//	GL_CHECK(glViewport(0, 0, 800, 600));
-//	root->render(context);
 }
 
 void Scene::onKey(int key, int scancode, int action, int mods) {
