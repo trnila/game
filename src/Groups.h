@@ -71,6 +71,7 @@ struct Earth {
 	void operator()(Scene* scene) {
 		NodeList *ro = scene->getRootNode().createGroup();
 		ro->rotate(0, 0, 1, 0);
+		ro->setPosition(600, 200, 600);
 		ro->attachLogic(RotateLogic(20));
 
 		NodeList *e1 = ro->createGroup();
