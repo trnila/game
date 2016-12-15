@@ -4,6 +4,7 @@
 #include "Terrain.h"
 #include "Scene/NodeList.h"
 #include "Scene.h"
+#include "Utils/factorial.h"
 
 class RotateLogic {
 public:
@@ -159,3 +160,22 @@ private:
 };
 
 void onGround(Node &node, float diff, Scene &scene);
+
+class Bezier {
+public:
+	Bezier(const std::vector<glm::vec3> &points, int duration) : time(0), points(points), duration(duration) {}
+
+
+	void operator()(Node &node, float dt, Scene &scene);
+
+	float bernstein(int i, int n, float t) {
+		return ((float) factorial(n)) / (factorial(n - i) * factorial(i))
+				* pow(t, i)
+				* pow(1.0f - t, n - i);
+	}
+
+private:
+	std::vector<glm::vec3> points;
+	float time = 0;
+	int duration;
+};

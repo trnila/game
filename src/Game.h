@@ -34,6 +34,7 @@ public:
 		glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
 		scene->onClick(pos, scene->getRootNode().find(index));
+		printf("(%f, %f, %f)\n", pos.x, pos.y, pos.z);
 	}
 
 	

@@ -87,3 +87,27 @@ void onGround(Node &node, float diff, Scene &scene) {
 	float height = scene.getTerrain()->getHeightAt(node.getWorldPosition().x, node.getWorldPosition().z);
 	node.setPosition(pos.x, height - node.getParent()->getPosition().y, pos.z);
 }
+
+void Bezier::operator()(Node &node, float dt, Scene &scene) {
+	time += dt;
+	float t = time / duration;
+	if(t > 1.0f) {
+		t = 0;
+		time = 0;
+		//node.removeLogic(this);
+	}
+
+
+	glm::vec3 result{0};
+	for(int i = 0; i < points.size(); i++) {
+		float B = bernstein(i, points.size(), t);
+		result.x += points[i].x * B;
+		result.y += points[i].y * B;
+		result.z += points[i].z * B;
+	}
+
+	result.y = std::max(result.y, scene.getTerrain()->getHeightAt(result.x, result.z) + 1);
+
+	//printf("%f [%f, %f, %f]\n", t, result.x, result.y, result.z);
+	node.setPosition(result);
+}
