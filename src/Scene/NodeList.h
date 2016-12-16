@@ -32,6 +32,22 @@ public:
 
 	Scene &getScene();
 
+	Node* findBy(std::function<bool(Node*)> predicate) {
+		Node* node = Node::findBy(predicate);
+		if(node) {
+			return node;
+		}
+
+		for(auto n: nodes) {
+			node = n->findBy(predicate);
+			if(node) {
+				return node;
+			}
+		}
+
+		return nullptr;
+	}
+
 private:
 	std::vector<Node *> nodes;
 	Scene &scene;

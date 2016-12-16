@@ -7,8 +7,8 @@
 #include "Scene/Lights/PointLight.h"
 #include "Scene/Lights/SpotLight.h"
 #include "GeneratedTerrain.h"
-#include "Groups.h"
 #include "Panel.h"
+#include "Factory.h"
 
 Scene::Scene(Camera* camera) : camera(*camera)  {
 	initResources();
@@ -32,53 +32,22 @@ Scene::Scene(Camera* camera) : camera(*camera)  {
 		node.setPosition(188.013016f, 100 + 33.348019f, 208.685776f);
 		node.attachLogic(CamInit());
 	}));
+	camera->setZFar(20000);
+	getRootNode().addNode(camera);
 }
 
 void Scene::createScene() {
 	createObjects();
-
-	camera.setZFar(20000);
-
-	//camera.attachLogic(CamInit());
-	getRootNode().addNode(&camera);
 	getRootNode().getScene().setAmbientLight(Color(0.1, 0.1, 0.1));
-
-	DirectionalLight *light = root->createLight<DirectionalLight>(0);
-	light->setDiffuseColor(Color(1, 1, 1));
-	light->setSpecularColor(Color(1, 1, 1));
-	light->setDir(glm::vec3(-0.550664, -0.395870, 0.734885));
-	root->addNode(light);
-
-	DirectionalLight *spot = root->createLight<DirectionalLight>(5);
-	spot->setDiffuseColor(Color(1, 1, 1));
-	spot->setSpecularColor(Color(1, 1, 1));
 }
 
 void Scene::createObjects() {
-	Skybox *skybox = new Skybox("resources/skyboxes/ely_hills/hills");
-	camera.addListener(&skybox->program);
-	getRootNode().addNode(skybox);
+	Factory fac;
+	fac.fillScene(*this);
 
-	//terrain = new Terrain(root->getScene());
-	terrain = new GeneratedTerrain(root->getScene());
-	terrain->init();
-	terrain->setScale(5, 90, 5);
-	getRootNode().addNode(terrain);
-
-	std::vector<std::function<void(Scene*)>> groups {
-			Forest(),
-	        TwoCubes(),
-	        VariousObjects(),
-	        Earth(),
-	        Balls(),
-	        RotatingSpotLight(),
-	        CombineScanner(),
-	        create_water
-	};
-
-	for(auto group: groups) {
-		group(this);
-	}
+	terrain = (Terrain*) getRootNode().findBy([](Node* node) -> bool {
+		return dynamic_cast<Terrain*>(node) != nullptr;
+	});
 }
 
 void Scene::initResources() {

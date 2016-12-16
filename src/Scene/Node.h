@@ -78,6 +78,13 @@ public:
 	virtual Object* find(int id) = 0;
 	const glm::vec3 getWorldPosition();
 
+	virtual Node* findBy(std::function<bool(Node*)> predicate) {
+		if(predicate(this)) {
+			return this;
+		}
+		return nullptr;
+	}
+
 private:
 	std::vector<LogicComponent> logic;
 	glm::vec3 worldPosition;

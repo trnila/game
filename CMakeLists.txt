@@ -95,5 +95,5 @@ src/Window.h
 src/GeneratedTerrain.cpp
 
 
-		src/Panel.cpp src/Panel.h src/Utils/Matrix.cpp src/Utils/Matrix.h src/Utils/factorial.h src/Utils/factorial.cpp)
+		src/Panel.cpp src/Panel.h src/Utils/Matrix.cpp src/Utils/Matrix.h src/Utils/factorial.h src/Utils/factorial.cpp src/Factory.cpp src/Factory.h)
 add_executable(projekt ${SOURCE_FILES})

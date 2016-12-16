@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Scene/Lights/PointLight.h"
 #include "Scene/NodeList.h"
+#include "GeneratedTerrain.h"
 #include "Logic.h"
 
 struct Forest {
@@ -186,4 +188,24 @@ void create_water(Scene* scene) {
 	obj->setScale(1000);
 	obj->setPosition(100, -150, 0);
 	scene->getRootNode().addNode(obj);
+}
+
+struct SkyboxFactory {
+	SkyboxFactory(const char* path) : path(path) {}
+
+	void operator()(Scene* scene) {
+		Skybox *skybox = new Skybox(path);
+		scene->getActiveCamera().addListener(&skybox->program);
+		scene->getRootNode().addNode(skybox);
+	}
+
+private:
+	const char* path;
+};
+
+void normal_terrain(Scene* scene) {
+	Terrain* terrain = new GeneratedTerrain(*scene);
+	terrain->init();
+	terrain->setScale(5, 90, 5);
+	scene->getRootNode().addNode(terrain);
 }
