@@ -16,6 +16,7 @@ Scene::Scene(Factory *factory) {
 	createScene();
 
 	factory->fillScene(*this);
+	getActiveCamera().addListener(&prog);
 
 	terrain = (Terrain*) getRootNode().findBy([](Node* node) -> bool {
 		return dynamic_cast<Terrain*>(node) != nullptr;
