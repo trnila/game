@@ -45,7 +45,7 @@ void Game::init() {
 			//Forest(),
 			//TwoCubes(),
 			VariousObjects(),
-			//Earth(),
+			Earth(),
 			//Balls(),
 			//RotatingSpotLight(),
 			CombineScanner(),
