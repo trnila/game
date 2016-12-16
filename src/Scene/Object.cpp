@@ -12,6 +12,7 @@ Object::Object(int id, Model *model, Program &program, Program &shadow, Texture 
 void Object::render(RenderContext &context) {
 	Program &currentProgram = context.getStage() == RenderStage::Shadow ? shadow : program;
 
+	context.applyShadows(currentProgram);
 	currentProgram.send("modelMatrix", modelMatrix);
 	currentProgram.send("offset", offset);
 	currentProgram.setColor(color.r, color.g, color.b);

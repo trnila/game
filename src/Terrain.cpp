@@ -128,21 +128,26 @@ int Terrain::getHeight() const {
 	return grid->getRows();
 }
 
-void Terrain::drawShadows(Scene &scene) {
+void Terrain::drawShadows() {
 	drawPrimitive();
 }
 
 void Terrain::render(RenderContext &context) {
-	prog.use();
-	prog.useTexture("grass", *grass, 0);
-	prog.useTexture("dirt", *dirt, 1);
-	prog.useTexture("snow", *snow, 2);
-	prog.send("modelMatrix", getTransform());
-	Material material;
-	material.specularColor = Color(0);
-	material.apply(prog);
+	context.applyShadows(prog);
+	if(context.getStage() == RenderStage::Shadow) {
+		drawShadows();
+	} else {
+		prog.use();
+		prog.useTexture("grass", *grass, 0);
+		prog.useTexture("dirt", *dirt, 1);
+		prog.useTexture("snow", *snow, 2);
+		prog.send("modelMatrix", getTransform());
+		Material material;
+		material.specularColor = Color(0);
+		material.apply(prog);
 
-	drawPrimitive();
+		drawPrimitive();
+	}
 }
 
 Object *Terrain::find(int id) {

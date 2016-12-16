@@ -2,6 +2,7 @@
 
 #include "Graphics/Texture.h"
 #include "Graphics/VBO.h"
+#include "Graphics/Program.h"
 
 class Panel {
 public:
@@ -14,8 +15,6 @@ public:
 private:
 	VBO vbo;
 	Program prog;
-
-
 };
 
 

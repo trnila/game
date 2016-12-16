@@ -3,6 +3,9 @@
 #include "VAO.h"
 #include "../Window.h"
 
+class ShadowResult;
+class Program;
+
 enum class RenderStage {
 	Shadow,
 	Normal
@@ -32,7 +35,14 @@ public:
 		window.setViewport();
 	}
 
+	void setResult(ShadowResult *result) {
+		RenderContext::result = result;
+	}
+
+	void applyShadows(Program &program);
+
 private:
 	RenderStage stage;
 	Window &window;
+	ShadowResult *result;
 };

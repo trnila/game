@@ -26,9 +26,21 @@ ShadowResult ShadowRenderer::render(RenderContext &context, Scene *root) {
 		context.clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		program.send("modelMatrix", root->getTerrain()->getTransform()); //TODO: remove!
-		root->getTerrain()->drawShadows(*root);
+		root->getTerrain()->drawShadows();
 		root->getRootNode().render(context);
 	}
 
 	return result;
+}
+
+void ShadowResult::apply(Program &program) {
+	glm::mat4 biasMatrix(
+			0.5, 0.0, 0.0, 0.0,
+			0.0, 0.5, 0.0, 0.0,
+			0.0, 0.0, 0.5, 0.0,
+			0.5, 0.5, 0.5, 1.0
+	);
+	glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
+	program.send("depthBias", depthBiasMVP);
+	program.useTexture("shadowTexture", *texture, 3);
 }

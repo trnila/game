@@ -1,7 +1,6 @@
 #pragma once
 
 #include <GL/glew.h>
-#include "Program.h"
 #include "../Utils/utils.h"
 class FrameBuffer;
 

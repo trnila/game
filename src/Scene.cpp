@@ -30,7 +30,8 @@ void Scene::update(float time) {
 }
 
 void Scene::renderOneFrame(RenderContext &context) {
-	ShadowResult shadows = shadowRenderer.render(context, this);
+	ShadowResult result = shadowRenderer.render(context, this);
+	context.setResult(&result);
 
 	context.setStage(RenderStage::Normal);
 	context.activateViewport();
@@ -39,7 +40,6 @@ void Scene::renderOneFrame(RenderContext &context) {
 
 	//shadows.apply(terrain->prog); //TODO: shadows?
 	//terrain->draw(*this);
-	shadows.apply(prog);
 	root->render(context);
 }
 

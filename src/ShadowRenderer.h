@@ -10,17 +10,7 @@ public:
 	Texture *texture;
 	glm::mat4 depthMVP;
 
-	void apply(Program &program) {
-		glm::mat4 biasMatrix(
-				0.5, 0.0, 0.0, 0.0,
-				0.0, 0.5, 0.0, 0.0,
-				0.0, 0.0, 0.5, 0.0,
-				0.5, 0.5, 0.5, 1.0
-		);
-		glm::mat4 depthBiasMVP = biasMatrix*depthMVP;
-		program.send("depthBias", depthBiasMVP);
-		program.useTexture("shadowTexture", *texture, 3);
-	}
+	void apply(Program &program);
 };
 
 class ShadowRenderer {

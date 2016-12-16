@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "Texture.h"
 
 class CubeMap: public Texture {

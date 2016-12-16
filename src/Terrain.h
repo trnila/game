@@ -54,7 +54,7 @@ public:
 
 	Program prog;
 
-	void drawShadows(Scene &scene);
+	void drawShadows();
 
 protected:
 	virtual void createTerrain();
