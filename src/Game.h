@@ -37,7 +37,17 @@ public:
 		printf("(%f, %f, %f)\n", pos.x, pos.y, pos.z);
 	}
 
-	
+
+	Window &getWindow();
+
+	void addMouse(MouseListener* m) {
+		mouse.push_back(m);
+	}
+
+	void addKeyboard(KeyListener* key) {
+		keyboard.push_back(key);
+	}
+
 protected:
 	Game() {};
 	friend Singleton<Game>;

@@ -4,6 +4,7 @@
 #include "Scene/NodeList.h"
 #include "GeneratedTerrain.h"
 #include "Logic.h"
+#include "Game.h"
 
 struct Forest {
 	void operator()(Scene* scene) {
@@ -176,19 +177,7 @@ struct VariousObjects {
 	}
 };
 
-void create_water(Scene* scene) {
-	Program *water = new Program();
-	water->attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.v.glsl", GL_VERTEX_SHADER));
-	water->attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/water.f.glsl", GL_FRAGMENT_SHADER));
-	water->link();
-	scene->getActiveCamera().addListener(water);
-
-	ResourceManager<Model> &models = ResourceManager<Model>::getInstance();
-	Object *obj = new Object(0, &models.getResource("resources/brickwall.obj"), *water, *water, nullptr);
-	obj->setScale(1000);
-	obj->setPosition(100, -150, 0);
-	scene->getRootNode().addNode(obj);
-}
+void create_water(Scene* scene);
 
 struct SkyboxFactory {
 	SkyboxFactory(const char* path) : path(path) {}
@@ -203,9 +192,13 @@ private:
 	const char* path;
 };
 
-void normal_terrain(Scene* scene) {
-	Terrain* terrain = new GeneratedTerrain(*scene);
-	terrain->init();
-	terrain->setScale(5, 90, 5);
-	scene->getRootNode().addNode(terrain);
-}
+void normal_terrain(Scene* scene);
+
+struct CameraFactory {
+	CameraFactory(Game *game) : game(game) {}
+
+	void operator()(Scene *scene);
+
+private:
+	Game *game;
+};

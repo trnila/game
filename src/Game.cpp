@@ -1,4 +1,7 @@
 #include "Game.h"
+#include "Factory.h"
+#include "Groups.h"
+#include "Scene/Lights/DirectionalLight.h"
 
 void Game::init() {
 	glfwSetErrorCallback([] (int err, const char* description) -> void {
@@ -25,14 +28,32 @@ void Game::init() {
 	GL_CHECK(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
 
 
-	Camera *camera = new Camera(*window);
-	CameraHandler* handler = new CameraHandler(camera);
-	camera->attachLogic([=](Node& node, float df, Scene& root) -> void {
-		handler->operator()(node, df, root);
+	Factory* factory = new Factory();
+	factory->add({
+			CameraFactory(this),
+			SkyboxFactory("resources/skyboxes/ely_hills/hills"),
+			normal_terrain,
+			Forest(),
+			TwoCubes(),
+			VariousObjects(),
+			Earth(),
+			Balls(),
+			RotatingSpotLight(),
+			CombineScanner(),
+			create_water,
+			[](Scene* scene) -> void {
+				DirectionalLight *light = scene->getRootNode().createLight<DirectionalLight>(0);
+				light->setDiffuseColor(Color(1, 1, 1));
+				light->setSpecularColor(Color(1, 1, 1));
+				light->setDir(glm::vec3(-0.550664, -0.395870, 0.734885));
+
+				DirectionalLight *spot = scene->getRootNode().createLight<DirectionalLight>(5);
+				spot->setDiffuseColor(Color(1, 1, 1));
+				spot->setSpecularColor(Color(1, 1, 1));
+			}
 	});
-	keyboard.push_back(handler);
-	mouse.push_back(handler);
-	scene = new Scene(camera);
+
+	scene = new Scene(factory);
 }
 
 void Game::startRendering() {
@@ -63,4 +84,8 @@ void Game::onMove(double x, double y) {
 	for(auto i: mouse) {
 		i->onMove(x, y);
 	}
+}
+
+Window &Game::getWindow() {
+	return *window;
 }

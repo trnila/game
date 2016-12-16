@@ -20,11 +20,11 @@
 #include "Terrain.h"
 #include "Panel.h"
 #include "ShadowRenderer.h"
+#include "Factory.h"
 
 class Scene {
-	std::vector<Program*> programs;
 public:
-	Scene(Camera *camera);
+	Scene(Factory *camera);
 
 	void update(float time);
 	void renderOneFrame(RenderContext &context);
@@ -35,7 +35,7 @@ public:
 	}
 
 	Camera& getActiveCamera() {
-		return camera;
+		return *camera;
 	}
 
 	States& getStates() {
@@ -66,12 +66,16 @@ public:
 		return factory;
 	}
 
+	void setActiveCamera(Camera* cam) {
+		this->camera = cam;
+	}
+
 	ObjectFactory* factory;
 private:
 	NodeList *root;
 
 	Program prog;
-	Camera &camera;
+	Camera *camera;
 
 	void createScene();
 	void initResources();
@@ -79,6 +83,7 @@ private:
 	States states;
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
+	std::vector<Program*> programs;
 
 	void createObjects();
 };
