@@ -103,6 +103,7 @@ void Bezier::operator()(Node &node, float dt, Scene &scene) {
 		result.z += points[i].z * B;
 	}
 
+	result -= node.getParent()->getPosition();
 	result.y = std::max(result.y, scene.getTerrain()->getHeightAt(result.x, result.z) + 1);
 
 	//printf("%f [%f, %f, %f]\n", t, result.x, result.y, result.z);
