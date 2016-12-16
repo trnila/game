@@ -14,7 +14,7 @@ public:
 	Color diffuseColor = Color(1);
 	Color specularColor = Color(1);
 	float shininess = 32;
-	float shininessStrength = 0.8;
+	float shininessStrength = 0.5;
 	Texture* texture = nullptr;
 	Texture* bumpTexture = nullptr;
 };
