@@ -10,7 +10,7 @@ ShadowResult ShadowRenderer::render(RenderContext &context, Scene *root) {
 
 	DirectionalLight* light = (DirectionalLight *) root->getRootNode().getLight(5);
 	float m = 20;
-	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-1*m,1*m,-1*m,1*m,-10,100);
+	glm::mat4 depthProjectionMatrix = glm::ortho<float>(-1*m,1*m,-1*m,1*m,-0,200);
 	glm::mat4 depthViewMatrix = glm::lookAt(light->getWorldPosition(), light->getWorldPosition() + light->getDir(), glm::vec3(0,1,0));
 	result.depthMVP = depthProjectionMatrix * depthViewMatrix;
 

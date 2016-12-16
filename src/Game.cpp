@@ -51,7 +51,7 @@ void Game::init() {
 			CombineScanner(),
 			[](Scene* scene) -> void {
 				NodeList* root = scene->getRootNode().createGroup();
-				root->setPosition(188.013016, 33.348019, 208.685776);
+				root->setPosition(188.013016, 33.348019, 207.685776);
 
 				root->createEntity("resources/Gman/gman.obj")->setScale(0.02);
 				root->createEntity("resources/normals/plane.obj")->setPosition(1.5, 0, 0);
@@ -67,6 +67,8 @@ void Game::init() {
 				DirectionalLight *spot = scene->getRootNode().createLight<DirectionalLight>(5);
 				spot->setDiffuseColor(Color(1, 1, 1));
 				spot->setSpecularColor(Color(1, 1, 1));
+				spot->setPosition(200.581467, 33.916870+20, 216.247879);
+				spot->setDir(glm::vec3(0.673366, -0.393158, -0.626103));
 			}
 	});
 

@@ -91,11 +91,13 @@ public:
 						return;
 					case GLFW_KEY_P:
 						l->setPosition(game->getScene()->getActiveCamera().getPosition());
+						printf("(%f, %f, %f)\n", l->getPosition().x, l->getPosition().y, l->getPosition().z);
 						return;
 					case GLFW_KEY_D: {
 						DirectionalLight *light = dynamic_cast<DirectionalLight *>(l);
 						if(light) {
 							light->setDir(game->getScene()->getActiveCamera().getDirection());
+							printf("(%f, %f, %f)\n", light->getDir().x, light->getDir().y, light->getDir().z);
 						}
 						return;
 					}
