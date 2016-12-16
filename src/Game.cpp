@@ -54,6 +54,7 @@ void Game::init() {
 				NodeList* root = scene->getRootNode().createGroup();
 				root->setPosition(188.013016, 33.348019, 208.685776);
 
+				root->createEntity("resources/Gman/gman.obj")->setScale(0.02);
 				root->createEntity("resources/normals/plane.obj")->setPosition(1.5, 0, 0);
 				root->createEntity("resources/normals/without.obj")->setPosition(-1.5, 0, 0);
 			},

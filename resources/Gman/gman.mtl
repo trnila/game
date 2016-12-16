@@ -9,8 +9,8 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  0.0
 illum 2
-map_Kd gman_facehirez.tga
-bump gmanhirez_normal.tga
+map_Kd Texture/gman_facehirez.tga
+bump Texture/gmanhirez_normal.tga
 #
 newmtl Material__11
 Ka  0.6 0.6 0.6
@@ -19,7 +19,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  0.0
 illum 2
-map_Kd upper_teeth.tga
+map_Kd Texture/upper_teeth.tga
 #
 newmtl Material__12
 Ka  0.6 0.6 0.6
@@ -28,7 +28,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  0.0
 illum 2
-map_Kd eyeball_l.tga
+map_Kd Texture/eyeball_l.tga
 #
 newmtl Material__13
 Ka  0.6 0.6 0.6
@@ -37,7 +37,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  0.0
 illum 2
-map_Kd lower_teeth.tga
+map_Kd Texture/lower_teeth.tga
 #
 newmtl Material__14
 Ka  0.6 0.6 0.6
@@ -46,7 +46,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  0.0
 illum 2
-map_Kd eyeball_r.tga
+map_Kd Texture/eyeball_r.tga
 #
 newmtl Material__15
 Ka  0.6 0.6 0.6
@@ -55,7 +55,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  0.0
 illum 2
-map_Kd gman_sheet.tga
+map_Kd Texture/gman_sheet.tga
 #
 newmtl Material__16
 Ka  0.6 0.6 0.6
@@ -64,7 +64,7 @@ Ks  0.9 0.9 0.9
 d  1.0
 Ns  0.0
 illum 2
-map_Kd tongue.tga
+map_Kd Texture/tongue.tga
 #
 # Multi/Sub SMDImport done 
 #
