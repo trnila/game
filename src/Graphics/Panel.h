@@ -9,12 +9,10 @@ public:
 	Panel();
 	void render();
 
-
-	Texture *texture;
-
 private:
 	VBO vbo;
 	Program prog;
+	Texture *texture;
 };
 
 

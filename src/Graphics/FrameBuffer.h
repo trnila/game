@@ -24,14 +24,11 @@ public:
 		return texture;
 	}
 
-
-	GLuint depthTexture;
 private:
 	GLuint id;
 	int width, height;
 	Texture texture;
+	GLuint depthTexture;
 
-
-	friend class LockImpl<FrameBuffer>;
-
+	friend class FrameBufferHandler;
 };

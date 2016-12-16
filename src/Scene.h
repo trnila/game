@@ -64,9 +64,9 @@ public:
 		this->camera = cam;
 	}
 
-	ObjectFactory* factory;
 private:
 	NodeList *root;
+	ObjectFactory* factory;
 
 	Program prog;
 	Camera *camera;

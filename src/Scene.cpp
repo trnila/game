@@ -18,7 +18,7 @@ void Scene::initResources() {
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/model.f.glsl", GL_FRAGMENT_SHADER));
 	prog.link();
 
-	factory = new ObjectFactory(prog, shadowRenderer.program);
+	factory = new ObjectFactory(prog, shadowRenderer.getProgram());
 	root = new NodeList(*this);
 	registerProgram(&prog);
 }

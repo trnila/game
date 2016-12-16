@@ -49,11 +49,7 @@ public:
 	}
 
 	int getWidth() const;
-
 	int getHeight() const;
-
-	Program prog;
-
 	void drawShadows();
 
 protected:
@@ -62,6 +58,7 @@ protected:
 
 	Matrix<Data> *grid;
 private:
+	Program prog;
 	Texture *grass;
 	Texture *dirt;
 	Texture *snow;

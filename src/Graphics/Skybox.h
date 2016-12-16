@@ -9,20 +9,19 @@
 
 class Skybox: public Node {
 public:
-	Skybox(const std::vector<std::string> &faces);
-	Skybox(const char *prefix);
+	Skybox(const std::vector<std::string> &faces, Camera& cam);
+	Skybox(const char *prefix, Camera &cam);
 	~Skybox();
 
 	void render(RenderContext &c);
 
 	Object *find(int id) override;
-
-	Program program;
 private:
 	CubeMap* cubemap;
 	Model *model;
+	Program program;
 
-	void load(const std::vector<std::string> &faces);
+	void load(const std::vector<std::string> &faces, Camera &camera);
 };
 
 

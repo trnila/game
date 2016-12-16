@@ -183,8 +183,7 @@ struct SkyboxFactory {
 	SkyboxFactory(const char* path) : path(path) {}
 
 	void operator()(Scene* scene) {
-		Skybox *skybox = new Skybox(path);
-		scene->getActiveCamera().addListener(&skybox->program);
+		Skybox *skybox = new Skybox(path, scene->getActiveCamera());
 		scene->getRootNode().addNode(skybox);
 	}
 

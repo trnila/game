@@ -5,7 +5,6 @@
 class FrameBuffer;
 
 class FrameBufferHandler: public LockImpl<FrameBuffer> {
-
 public:
 	FrameBufferHandler(FrameBuffer &t);
 

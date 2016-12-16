@@ -5,9 +5,6 @@
 #include "Terrain.h"
 
 class GeneratedTerrain: public Terrain {
-protected:
-
-
 public:
 	GeneratedTerrain(Scene &scene);
 	

@@ -32,6 +32,10 @@ ShadowResult ShadowRenderer::render(RenderContext &context, Scene *root) {
 	return result;
 }
 
+Program &ShadowRenderer::getProgram() {
+	return program;
+}
+
 void ShadowResult::apply(Program &program) {
 	glm::mat4 biasMatrix(
 			0.5, 0.0, 0.0, 0.0,

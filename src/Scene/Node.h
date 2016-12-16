@@ -48,8 +48,6 @@ private:
 
 class Node : public Transformable {
 public:
-
-
 	virtual void render(RenderContext &context) = 0;
 	virtual void update(float diff, const glm::mat4 &parent);
 

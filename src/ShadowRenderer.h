@@ -30,9 +30,11 @@ public:
 
 	ShadowResult render(RenderContext &ctx, Scene *root);
 
-	Program program;
+	Program &getProgram();
+
 private:
 	FrameBuffer *depthBuffer;
+	Program program;
 };
 
 
