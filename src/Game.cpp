@@ -43,13 +43,20 @@ void Game::init() {
 			CameraFactory(this),
 			SkyboxFactory("resources/skyboxes/ely_hills/hills"),
 			normal_terrain,
-			Forest(),
-			TwoCubes(),
+			//Forest(),
+			//TwoCubes(),
 			VariousObjects(),
-			Earth(),
-			Balls(),
-			RotatingSpotLight(),
+			//Earth(),
+			//Balls(),
+			//RotatingSpotLight(),
 			CombineScanner(),
+			[](Scene* scene) -> void {
+				NodeList* root = scene->getRootNode().createGroup();
+				root->setPosition(188.013016, 33.348019, 208.685776);
+
+				root->createEntity("resources/normals/plane.obj")->setPosition(1.5, 0, 0);
+				root->createEntity("resources/normals/without.obj")->setPosition(-1.5, 0, 0);
+			},
 			create_water,
 			[](Scene* scene) -> void {
 				DirectionalLight *light = scene->getRootNode().createLight<DirectionalLight>(0);
