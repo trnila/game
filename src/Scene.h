@@ -38,10 +38,6 @@ public:
 		return *camera;
 	}
 
-	States& getStates() {
-		return states;
-	}
-
 	Terrain *getTerrain() const;
 
 	void onClick(glm::vec3 tvec3, Object *obj);
@@ -79,9 +75,7 @@ private:
 
 	void initResources();
 
-	States states;
 	ShadowRenderer shadowRenderer;
 	Terrain *terrain;
 	std::vector<Program*> programs;
-
 };

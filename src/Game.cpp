@@ -2,6 +2,7 @@
 #include "Factory.h"
 #include "Groups.h"
 #include "Scene/Lights/DirectionalLight.h"
+#include "State.h"
 
 void Game::init() {
 	glfwSetErrorCallback([] (int err, const char* description) -> void {
@@ -26,7 +27,16 @@ void Game::init() {
 	GL_CHECK(glEnable(GL_DEPTH_TEST));
 	GL_CHECK(glEnable(GL_STENCIL_TEST));
 	GL_CHECK(glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE));
-
+	
+	states = new States(this);
+	states->add(StateType::Insert, new Insert(), GLFW_KEY_I);
+	states->add(StateType::Delete, new Delete(), GLFW_KEY_X);
+	states->add(StateType::Scale, new Scale(), GLFW_KEY_S);
+	states->add(StateType::Lights, new Lights(), GLFW_KEY_L);
+	states->add(StateType::Shoot, new Shoot(), GLFW_KEY_SPACE);
+	states->change(StateType::Normal);
+	addKeyboard(states);
+	addMouse(states);
 
 	Factory* factory = new Factory();
 	factory->add({
@@ -77,7 +87,6 @@ void Game::onKey(int key, int scancode, int action, int mods) {
 	for(auto i: keyboard) {
 		i->onKey(key, scancode, action, mods);
 	}
-//	scene->getStates().current().onKey(key, scancode, action, mods, *this); //TODO: fix
 }
 
 void Game::onMove(double x, double y) {
@@ -88,4 +97,35 @@ void Game::onMove(double x, double y) {
 
 Window &Game::getWindow() {
 	return *window;
+}
+
+States *Game::getStates() {
+	return states;
+}
+
+Scene *Game::getScene() {
+	return scene;
+}
+
+void Game::onClick(int button, int action, double x, double y) {
+	if (action != GLFW_PRESS) {
+		return;
+	}
+
+	int newY = window->getHeight() - y;
+	float depth;
+
+	glReadPixels(x, newY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
+	int index;
+	glReadPixels(x, newY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_INT, &index);
+
+	glm::vec3 screenX = glm::vec3(x, newY, depth);
+	glm::mat4 view = scene->getActiveCamera().getLookAt();
+	glm::mat4 projection = scene->getActiveCamera().getPerspective();
+
+	glm::vec4 viewPort = glm::vec4(0, 0, window->getWidth(), window->getHeight());
+	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
+
+	states->current().onClick(pos, scene->getRootNode().find(index), *scene);
+	printf("(%f, %f, %f)\n", pos.x, pos.y, pos.z);
 }

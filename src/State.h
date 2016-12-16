@@ -8,19 +8,20 @@
 #include "States.h"
 #include "Scene.h"
 #include "Scene/Lights/DirectionalLight.h"
+#include "Game.h"
 
 class State {
 public:
 	virtual void onClick(glm::vec3 pos, Object *object, Scene &root){}
-	virtual void onKey(int key, int scancode, int action, int mods, Scene &root) {
+	virtual void onKey(int key, int scancode, int action, int mods, Game *game) {
 		if(action == GLFW_PRESS) {
 			if(key == GLFW_KEY_ESCAPE) {
-				root.getStates().change(StateType::Normal);
+				game->getStates()->change(StateType::Normal);
 			}
 
 			auto it = transitionKeys.find(key);
 			if(it != transitionKeys.end()) {
-				root.getStates().change(it->second);
+				game->getStates()->change(it->second);
 			}
 		}
 	}
@@ -61,11 +62,11 @@ public:
 class Scale: public State {
 public:
 
-	virtual void onKey(int key, int scancode, int action, int mods, Scene &root) override {
+	virtual void onKey(int key, int scancode, int action, int mods, Game *game) override {
 		if(action == GLFW_PRESS && key == GLFW_KEY_R) {
 			larger = !larger;
 		} else {
-			State::onKey(key, scancode, action, mods, root);
+			State::onKey(key, scancode, action, mods, game);
 		}
 	}
 
@@ -80,21 +81,21 @@ private:
 class Lights: public State {
 public:
 
-	virtual void onKey(int key, int scancode, int action, int mods, Scene &root) override {
+	virtual void onKey(int key, int scancode, int action, int mods, Game *game) override {
 		if(action == GLFW_PRESS) {
-			BaseLight* l = root.getRootNode().getLight(this->light);
+			BaseLight* l = game->getScene()->getRootNode().getLight(this->light);
 			if(l) {
 				switch(key) {
 					case GLFW_KEY_T:
 						l->setActive(!l->isActive());
 						return;
 					case GLFW_KEY_P:
-						l->setPosition(root.getActiveCamera().getPosition());
+						l->setPosition(game->getScene()->getActiveCamera().getPosition());
 						return;
 					case GLFW_KEY_D: {
 						DirectionalLight *light = dynamic_cast<DirectionalLight *>(l);
 						if(light) {
-							light->setDir(root.getActiveCamera().getDirection());
+							light->setDir(game->getScene()->getActiveCamera().getDirection());
 						}
 						return;
 					}
@@ -117,7 +118,7 @@ public:
 			}
 		}
 
-		State::onKey(key, scancode, action, mods, root);
+		State::onKey(key, scancode, action, mods, game);
 	}
 
 private:
@@ -127,19 +128,19 @@ private:
 class Shoot : public State {
 public:
 
-	virtual void onKey(int key, int scancode, int action, int mods, Scene &root) override {
+	virtual void onKey(int key, int scancode, int action, int mods, Game *game) override {
 		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
-			glm::vec3 pos = root.getActiveCamera().getPosition();
+			glm::vec3 pos = game->getScene()->getActiveCamera().getPosition();
 
 			Object *obj;
-			obj = root.getRootNode().createEntity("resources/ball.obj");
+			obj = game->getScene()->getRootNode().createEntity("resources/ball.obj");
 			obj->setPosition(pos.x, pos.y, pos.z);
 			obj->rotate(0, 0, 0, 1);
 			obj->setScale(0.05);
 			obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-			obj->attachLogic(MoveLogic(root.getActiveCamera().getDirection()));
+			obj->attachLogic(MoveLogic(game->getScene()->getActiveCamera().getDirection()));
 			obj->attachLogic(DestroyLogic(5));
-			root.getRootNode().addNode(obj);
+			game->getScene()->getRootNode().addNode(obj);
 		}
 	}
 };

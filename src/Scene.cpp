@@ -22,13 +22,6 @@ void Scene::initResources() {
 	factory = new ObjectFactory(prog, shadowRenderer.program);
 	root = new NodeList(*this);
 	registerProgram(&prog);
-
-	states.add(StateType::Insert, new Insert(), GLFW_KEY_I);
-	states.add(StateType::Delete, new Delete(), GLFW_KEY_X);
-	states.add(StateType::Scale, new Scale(), GLFW_KEY_S);
-	states.add(StateType::Lights, new Lights(), GLFW_KEY_L);
-	states.add(StateType::Shoot, new Shoot(), GLFW_KEY_SPACE);
-	states.change(StateType::Normal);
 }
 
 void Scene::update(float time) {
@@ -53,8 +46,3 @@ void Scene::renderOneFrame(RenderContext &context) {
 Terrain *Scene::getTerrain() const {
 	return terrain;
 }
-
-void Scene::onClick(glm::vec3 pos, Object *obj) {
-	states.current().onClick(pos, obj, *this);
-}
-
