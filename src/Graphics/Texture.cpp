@@ -1,5 +1,4 @@
 #include "Texture.h"
-#include "../Utils/Formatter.h"
 #include "FrameBuffer.h"
 #include "../Utils/Image.h"
 

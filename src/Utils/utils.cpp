@@ -1,8 +1,6 @@
 #include <GL/glew.h>
 #include <iostream>
-#include <stdlib.h>
 #include "utils.h"
-#include "Formatter.h"
 
 void checkOpenglError(const char *cmd, const char *file, int line) {
 	GLenum err;

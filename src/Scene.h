@@ -40,8 +40,6 @@ public:
 
 	Terrain *getTerrain() const;
 
-	void onClick(glm::vec3 tvec3, Object *obj);
-
 	void registerProgram(Program *program) {
 		programs.push_back(program);
 	}

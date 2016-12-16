@@ -1,8 +1,6 @@
 #include <glm/ext.hpp>
 #include <random>
 #include "Logic.h"
-#include "Scene/Lights/BaseLight.h"
-#include "Scene.h"
 
 void Walker::operator()(Node &node, float dt, Scene &scene) {
 	Camera &cam = scene.getActiveCamera();
@@ -50,7 +48,7 @@ void Walker::operator()(Node &node, float dt, Scene &scene) {
 		obj->setPosition(node.getPosition());
 		//obj->attachLogic(TerrainMove(dir));
 		obj->attachLogic(MoveLogic(glm::vec3(0, -1, 0)));
-		obj->attachLogic([=](Node &node, float dt, Scene &scene) -> void {
+		obj->attachLogic([dir](Node &node, float dt, Scene &scene) -> void {
 			float height = scene.getTerrain()->getHeightAt(node.getPosition().x, node.getPosition().z);
 			if(node.getPosition().y <= height) {
 				node.removeAllLogic();

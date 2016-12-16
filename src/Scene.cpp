@@ -1,6 +1,5 @@
 #include <glm/ext.hpp>
 #include "Scene.h"
-#include "State.h"
 
 Scene::Scene(Factory *factory) {
 	initResources();

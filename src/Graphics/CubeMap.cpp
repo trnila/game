@@ -1,5 +1,4 @@
 #include "CubeMap.h"
-#include "../Utils/Formatter.h"
 #include "../Utils/Image.h"
 
 CubeMap::CubeMap(std::vector<std::string> images): Texture(GL_TEXTURE_CUBE_MAP) {

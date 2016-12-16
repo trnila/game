@@ -1,7 +1,6 @@
 #include "ShadowRenderer.h"
 #include "Scene/NodeList.h"
 #include "Scene/Lights/DirectionalLight.h"
-#include "Scene.h"
 
 ShadowResult ShadowRenderer::render(RenderContext &context, Scene *root) {
 	context.setStage(RenderStage::Shadow);

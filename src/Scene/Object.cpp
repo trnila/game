@@ -1,5 +1,4 @@
 #include "Object.h"
-#include "../Logic.h"
 
 Object::Object(int id, Model *model, Program &program, Program &shadow, Texture *texture) :
 		id(id),

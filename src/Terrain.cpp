@@ -1,9 +1,6 @@
 #include "Utils/ResourceManager.h"
 #include "Terrain.h"
-#include <GL/glew.h>
-#include <glm/ext.hpp>
 #include "Graphics/Texture.h"
-#include "Transformable.h"
 #include "Utils/Image.h"
 #include "Graphics/Material.h"
 #include "Scene.h"

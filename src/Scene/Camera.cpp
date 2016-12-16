@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <stdio.h>
 
 Camera::Camera(Window &window) :
 		window(window),

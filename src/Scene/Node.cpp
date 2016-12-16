@@ -1,7 +1,5 @@
 #include "Lights/BaseLight.h"
-#include "Node.h"
 #include "../Logic.h"
-#include "NodeList.h"
 
 void Node::updateLogic(float diff) {
 	for(auto& cb: this->logic) {

@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "Factory.h"
 #include "Groups.h"
 #include "Scene/Lights/DirectionalLight.h"
 #include "State.h"
