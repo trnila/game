@@ -2,8 +2,15 @@
 #include "../Logic.h"
 
 void Node::updateLogic(float diff) {
-	for(auto& cb: this->logic) {
-		cb.update(*this, diff, this->getParent()->getScene());
+	for (std::string& name : toRemoveLogic) {
+		logic.erase(std::remove_if(logic.begin(), logic.end(), [&](const LogicComponent& comp) -> bool {
+			return comp.getName() == name;
+		}));
+	}
+	toRemoveLogic.clear();
+
+	for(int i = 0; i < logic.size(); i++) {
+		logic[i].update(*this, diff, this->getParent()->getScene());
 	}
 }
 

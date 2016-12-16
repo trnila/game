@@ -60,9 +60,7 @@ public:
 	}
 
 	void removeLogic(const std::string &name) {
-		logic.erase(std::remove_if(logic.begin(), logic.end(), [&](const LogicComponent& comp) -> bool {
-			return comp.getName() == name;
-		}));
+		toRemoveLogic.push_back(name);
 	}
 
 	void removeAllLogic() {
@@ -85,6 +83,7 @@ public:
 
 private:
 	std::vector<LogicComponent> logic;
+	std::vector<std::string> toRemoveLogic;
 	glm::vec3 worldPosition;
 	NodeList *parent = nullptr;
 };
