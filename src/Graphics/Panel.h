@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Graphics/Texture.h"
-#include "Graphics/VBO.h"
-#include "Graphics/Program.h"
+#include "Texture.h"
+#include "VBO.h"
+#include "Program.h"
 
 class Panel {
 public:

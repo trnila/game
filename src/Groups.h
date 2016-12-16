@@ -2,7 +2,7 @@
 
 #include "Scene/Lights/PointLight.h"
 #include "Scene/NodeList.h"
-#include "GeneratedTerrain.h"
+#include "Scene/GeneratedTerrain.h"
 #include "Logic.h"
 #include "Game.h"
 

@@ -1,5 +1,5 @@
 #include "Panel.h"
-#include "Utils/ResourceManager.h"
+#include "../Utils/ResourceManager.h"
 
 Panel::Panel() {
 	prog.attach(ResourceManager<Shader>::getInstance().getResource<>("resources/shaders/panel.v.glsl", GL_VERTEX_SHADER));

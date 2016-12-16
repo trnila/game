@@ -74,10 +74,10 @@ src/State.cpp
 src/State.h
 src/States.h
 src/stb_image.h
-src/Terrain.cpp
-src/Terrain.h
-src/Transformable.cpp
-src/Transformable.h
+		src/Scene/Terrain.cpp
+		src/Scene/Terrain.h
+		src/Scene/Transformable.cpp
+		src/Scene/Transformable.h
 		src/Utils/Color.h
 src/Utils/Formatter.cpp
 src/Utils/Formatter.h
@@ -92,8 +92,8 @@ src/Utils/utils.cpp
 src/Utils/utils.h
 src/Window.cpp
 src/Window.h
-src/GeneratedTerrain.cpp
+		src/Scene/GeneratedTerrain.cpp
 
 
-		src/Panel.cpp src/Panel.h src/Utils/Matrix.cpp src/Utils/Matrix.h src/Utils/factorial.h src/Utils/factorial.cpp src/Factory.cpp src/Factory.h src/Groups.cpp src/States.cpp src/RenderContext.cpp)
+		src/Graphics/Panel.cpp src/Graphics/Panel.h src/Utils/Matrix.cpp src/Utils/Matrix.h src/Utils/factorial.h src/Utils/factorial.cpp src/Factory.cpp src/Factory.h src/Groups.cpp src/States.cpp src/RenderContext.cpp)
 add_executable(projekt ${SOURCE_FILES})

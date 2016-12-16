@@ -17,8 +17,8 @@
 #include "ObjectFactory.h"
 #include "Logic.h"
 #include "States.h"
-#include "Terrain.h"
-#include "Panel.h"
+#include "Scene/Terrain.h"
+#include "Graphics/Panel.h"
 #include "ShadowRenderer.h"
 #include "Factory.h"
 

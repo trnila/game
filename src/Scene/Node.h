@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <vector>
-#include "../Transformable.h"
+#include "Transformable.h"
 #include "../Graphics/RenderContext.h"
 
 class Logic;

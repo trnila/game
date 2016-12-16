@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Scene/Lights/SpotLight.h"
-#include "Terrain.h"
+#include "Scene/Terrain.h"
 #include "Scene/NodeList.h"
 #include "Scene.h"
 #include "Utils/factorial.h"

@@ -1,9 +1,9 @@
 #pragma once
-#include "Graphics/Program.h"
-#include "Graphics/VBO.h"
-#include "Graphics/VAO.h"
+#include "../Graphics/Program.h"
+#include "../Graphics/VBO.h"
+#include "../Graphics/VAO.h"
 #include "Transformable.h"
-#include "Utils/Matrix.h"
+#include "../Utils/Matrix.h"
 
 class Scene;
 

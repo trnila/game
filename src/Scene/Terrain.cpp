@@ -1,9 +1,9 @@
-#include "Utils/ResourceManager.h"
+#include "../Utils/ResourceManager.h"
 #include "Terrain.h"
-#include "Graphics/Texture.h"
-#include "Utils/Image.h"
-#include "Graphics/Material.h"
-#include "Scene.h"
+#include "../Graphics/Texture.h"
+#include "../Utils/Image.h"
+#include "../Graphics/Material.h"
+#include "../Scene.h"
 
 Terrain::Terrain(Scene &scene) {
 	createShader();
