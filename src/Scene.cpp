@@ -1,19 +1,10 @@
 #include <glm/ext.hpp>
 #include "Scene.h"
-#include "Scene/Lights/BaseLight.h"
-#include "States.h"
 #include "State.h"
-#include "Scene/Lights/DirectionalLight.h"
-#include "Scene/Lights/PointLight.h"
-#include "Scene/Lights/SpotLight.h"
-#include "GeneratedTerrain.h"
-#include "Panel.h"
-#include "Factory.h"
-#include "Game.h"
 
 Scene::Scene(Factory *factory) {
 	initResources();
-	createScene();
+	getRootNode().getScene().setAmbientLight(Color(0.1, 0.1, 0.1));
 
 	factory->fillScene(*this);
 	getActiveCamera().addListener(&prog);
@@ -21,14 +12,6 @@ Scene::Scene(Factory *factory) {
 	terrain = (Terrain*) getRootNode().findBy([](Node* node) -> bool {
 		return dynamic_cast<Terrain*>(node) != nullptr;
 	});
-}
-
-void Scene::createScene() {
-	createObjects();
-	getRootNode().getScene().setAmbientLight(Color(0.1, 0.1, 0.1));
-}
-
-void Scene::createObjects() {
 }
 
 void Scene::initResources() {

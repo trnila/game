@@ -77,7 +77,6 @@ private:
 	Program prog;
 	Camera *camera;
 
-	void createScene();
 	void initResources();
 
 	States states;
@@ -85,5 +84,4 @@ private:
 	Terrain *terrain;
 	std::vector<Program*> programs;
 
-	void createObjects();
 };
