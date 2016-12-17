@@ -1,3 +1,7 @@
+if not deadTime then deadTime = 5.0 end
+if not growSpeed then growSpeed = 1.01 end
+if not maxScale then maxScale = 4.0 end
+
 local currentDeadTime = 0.0
 
 function tick(dt)

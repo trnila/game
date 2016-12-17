@@ -1,13 +1,19 @@
 #pragma once
 
-#include "Scene/Node.h"
 #include "sol.hpp"
+
+class Node;
+class Scene;
 
 class LuaLogic {
 public:
 	LuaLogic(Node *node, const char *path);
 
 	void operator()(Node& node, float dt, Scene& scene);
+
+	sol::state &getState() {
+		return state;
+	}
 
 private:
 	Node *node;

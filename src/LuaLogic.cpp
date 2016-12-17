@@ -1,4 +1,5 @@
-
+#include <glm/vec3.hpp>
+#include "Scene/Node.h"
 #include "LuaLogic.h"
 
 LuaLogic::LuaLogic(Node *node, const char *path) : node(node) {
@@ -19,21 +20,10 @@ LuaLogic::LuaLogic(Node *node, const char *path) : node(node) {
 	                                      "z", &glm::tvec3<float>::z
 	);
 
-	state["deadTime"] = 5.0f;
-	state["growSpeed"] = 1.01f;
-	state["maxScale"] = 4.0f;
-
-	auto data = {
-			glm::vec3{142.136200, 35.926910, 178.578262},
-			glm::vec3{200.470261, 32.839893, 223.659439},
-			glm::vec3{91.863808, 41.696106, 269.774445},
-	};
-	state["points"] = data;
+	state["node"] = node;
 }
 
 void LuaLogic::operator()(Node &node, float dt, Scene &scene) {
-	state["node"] = &node;
-
 	state["tick"](dt);
 }
 

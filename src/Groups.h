@@ -159,7 +159,13 @@ struct VariousObjects {
 		obj->setPosition(15, 0, 5);
 		obj->setScale(0.02);
 		obj->attachLogic(OnGround(glm::vec3(0)));
-		obj->attachLogic(LuaLogicHolder(new LuaLogic(obj, "resources/scripts/test.lua")));
+		obj->loadScript("resources/scripts/test.lua");
+		auto data = {
+				glm::vec3{142.136200, 35.926910, 178.578262},
+				glm::vec3{200.470261, 32.839893, 223.659439},
+				glm::vec3{91.863808, 41.696106, 269.774445},
+		};
+		obj->getLua()["points"] = data;
 
 		obj = root->createEntity("resources/D0G/a.obj");
 		obj->attachLogic(OnGround(glm::vec3(0)));

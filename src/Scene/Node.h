@@ -5,6 +5,7 @@
 #include <vector>
 #include "Transformable.h"
 #include "../Graphics/RenderContext.h"
+#include "../LuaLogic.h"
 
 class Logic;
 class Object;
@@ -83,10 +84,20 @@ public:
 		return nullptr;
 	}
 
+	void loadScript(const char* path) {
+		lua = new LuaLogic(this, path);
+		attachLogic(LuaLogicHolder(lua));
+	}
+
+	sol::state & getLua() {
+		return lua->getState();
+	}
+
 private:
 	std::vector<LogicComponent> logic;
 	glm::vec3 worldPosition;
 	NodeList *parent = nullptr;
+	LuaLogic *lua = nullptr;
 };
 
 
