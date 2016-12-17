@@ -136,5 +136,5 @@ void Game::onClick(int button, int action, double x, double y) {
 	glm::vec3 pos = glm::unProject(screenX, view, projection, viewPort);
 
 	states->current().onClick(pos, scene->getRootNode().find(index), *scene);
-	printf("(%f, %f, %f)\n", pos.x, pos.y, pos.z);
+	printf("glm::vec3{%f, %f, %f},\n", pos.x, pos.y, pos.z);
 }

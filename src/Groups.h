@@ -17,14 +17,14 @@ struct Forest {
 		obj->rotate(0, 0, 0, 1);
 		obj->setScale(0.001, 0.001, 0.001);
 		obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-		obj->attachLogic(TreeLogic(1.01, 0.1, 5));
+		//obj->attachLogic(TreeLogic(1.01, 0.1, 5));
 
 		obj = forest->createEntity("resources/tree.obj");
 		obj->setPosition(0, 0.0f, 0);
 		obj->rotate(0, 0, 0, 1);
 		obj->setScale(0.001, 0.001, 0.001);
 		obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-		obj->attachLogic(TreeLogic(1.04, 0.2, 9));
+		//obj->attachLogic(TreeLogic(1.04, 0.2, 9));
 	}
 };
 
@@ -155,7 +155,7 @@ struct VariousObjects {
 		obj->rotate(0, 0, 1, 0);
 		obj->attachLogic(RotateLogic(40));
 
-		obj = root->createEntity("resources/Vortigaunt/vortigaunt.obj");
+		obj = scene->getRootNode().createEntity("resources/Vortigaunt/vortigaunt.obj");
 		obj->setPosition(15, 0, 5);
 		obj->setScale(0.02);
 		obj->attachLogic(OnGround(glm::vec3(0)));
