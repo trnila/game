@@ -5,6 +5,7 @@
 #include "Scene/GeneratedTerrain.h"
 #include "Logic.h"
 #include "Game.h"
+#include "LuaLogic.h"
 
 struct Forest {
 	void operator()(Scene* scene) {
@@ -158,6 +159,10 @@ struct VariousObjects {
 		obj->setPosition(15, 0, 5);
 		obj->setScale(0.02);
 		obj->attachLogic(OnGround(glm::vec3(0)));
+		LuaLogic *logic = new LuaLogic(obj, "resources/scripts/test.lua");
+		obj->attachLogic([=](Node& node, float dt, Scene& scene) -> void {
+			logic->operator()(node, dt, scene);
+		});
 
 		obj = root->createEntity("resources/D0G/a.obj");
 		obj->attachLogic(OnGround(glm::vec3(0)));

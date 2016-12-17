@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.6)
 project(projekt)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11") # -Wall -Wextra -pedantic
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14") # -Wall -Wextra -pedantic
 
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(assimp REQUIRED)
-include_directories(${GLEW_INCLUDE_DIRS})
-link_libraries(${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${ASSIMP_LIBRARIES} glfw)
+include_directories(${GLEW_INCLUDE_DIRS} vendor)
+link_libraries(${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${ASSIMP_LIBRARIES} glfw lua)
 
 #  make clean && find src -type f | sort
 set(SOURCE_FILES
@@ -95,5 +95,5 @@ src/Window.h
 		src/Scene/GeneratedTerrain.cpp
 
 
-		src/Graphics/Panel.cpp src/Graphics/Panel.h src/Utils/Matrix.cpp src/Utils/Matrix.h src/Utils/factorial.h src/Utils/factorial.cpp src/Factory.cpp src/Factory.h src/Groups.cpp src/States.cpp src/RenderContext.cpp)
+		src/Graphics/Panel.cpp src/Graphics/Panel.h src/Utils/Matrix.cpp src/Utils/Matrix.h src/Utils/factorial.h src/Utils/factorial.cpp src/Factory.cpp src/Factory.h src/Groups.cpp src/States.cpp src/RenderContext.cpp src/LuaLogic.cpp src/LuaLogic.h)
 add_executable(projekt ${SOURCE_FILES})
