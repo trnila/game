@@ -20,32 +20,6 @@ private:
 	float anglePerSec;
 };
 
-class TreeLogic {
-public:
-	TreeLogic(float growSpeed, float maxScale, float deadTime) : growSpeed(growSpeed), maxScale(maxScale), deadTime(deadTime) {}
-
-	void operator()(Node& node, float dt, Scene& scene) {
-		if (node.getScale().x > maxScale) {
-			node.rotate(90, 0, 0, 1);
-			currentDeadTime += dt;
-
-			if (currentDeadTime > deadTime) {
-				node.rotate(0, 0, 0, 1);
-				node.setScale(0.001, 0.001, 0.001);
-				currentDeadTime = 0;
-			}
-		} else {
-			node.multiplyScale(growSpeed, growSpeed, growSpeed);
-		}
-	}
-
-private:
-	float deadTime;
-	float growSpeed;
-	float maxScale;
-	float currentDeadTime = 0;
-};
-
 
 class DestroyLogic {
 public:

@@ -15,3 +15,13 @@ private:
 };
 
 
+class LuaLogicHolder {
+public:
+	LuaLogicHolder(LuaLogic *ptr): ptr(ptr) {}
+	void operator()(Node& node, float dt, Scene& scene) {
+		ptr->operator()(node, dt, scene);
+	}
+
+private:
+	LuaLogic* ptr;
+};

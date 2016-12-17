@@ -9,6 +9,7 @@
 #include "Scene.h"
 #include "Scene/Lights/DirectionalLight.h"
 #include "Game.h"
+#include "LuaLogic.h"
 
 class State {
 public:
@@ -43,7 +44,8 @@ public:
 		obj->rotate(0, 0, 0, 1);
 		obj->setScale(0.1);
 		obj->setColor(139 / 255.0f, 69 / 255.0f, 19 / 255.0f);
-		obj->attachLogic(TreeLogic(1.01, 0.1, 5));
+		//obj->attachLogic(TreeLogic(1.01, 0.1, 5));
+		obj->attachLogic(LuaLogicHolder(new LuaLogic(obj, "resources/scripts/tree.lua")));
 		root.getRootNode().addNode(obj);
 	}
 };

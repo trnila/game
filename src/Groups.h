@@ -159,10 +159,7 @@ struct VariousObjects {
 		obj->setPosition(15, 0, 5);
 		obj->setScale(0.02);
 		obj->attachLogic(OnGround(glm::vec3(0)));
-		LuaLogic *logic = new LuaLogic(obj, "resources/scripts/test.lua");
-		obj->attachLogic([=](Node& node, float dt, Scene& scene) -> void {
-			logic->operator()(node, dt, scene);
-		});
+		obj->attachLogic(LuaLogicHolder(new LuaLogic(obj, "resources/scripts/test.lua")));
 
 		obj = root->createEntity("resources/D0G/a.obj");
 		obj->attachLogic(OnGround(glm::vec3(0)));
